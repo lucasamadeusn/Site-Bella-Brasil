@@ -1,6 +1,5 @@
 // Vercel Serverless Function — GET /api/products
-require('dotenv').config({ path: require('path').join(__dirname, '../server/.env') });
-const { getProducts } = require('../server/square');
+const { getProducts } = require('./lib/square');
 
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -10,9 +9,9 @@ module.exports = async function handler(req, res) {
 
   try {
     const products = await getProducts();
-    res.status(200).json({ products });
+    res.status(200).json({ success: true, count: products.length, products });
   } catch (err) {
     console.error('❌ /api/products:', err.message);
-    res.status(502).json({ error: err.message });
+    res.status(502).json({ success: false, error: err.message });
   }
 };

@@ -1,6 +1,6 @@
 // Vercel Serverless Function — POST /api/create-checkout
-require('dotenv').config({ path: require('path').join(__dirname, '../server/.env') });
-const { createPaymentLink } = require('../server/square');
+const { createPaymentLink } = require('./lib/square');
+const { isEmailConfigured } = require('./lib/email');
 
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -11,13 +11,13 @@ module.exports = async function handler(req, res) {
 
   try {
     const { items, delivery, customerName } = req.body || {};
-    if (!items || items.length === 0) {
-      return res.status(400).json({ error: 'Nenhum item no carrinho.' });
+    if (!Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({ success: false, error: 'Nenhum item no carrinho.' });
     }
-    const url = await createPaymentLink(items, delivery, customerName);
-    res.status(200).json({ url });
+    const checkoutUrl = await createPaymentLink(items, delivery || {}, customerName || '');
+    res.status(200).json({ success: true, checkoutUrl, emailReady: isEmailConfigured() });
   } catch (err) {
     console.error('❌ /api/create-checkout:', err.message);
-    res.status(502).json({ error: err.message });
+    res.status(502).json({ success: false, error: err.message });
   }
 };

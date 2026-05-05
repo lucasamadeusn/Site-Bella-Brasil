@@ -1,6 +1,5 @@
 // Vercel Serverless Function — POST /api/send-confirmation
-require('dotenv').config({ path: require('path').join(__dirname, '../server/.env') });
-const { sendOrderConfirmation, isEmailConfigured } = require('../server/email');
+const { sendOrderConfirmation, isEmailConfigured } = require('./lib/email');
 
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -10,7 +9,7 @@ module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   if (!isEmailConfigured()) {
-    return res.status(503).json({ error: 'Serviço de e-mail não configurado.' });
+    return res.status(503).json({ success: false, error: 'Serviço de e-mail não configurado.' });
   }
 
   try {
@@ -18,6 +17,6 @@ module.exports = async function handler(req, res) {
     res.status(200).json({ success: true, ...result });
   } catch (err) {
     console.error('❌ /api/send-confirmation:', err.message);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ success: false, error: err.message });
   }
 };

@@ -12,6 +12,7 @@
 // Carrega .env do mesmo diretório deste arquivo (funciona independente de onde o processo foi iniciado)
 require('dotenv').config({ path: require('path').join(__dirname, '.env') });
 
+const path    = require('path');
 const express = require('express');
 const cors    = require('cors');
 const { getProducts, createPaymentLink } = require('./square');
@@ -20,7 +21,12 @@ const { sendOrderConfirmation, isEmailConfigured } = require('./email');
 const app  = express();
 const PORT = process.env.PORT || 3333;
 
-// ── Origens permitidas (CORS) ──────────────────────────────────
+// ── Serve frontend estático (HTML/CSS/JS/images) ────────────────
+// Em produção (Vercel/Railway) o __dirname é server/, então subimos um nível
+const FRONTEND_DIR = path.join(__dirname, '..');
+app.use(express.static(FRONTEND_DIR, { index: 'index.html' }));
+
+// ── CORS (para chamadas diretas à API de outros domínios) ───────
 const ALLOWED_ORIGINS = [
   process.env.FRONTEND_URL,
   'http://localhost:3001',
@@ -33,7 +39,7 @@ app.use(cors({
   origin: (origin, cb) => {
     // Permite chamadas sem origin (ex: Postman, curl) e origens da lista
     if (!origin || ALLOWED_ORIGINS.includes(origin)) return cb(null, true);
-    cb(new Error(`CORS bloqueado para: ${origin}`));
+    cb(null, true); // em produção permite qualquer origin (mesma URL)
   },
   methods: ['GET', 'POST', 'OPTIONS'],
 }));
@@ -141,8 +147,17 @@ app.post('/send-confirmation', async (req, res) => {
   }
 });
 
-// ── 404 handler ─────────────────────────────────────────────────
-app.use((_req, res) => {
+// ── Fallback: serve index.html para rotas desconhecidas ─────────
+// (necessário para o Vercel roteando tudo pelo Express)
+app.use((req, res) => {
+  const requestedPage = path.join(FRONTEND_DIR, req.path);
+  // Se parece um arquivo de página, tenta servir; caso contrário, 404 JSON
+  if (req.path.endsWith('.html')) {
+    return res.sendFile(requestedPage, err => {
+      if (err) res.status(404).sendFile(path.join(FRONTEND_DIR, '404.html'),
+        () => res.status(404).json({ error: 'Página não encontrada.' }));
+    });
+  }
   res.status(404).json({ success: false, error: 'Endpoint não encontrado.' });
 });
 

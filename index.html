@@ -33,36 +33,36 @@
     </form>
 
     <div class="nav-links">
-      <a href="index.html">Início</a>
-      <a href="shop.html">Produtos</a>
-      <a href="about.html">Sobre</a>
-      <a href="contact.html">Contato</a>
-      <a href="conta.html" id="nav-account-link">👤 Minha Conta</a>
+      <a href="index.html" data-i18n="nav-inicio">Início</a>
+      <a href="shop.html"  data-i18n="nav-produtos">Produtos</a>
+      <a href="about.html" data-i18n="nav-sobre">Sobre</a>
+      <a href="contact.html" data-i18n="nav-contato">Contato</a>
+      <a href="conta.html" id="nav-account-link" data-i18n="nav-conta">👤 Minha Conta</a>
     </div>
     <a href="cart.html" class="cart-btn">
-      🛒 Carrinho
+      <span data-i18n="nav-carrinho">🛒 Carrinho</span>
       <span class="cart-count" style="display:none">0</span>
     </a>
     <button class="hamburger" id="hamburger-btn" aria-label="Menu">☰</button>
   </nav>
   <nav class="mobile-nav" id="mobile-nav">
-    <a href="index.html">🏠 Início</a>
-    <a href="shop.html">🛍️ Produtos</a>
-    <a href="about.html">ℹ️ Sobre Nós</a>
-    <a href="contact.html">📞 Contato</a>
-    <a href="conta.html">👤 Minha Conta</a>
-    <a href="cart.html">🛒 Ver Carrinho</a>
+    <a href="index.html"  data-i18n="nav-inicio-m">🏠 Início</a>
+    <a href="shop.html"   data-i18n="nav-produtos-m">🛍️ Produtos</a>
+    <a href="about.html"  data-i18n="nav-sobre-m">ℹ️ Sobre Nós</a>
+    <a href="contact.html" data-i18n="nav-contato-m">📞 Contato</a>
+    <a href="conta.html"  data-i18n="nav-conta-m">👤 Minha Conta</a>
+    <a href="cart.html"   data-i18n="nav-cart-m">🛒 Ver Carrinho</a>
   </nav>
 </header>
 
 <!-- ═════════════════════════ TRUST BAR ════════════════════════════════ -->
 <div class="trust-bar">
   <div class="trust-bar-inner">
-    <div class="trust-item green"><span class="t-icon">🔒</span> Checkout 100% Seguro</div>
-    <div class="trust-item"><span class="t-icon">💳</span> Powered by Square Checkout</div>
-    <div class="trust-item"><span class="t-icon">🚚</span> Frete Grátis acima de $60</div>
-    <div class="trust-item navy"><span class="t-icon">⭐</span> 4.9 no Google (90+ avaliações)</div>
-    <div class="trust-item"><span class="t-icon">↩️</span> Devolução Garantida</div>
+    <div class="trust-item green"><span class="t-icon">🔒</span> <span data-i18n="trust-secure">Checkout 100% Seguro</span></div>
+    <div class="trust-item"><span class="t-icon">💳</span> <span data-i18n="trust-square">Powered by Square Checkout</span></div>
+    <div class="trust-item"><span class="t-icon">🚚</span> <span data-i18n="trust-free">Frete Grátis acima de $60</span></div>
+    <div class="trust-item navy"><span class="t-icon">⭐</span> <span data-i18n="trust-google">4.9 no Google (90+ avaliações)</span></div>
+    <div class="trust-item"><span class="t-icon">↩️</span> <span data-i18n="trust-return">Devolução Garantida</span></div>
   </div>
 </div>
 
@@ -107,15 +107,15 @@
         </div>
         <div class="hero-stat">
           <strong>90+</strong>
-          <span>Avaliações</span>
+          <span data-i18n="hero-stat-reviews">Avaliações</span>
         </div>
         <div class="hero-stat">
           <strong>200+</strong>
-          <span>Produtos</span>
+          <span data-i18n="hero-stat-products">Produtos</span>
         </div>
         <div class="hero-stat">
           <strong>🌎 WA</strong>
-          <span>Delivery</span>
+          <span data-i18n="hero-stat-delivery">Delivery</span>
         </div>
       </div>
     </div>
@@ -125,7 +125,7 @@
       <div class="hero-store-card">
 
         <!-- Top floating badges -->
-        <div class="hero-flag-badge badge-br">🇧🇷 Sabor Autêntico</div>
+        <div class="hero-flag-badge badge-br" data-i18n="hero-badge-br">🇧🇷 Sabor Autêntico</div>
         <div class="hero-flag-badge badge-us">🇺🇸 Kirkland, WA</div>
 
         <!-- Image frame with gold ring -->
@@ -168,11 +168,11 @@
 <!-- ═════════════════════════════ INFO STRIP ════════════════════════════ -->
 <div class="info-strip">
   <div class="info-strip-inner">
-    <div class="info-item"><span class="icon">🚚</span> Frete grátis acima de $60</div>
-    <div class="info-item"><span class="icon">🇧🇷</span> Produtos 100% brasileiros</div>
-    <div class="info-item"><span class="icon">⭐</span> 4.9 estrelas no Google</div>
-    <div class="info-item"><span class="icon">📦</span> Delivery para todo WA</div>
-    <div class="info-item"><span class="icon">🔒</span> Pagamento seguro</div>
+    <div class="info-item" data-i18n="strip-1">🚚 Frete grátis acima de $60</div>
+    <div class="info-item" data-i18n="strip-2">🇧🇷 Produtos 100% brasileiros</div>
+    <div class="info-item" data-i18n="strip-3">⭐ 4.9 estrelas no Google</div>
+    <div class="info-item" data-i18n="strip-4">📦 Delivery para todo WA</div>
+    <div class="info-item" data-i18n="strip-5">🔒 Pagamento seguro</div>
   </div>
 </div>
 
@@ -181,26 +181,25 @@
   <div class="container">
     <div class="section-header">
       <div>
-        <div class="section-eyebrow">Explore por categoria</div>
-        <h2>O que você está <span>procurando?</span></h2>
+        <div class="section-eyebrow" data-i18n="cat-eyebrow">Explore por categoria</div>
+        <h2><span data-i18n="cat-h2-a">O que você está</span> <span data-i18n="cat-h2-b">procurando?</span></h2>
       </div>
     </div>
     <div class="category-grid" id="home-category-grid">
-      <!-- Preenchido dinamicamente pelo square-integration.js -->
       <a href="shop.html?cat=Congelados" class="category-card">
         <div class="cat-emoji">🧊</div>
         <div class="cat-name">Congelados</div>
-        <div class="cat-count">Ver produtos</div>
+        <div class="cat-count" data-i18n="cat-ver-prod">Ver produtos</div>
       </a>
       <a href="shop.html?cat=Cacau+show+chocolates" class="category-card">
         <div class="cat-emoji">🍫</div>
         <div class="cat-name">Cacau Show Chocolates</div>
-        <div class="cat-count">Ver produtos</div>
+        <div class="cat-count" data-i18n="cat-ver-prod">Ver produtos</div>
       </a>
       <a href="shop.html" class="category-card">
         <div class="cat-emoji">🛍️</div>
-        <div class="cat-name">Ver Todos</div>
-        <div class="cat-count">Todos os produtos</div>
+        <div class="cat-name" data-i18n="cat-all-name">Ver Todos</div>
+        <div class="cat-count" data-i18n="cat-all-sub">Todos os produtos</div>
       </a>
     </div>
   </div>
@@ -211,13 +210,12 @@
   <div class="container">
     <div class="section-header">
       <div>
-        <div class="section-eyebrow">Mais Vendidos</div>
-        <h2>Os <span>favoritos</span> da comunidade</h2>
+        <div class="section-eyebrow" data-i18n="feat-eyebrow">Mais Vendidos</div>
+        <h2><span data-i18n="feat-h2-a">Os</span> <span data-i18n="feat-h2-b">favoritos</span> <span data-i18n="feat-h2-c">da comunidade</span></h2>
       </div>
-      <a href="shop.html" class="see-all">Ver todos →</a>
+      <a href="shop.html" class="see-all" data-i18n="feat-see-all">Ver todos →</a>
     </div>
     <div class="product-grid" id="featured-products">
-      <!-- Preenchido pelo JS -->
       <div class="loading"><div class="spinner"></div></div>
     </div>
   </div>
@@ -229,17 +227,17 @@
     <div class="promo-banners">
       <div class="promo-card green">
         <div class="promo-text">
-          <h3>Churrasco Perfeito</h3>
-          <p>Picanha, linguiça e costela fresquinha direto pra sua grelha!</p>
-          <a href="shop.html?cat=carnes" class="btn-primary" style="margin-top:1rem;display:inline-flex">Ver Carnes →</a>
+          <h3 data-i18n="promo1-h3">Churrasco Perfeito</h3>
+          <p data-i18n="promo1-p">Picanha, linguiça e costela fresquinha direto pra sua grelha!</p>
+          <a href="shop.html?cat=carnes" class="btn-primary" data-i18n="promo1-btn" style="margin-top:1rem;display:inline-flex">Ver Carnes →</a>
         </div>
         <div class="promo-emoji">🔥</div>
       </div>
       <div class="promo-card yellow">
         <div class="promo-text">
-          <h3>Café da Manhã Brasileiro</h3>
-          <p>Pão de queijo, requeijão, café Pilão e achocolatado Nescau!</p>
-          <a href="shop.html?cat=frios" class="btn-primary" style="margin-top:1rem;display:inline-flex">Ver Frios →</a>
+          <h3 data-i18n="promo2-h3">Café da Manhã Brasileiro</h3>
+          <p data-i18n="promo2-p">Pão de queijo, requeijão, café Pilão e achocolatado Nescau!</p>
+          <a href="shop.html?cat=frios" class="btn-primary" data-i18n="promo2-btn" style="margin-top:1rem;display:inline-flex">Ver Frios →</a>
         </div>
         <div class="promo-emoji">☕</div>
       </div>
@@ -252,10 +250,10 @@
   <div class="container">
     <div class="section-header">
       <div>
-        <div class="section-eyebrow">Promoções</div>
-        <h2>Ofertas <span>imperdíveis</span></h2>
+        <div class="section-eyebrow" data-i18n="promo-eyebrow">Promoções</div>
+        <h2><span data-i18n="promo-h2-a">Ofertas</span> <span data-i18n="promo-h2-b">imperdíveis</span></h2>
       </div>
-      <a href="shop.html?sort=sale" class="see-all">Ver todas →</a>
+      <a href="shop.html?sort=sale" class="see-all" data-i18n="promo-see-all">Ver todas →</a>
     </div>
     <div class="product-grid" id="promo-products">
       <div class="loading"><div class="spinner"></div></div>
@@ -418,15 +416,11 @@
       </div>
     </div>
     <div class="footer-col">
-      <h4>Categorias</h4>
-      <a href="shop.html">🛒 Todos os Produtos</a>
+      <h4 data-i18n="footer-cat-h4">Categorias</h4>
+      <a href="shop.html">🛒 <span data-i18n="cat-all-name">Ver Todos</span></a>
       <a href="shop.html?cat=Congelados">🧊 Congelados</a>
-      <a href="shop.html?cat=Cacau+show+chocolates">🍫 Cacau Show</a>
-      <a href="shop.html?cat=carnes">🥩 Carnes</a>
-      <a href="shop.html?cat=bebidas">🥤 Bebidas</a>
-      <a href="shop.html?cat=doces">🍬 Doces</a>
-      <a href="shop.html?cat=mercearia">🛍️ Mercearia</a>
-      <a href="rastreamento.html" style="margin-top:.5rem;opacity:.7;font-size:.82rem">📦 Rastrear Pedido</a>
+      <a href="shop.html?cat=Cacau+show+chocolates">🍫 Cacau Show Chocolates</a>
+      <a href="rastreamento.html" style="margin-top:.6rem;opacity:.7;font-size:.82rem" data-i18n="footer-track">📦 Rastrear Pedido</a>
     </div>
     <div class="footer-col">
       <h4>Horário de Funcionamento</h4>

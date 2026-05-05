@@ -21,18 +21,14 @@ function _getSquareProductFromCache(id) {
   } catch { return null; }
 }
 
-// Retorna produto de qualquer fonte: estático, mapa em memória ou cache localStorage
+// Retorna produto apenas do Square (mapa em memória ou cache localStorage)
+// Produtos estáticos (products.js) foram removidos — usamos somente o Square.
 function _resolveProduct(id) {
-  // 1. Produtos estáticos (products.js)
-  if (typeof getProductById === 'function') {
-    const p = getProductById(id);
-    if (p) return p;
-  }
-  // 2. Mapa em memória do square-integration.js (mais rápido, sem parse JSON)
+  // 1. Mapa em memória do square-integration.js (mais rápido, sem parse JSON)
   if (window._sqProductMap && window._sqProductMap[id]) {
     return window._sqProductMap[id];
   }
-  // 3. Cache em localStorage (persiste entre páginas)
+  // 2. Cache em localStorage (persiste entre páginas)
   return _getSquareProductFromCache(id);
 }
 

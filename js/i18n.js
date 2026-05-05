@@ -1,106 +1,114 @@
 // ================================================================
 //  i18n.js — PT / EN Language Toggle — Bella Brasil Market Plus
-//  Abordagem: selector-map + data-i18n attributes
 // ================================================================
 
 const LANG_KEY = 'bellabrasil_lang';
 
-// ── 1. data-i18n attribute translations (legacy + new) ──────────
+// ── Translation dictionary ──────────────────────────────────────
 const translations = {
+  // Nav
+  'nav-inicio':   { pt: 'Início',       en: 'Home' },
+  'nav-produtos': { pt: 'Produtos',     en: 'Products' },
+  'nav-sobre':    { pt: 'Sobre',        en: 'About' },
+  'nav-contato':  { pt: 'Contato',      en: 'Contact' },
+  'nav-conta':    { pt: '👤 Minha Conta', en: '👤 My Account' },
+  'nav-carrinho': { pt: '🛒 Carrinho',    en: '🛒 Cart' },
+  'nav-inicio-m': { pt: '🏠 Início',      en: '🏠 Home' },
+  'nav-produtos-m':{ pt: '🛍️ Produtos',   en: '🛍️ Products' },
+  'nav-sobre-m':  { pt: 'ℹ️ Sobre Nós',   en: 'ℹ️ About Us' },
+  'nav-contato-m':{ pt: '📞 Contato',     en: '📞 Contact' },
+  'nav-conta-m':  { pt: '👤 Minha Conta', en: '👤 My Account' },
+  'nav-cart-m':   { pt: '🛒 Ver Carrinho',en: '🛒 View Cart' },
+
+  // Trust bar
+  'trust-secure': { pt: 'Checkout 100% Seguro',         en: '100% Secure Checkout' },
+  'trust-square': { pt: 'Powered by Square Checkout',   en: 'Powered by Square Checkout' },
+  'trust-free':   { pt: 'Frete Grátis acima de $60',    en: 'Free Shipping over $60' },
+  'trust-google': { pt: '4.9 no Google (90+ avaliações)',en: '4.9 on Google (90+ reviews)' },
+  'trust-return': { pt: 'Devolução Garantida',           en: 'Guaranteed Returns' },
+
+  // Hero
   'hero-badge':    { pt: '🚚 Delivery para todo Washington', en: '🚚 Delivery across Washington' },
   'hero-cta-shop': { pt: '🛒 Comprar Agora', en: '🛒 Shop Now' },
   'hero-cta-more': { pt: 'Saiba Mais →',     en: 'Learn More →' },
+  'hero-stat-reviews': { pt: 'Avaliações', en: 'Reviews' },
+  'hero-stat-products':{ pt: 'Produtos',   en: 'Products' },
+  'hero-stat-delivery':{ pt: 'Delivery',   en: 'Delivery' },
+  'hero-store-delivery':{ pt: '🚚 Frete grátis acima de $60', en: '🚚 Free shipping over $60' },
+  'hero-badge-br': { pt: '🇧🇷 Sabor Autêntico', en: '🇧🇷 Authentic Flavor' },
+
+  // Info strip
+  'strip-1': { pt: '🚚 Frete grátis acima de $60', en: '🚚 Free shipping over $60' },
+  'strip-2': { pt: '🇧🇷 Produtos 100% brasileiros', en: '🇧🇷 100% Brazilian products' },
+  'strip-3': { pt: '⭐ 4.9 estrelas no Google',    en: '⭐ 4.9 stars on Google' },
+  'strip-4': { pt: '📦 Delivery para todo WA',     en: '📦 Delivery across WA' },
+  'strip-5': { pt: '🔒 Pagamento seguro',          en: '🔒 Secure payment' },
+
+  // Categories section
+  'cat-eyebrow': { pt: 'Explore por categoria',  en: 'Browse by category' },
+  'cat-h2-a':    { pt: 'O que você está',        en: "What are you" },
+  'cat-h2-b':    { pt: 'procurando?',            en: 'looking for?' },
+  'cat-ver-prod':{ pt: 'Ver produtos',           en: 'View products' },
+  'cat-all-name':{ pt: 'Ver Todos',              en: 'See All' },
+  'cat-all-sub': { pt: 'Todos os produtos',      en: 'All products' },
+
+  // Featured / promo sections
+  'feat-eyebrow': { pt: 'Mais Vendidos',              en: 'Best Sellers' },
+  'feat-h2-a':    { pt: 'Os',                         en: 'Community' },
+  'feat-h2-b':    { pt: 'favoritos',                  en: 'favorites' },
+  'feat-h2-c':    { pt: 'da comunidade',              en: '' },
+  'feat-see-all': { pt: 'Ver todos →',               en: 'See all →' },
+  'promo-eyebrow':{ pt: 'Promoções',                  en: 'Promotions' },
+  'promo-h2-a':   { pt: 'Ofertas',                   en: 'Unmissable' },
+  'promo-h2-b':   { pt: 'imperdíveis',               en: 'offers' },
+  'promo-see-all':{ pt: 'Ver todas →',               en: 'See all →' },
+
+  // Promo banners
+  'promo1-h3':    { pt: 'Churrasco Perfeito',         en: 'Perfect BBQ' },
+  'promo1-p':     { pt: 'Picanha, linguiça e costela fresquinha direto pra sua grelha!', en: 'Picanha, sausage and ribs fresh to your grill!' },
+  'promo1-btn':   { pt: 'Ver Carnes →',               en: 'Shop Meats →' },
+  'promo2-h3':    { pt: 'Café da Manhã Brasileiro',   en: 'Brazilian Breakfast' },
+  'promo2-p':     { pt: 'Pão de queijo, requeijão, café Pilão e achocolatado Nescau!', en: 'Cheese bread, cream cheese, Pilão coffee and Nescau!' },
+  'promo2-btn':   { pt: 'Ver Frios →',                en: 'Shop Dairy →' },
+
+  // Why Bella Brasil section
+  'why-eyebrow':  { pt: 'Por que escolher a Bella Brasil?', en: 'Why choose Bella Brasil?' },
+  'why-h2-a':     { pt: 'A melhor',                   en: 'The best' },
+  'why-h2-b':     { pt: 'experiência',                en: 'Brazilian' },
+  'why-h2-c':     { pt: 'brasileira em WA',           en: 'experience in WA' },
+  'why-feat1-h4': { pt: 'Produtos Autênticos',        en: 'Authentic Products' },
+  'why-feat1-p':  { pt: 'Importados diretamente do Brasil com sabor e qualidade garantidos.', en: 'Directly imported from Brazil with guaranteed flavor and quality.' },
+  'why-feat2-h4': { pt: 'Delivery em todo WA',        en: 'Delivery across WA' },
+  'why-feat2-p':  { pt: 'Entregamos em todo o estado de Washington via UPS.', en: 'We deliver across all of Washington State via UPS.' },
+  'why-feat3-h4': { pt: 'Pagamento Seguro',           en: 'Secure Payment' },
+  'why-feat3-p':  { pt: 'Checkout 100% seguro via Square. Aceitamos cartões e digital wallets.', en: '100% secure checkout via Square. We accept cards and digital wallets.' },
+  'why-feat4-h4': { pt: 'Atendimento em Português',  en: 'Portuguese Support' },
+  'why-feat4-p':  { pt: 'Nossa equipe fala português e está pronta para te ajudar!', en: 'Our team speaks Portuguese and is ready to help!' },
+
+  // Reviews section
+  'rev-eyebrow':  { pt: 'Avaliações',                 en: 'Reviews' },
+  'rev-h2-a':     { pt: 'O que nossos',               en: 'What our' },
+  'rev-h2-b':     { pt: 'clientes',                   en: 'customers' },
+  'rev-h2-c':     { pt: 'dizem',                      en: 'say' },
+  'rev-btn':      { pt: '⭐ Ver todas as avaliações no Google', en: '⭐ See all reviews on Google' },
+
+  // Footer
+  'footer-desc':  { pt: 'Sua loja brasileira de confiança em Kirkland, Washington. Trazemos o sabor autêntico do Brasil para a sua mesa!',
+                    en: 'Your trusted Brazilian store in Kirkland, Washington. We bring the authentic taste of Brazil to your table!' },
+  'footer-cat-h4':{ pt: 'Categorias',                 en: 'Categories' },
+  'footer-hours-h4':{ pt: 'Horário de Funcionamento', en: 'Store Hours' },
+  'footer-contact-h4':{ pt: 'Contato & Localização',  en: 'Contact & Location' },
+  'footer-track': { pt: '📦 Rastrear Pedido',         en: '📦 Track Order' },
+  'footer-delivery-note': { pt: 'Delivery disponível para todo o estado de Washington (WA)',
+                             en: 'Delivery available across Washington State (WA)' },
+  'footer-copy':  { pt: '© 2025 Bella Brasil Market Plus. Todos os direitos reservados.',
+                    en: '© 2025 Bella Brasil Market Plus. All rights reserved.' },
+
+  // Buttons generic
+  'btn-shop-now': { pt: '🛍️ Explorar Produtos',      en: '🛍️ Shop Products' },
 };
 
-// ── 2. Selector map — cobre todos os textos sem data-i18n ───────
-// { sel, pt, en }          → substitui textContent do elemento
-// { sel, pt, en, html }    → substitui innerHTML (para spans internos)
-// { sel, pt, en, attr }    → substitui um atributo (ex: placeholder)
-// { sel, pt, en, lastText} → substitui somente o último nó de texto
-//                            (usado quando há <span class="t-icon"> antes)
-const selectorMap = [
-
-  // ── Navbar desktop ───────────────────────────────────────────
-  { sel: '.nav-links a[href="index.html"]',   pt: 'Início',   en: 'Home' },
-  { sel: '.nav-links a[href="shop.html"]',    pt: 'Produtos', en: 'Products' },
-  { sel: '.nav-links a[href="about.html"]',   pt: 'Sobre',    en: 'About' },
-  { sel: '.nav-links a[href="contact.html"]', pt: 'Contato',  en: 'Contact' },
-
-  // ── Navbar mobile ────────────────────────────────────────────
-  { sel: '.mobile-nav a[href="index.html"]',   pt: '🏠 Início',      en: '🏠 Home' },
-  { sel: '.mobile-nav a[href="shop.html"]',    pt: '🛍️ Produtos',    en: '🛍️ Products' },
-  { sel: '.mobile-nav a[href="about.html"]',   pt: 'ℹ️ Sobre Nós',   en: 'ℹ️ About Us' },
-  { sel: '.mobile-nav a[href="contact.html"]', pt: '📞 Contato',     en: '📞 Contact' },
-  { sel: '.mobile-nav a[href="cart.html"]',    pt: '🛒 Ver Carrinho', en: '🛒 View Cart' },
-  { sel: '.mobile-nav a[href="conta.html"]',   pt: '👤 Minha Conta', en: '👤 My Account' },
-
-  // ── Search bar ───────────────────────────────────────────────
-  { sel: '.search-bar input', pt: 'Buscar produtos brasileiros...', en: 'Search Brazilian products...', attr: 'placeholder' },
-
-  // ── Trust bar (tem <span class="t-icon"> → lastText) ─────────
-  { sel: '.trust-item.green', pt: 'Checkout 100% Seguro',       en: '100% Secure Checkout',     lastText: true },
-  { sel: '.trust-item.navy',  pt: '4.9 no Google (90+ avaliações)', en: '4.9 on Google (90+ reviews)', lastText: true },
-
-  // ── Hero ─────────────────────────────────────────────────────
-  { sel: '.hero-badge',       pt: '🚚 Delivery para todo Washington', en: '🚚 Delivery across Washington' },
-  { sel: '.hero h1', html: true,
-    pt: 'O sabor do<br><span>Brasil</span> 🇧🇷<br>na sua porta!',
-    en: 'The taste of<br><span>Brazil</span> 🇺🇸<br>at your door!' },
-  { sel: '.hero-content > p',
-    pt: 'Carnes frescas, pão de queijo, guaraná, açaí e tudo que você sente saudade. Delivery para todo o estado de Washington 🇺🇸',
-    en: 'Fresh meats, pão de queijo, guaraná, açaí and everything you miss from home. Delivery across all of Washington State 🇺🇸' },
-  { sel: '.hero-stat:nth-child(2) span', pt: 'Avaliações', en: 'Reviews' },
-  { sel: '.hero-stat:nth-child(3) span', pt: 'Produtos',   en: 'Products' },
-  { sel: '.hero-stat:nth-child(4) span', pt: 'Delivery',   en: 'Delivery' },
-  { sel: '.hero-store-label',
-    html: true,
-    pt: 'Bella Brasil Market Plus<small>12545 116th Ave NE · Kirkland, WA 98034</small>',
-    en: 'Bella Brasil Market Plus<small>12545 116th Ave NE · Kirkland, WA 98034</small>' },
-  { sel: '.hero-flag-badge.badge-br',       pt: '🇧🇷 Sabor Autêntico', en: '🇧🇷 Authentic Flavor' },
-  { sel: '.hero-flag-badge.badge-delivery', pt: '🚚 Frete grátis acima de $60', en: '🚚 Free shipping over $60' },
-
-  // ── Info strip ───────────────────────────────────────────────
-  { sel: '.info-item:nth-child(1)', pt: '🚚 Frete grátis acima de $60',  en: '🚚 Free shipping over $60',      html: true },
-  { sel: '.info-item:nth-child(2)', pt: '🇧🇷 Produtos 100% brasileiros',  en: '🇧🇷 100% Brazilian products',     html: true },
-  { sel: '.info-item:nth-child(3)', pt: '⭐ 4.9 estrelas no Google',      en: '⭐ 4.9 stars on Google',          html: true },
-  { sel: '.info-item:nth-child(4)', pt: '📦 Delivery para todo WA',       en: '📦 Delivery across WA',           html: true },
-  { sel: '.info-item:nth-child(5)', pt: '🔒 Pagamento seguro',            en: '🔒 Secure payment',               html: true },
-
-  // ── Section: Categorias ──────────────────────────────────────
-  { sel: '#home-category-grid + * .section-eyebrow, .section-eyebrow:first-of-type',
-    pt: 'Explore por categoria', en: 'Browse by category' },
-  { sel: '.cat-count', pt: 'Ver produtos', en: 'View products' },
-
-  // ── Section: Mais Vendidos ───────────────────────────────────
-  { sel: '.section-eyebrow', pt: 'Mais Vendidos', en: 'Best Sellers',   all: true },
-  { sel: '.see-all',         pt: 'Ver todos →',   en: 'See all →',      all: true },
-
-  // ── Section: Promoções ───────────────────────────────────────
-  { sel: '#promo-products + * .section-eyebrow', pt: 'Promoções', en: 'Promotions' },
-
-  // ── Footer ───────────────────────────────────────────────────
-  { sel: '.footer-brand p',        pt: 'Sua loja brasileira de confiança em Kirkland, Washington. Trazemos o sabor autêntico do Brasil para a sua mesa!',
-                                   en: 'Your trusted Brazilian store in Kirkland, Washington. We bring the authentic taste of Brazil to your table!' },
-  { sel: '.footer-col:nth-child(2) h4', pt: 'Categorias',               en: 'Categories' },
-  { sel: '.footer-col:nth-child(3) h4', pt: 'Horário de Funcionamento', en: 'Store Hours' },
-  { sel: '.footer-col:nth-child(4) h4', pt: 'Contato & Localização',    en: 'Contact & Location' },
-  { sel: '.footer-col .footer-delivery-note',
-    pt: 'Delivery disponível para todo o estado de Washington (WA)',
-    en: 'Delivery available across Washington State (WA)' },
-  { sel: '.footer-bottom span:first-child',
-    pt: '© 2025 Bella Brasil Market Plus. Todos os direitos reservados.',
-    en: '© 2025 Bella Brasil Market Plus. All rights reserved.' },
-
-  // ── About page ───────────────────────────────────────────────
-  { sel: '.about-hero h1', html: true,
-    pt: 'Levando o <span>Brasil</span> até você<br>em Kirkland, WA 🇧🇷',
-    en: 'Bringing <span>Brazil</span> to you<br>in Kirkland, WA 🇧🇷' },
-
-  // ── Cart / Checkout ──────────────────────────────────────────
-  { sel: '.cart-btn',  pt: '🛒 Carrinho', en: '🛒 Cart',        html: true, keepChild: '.cart-count' },
-];
-
-// ── Core helpers ────────────────────────────────────────────────
+// ── Core functions ──────────────────────────────────────────────
 
 function getCurrentLang() {
   return localStorage.getItem(LANG_KEY) || 'pt';
@@ -112,55 +120,37 @@ function setLang(lang) {
   updateToggleBtn(lang);
 }
 
-/** Substitui apenas o último nó de texto de um elemento (preserva ícones) */
-function _replaceLastTextNode(el, text) {
-  const textNodes = [...el.childNodes].filter(
-    n => n.nodeType === 3 && n.textContent.trim().length > 0
-  );
-  if (textNodes.length > 0) {
-    textNodes[textNodes.length - 1].textContent = ' ' + text;
-  }
-}
-
 function applyLang(lang) {
-  // 1) data-i18n attributes (backward compat)
+  // 1) data-i18n → textContent
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.dataset.i18n;
-    if (translations[key]?.[lang]) el.textContent = translations[key][lang];
+    const val = translations[key]?.[lang];
+    if (val !== undefined) el.textContent = val;
   });
+
+  // 2) data-i18n-html → innerHTML (allows <span> inside)
   document.querySelectorAll('[data-i18n-html]').forEach(el => {
     const key = el.dataset.i18nHtml;
-    if (translations[key]?.[lang]) el.innerHTML = translations[key][lang];
+    const val = translations[key]?.[lang];
+    if (val !== undefined) el.innerHTML = val;
   });
+
+  // 3) data-i18n-placeholder → placeholder attribute
   document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
     const key = el.dataset.i18nPlaceholder;
-    if (translations[key]?.[lang]) el.placeholder = translations[key][lang];
+    const val = translations[key]?.[lang];
+    if (val !== undefined) el.placeholder = val;
   });
 
-  // 2) selectorMap
-  selectorMap.forEach(item => {
-    const text = lang === 'en' ? item.en : item.pt;
-    if (text === undefined) return;
+  // 4) Hero h1 special (has HTML structure)
+  const heroH1 = document.querySelector('.hero h1');
+  if (heroH1) {
+    heroH1.innerHTML = lang === 'en'
+      ? 'The taste of<br><span>Brazil</span> 🇺🇸<br>at your door!'
+      : 'O sabor do<br><span>Brasil</span> 🇧🇷<br>na sua porta!';
+  }
 
-    const nodes = item.all
-      ? document.querySelectorAll(item.sel)
-      : [document.querySelector(item.sel)].filter(Boolean);
-
-    nodes.forEach(el => {
-      if (!el) return;
-      if (item.attr) {
-        el[item.attr] = text;
-      } else if (item.html) {
-        el.innerHTML = text;
-      } else if (item.lastText) {
-        _replaceLastTextNode(el, text);
-      } else {
-        el.textContent = text;
-      }
-    });
-  });
-
-  // 3) Account link: preserve dynamic name
+  // 5) Account link (preserves dynamic first name)
   const user = (() => { try { return JSON.parse(localStorage.getItem('bellabrasil_user')); } catch { return null; } })();
   document.querySelectorAll('#nav-account-link').forEach(l => {
     l.textContent = user
@@ -168,15 +158,22 @@ function applyLang(lang) {
       : (lang === 'en' ? '👤 My Account' : '👤 Minha Conta');
   });
 
-  // 4) html lang attribute
+  // 6) html lang attribute
   document.documentElement.lang = lang === 'en' ? 'en' : 'pt-BR';
 }
 
+// Botão mostra o idioma ATUAL (clique para trocar)
+// ex: quando em PT → mostra "🇧🇷 PT" → clicar muda para EN
 function updateToggleBtn(lang) {
   const btn = document.getElementById('lang-toggle-btn');
   if (!btn) return;
-  btn.textContent = lang === 'pt' ? '🇺🇸 EN' : '🇧🇷 PT';
-  btn.title = lang === 'pt' ? 'Switch to English' : 'Mudar para Português';
+  if (lang === 'pt') {
+    btn.innerHTML = '🇧🇷 PT <span style="opacity:.5;margin:0 2px">|</span> EN';
+    btn.title = 'Switch to English';
+  } else {
+    btn.innerHTML = 'PT <span style="opacity:.5;margin:0 2px">|</span> 🇺🇸 EN';
+    btn.title = 'Mudar para Português';
+  }
 }
 
 function toggleLang() {
@@ -191,15 +188,21 @@ function initLangToggle() {
   const btn = document.createElement('button');
   btn.id = 'lang-toggle-btn';
   btn.onclick = toggleLang;
-  btn.style.cssText = `background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);
-    color:#fff;padding:.35rem .8rem;border-radius:8px;font-size:.82rem;font-weight:700;
-    cursor:pointer;transition:background .2s;flex-shrink:0;letter-spacing:.04em;`;
+  btn.style.cssText = `background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);
+    color:#fff;padding:.35rem .85rem;border-radius:8px;font-size:.8rem;font-weight:700;
+    cursor:pointer;transition:background .2s;flex-shrink:0;letter-spacing:.03em;
+    display:flex;align-items:center;gap:.15rem;`;
   btn.addEventListener('mouseenter', () => btn.style.background = 'rgba(255,255,255,.24)');
   btn.addEventListener('mouseleave', () => btn.style.background = 'rgba(255,255,255,.12)');
 
   const cartBtn = navbar.querySelector('.cart-btn');
   if (cartBtn) navbar.insertBefore(btn, cartBtn);
   else navbar.appendChild(btn);
+
+  // Reseta para PT se não houver preferência salva
+  if (!localStorage.getItem(LANG_KEY)) {
+    localStorage.setItem(LANG_KEY, 'pt');
+  }
 
   const lang = getCurrentLang();
   applyLang(lang);

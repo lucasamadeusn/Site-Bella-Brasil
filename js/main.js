@@ -338,7 +338,7 @@ function showOrderSuccess(total, itemCount) {
 // ── Auto-init based on page ──────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   const page = location.pathname.split('/').pop();
-  if (!page || page === 'index.html') initHomePage();
+  // initHomePage() removido — home usa apenas produtos do Square via square-integration.js
   if (page === 'shop.html')           initShopPage();
   if (page === 'contact.html')        initContactForm();
   if (page === 'checkout.html')       initCheckoutForm();

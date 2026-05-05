@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Bella Brasil Market Plus</title>
+  <link rel="stylesheet" href="css/style.css?v=2026" />
+  <meta name="theme-color" content="#1A3B6F" />
+  <style>
+    body { background: var(--gray-100); }
+    /* ── Login gate ── */
+    .admin-login {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, #0b2340 0%, #1A3B6F 50%, #0e5c2e 100%);
+      padding: 1rem;
+    }
+    .login-box {
+      background: #fff; border-radius: var(--radius-lg);
+      box-shadow: 0 20px 60px rgba(0,0,0,.3);
+      padding: 2.5rem 2rem; max-width: 400px; width: 100%; text-align: center;
+    }
+    .login-box .lb-logo { font-size: 2.5rem; margin-bottom: .8rem; }
+    .login-box h2 { color: var(--navy); margin-bottom: .3rem; }
+    .login-box p  { color: var(--gray-400); font-size: .88rem; margin-bottom: 1.5rem; }
+    .login-box input {
+      width: 100%; padding: .8rem 1rem; border: 1.5px solid var(--gray-200);
+      border-radius: 10px; font-size: 1rem; outline: none; transition: var(--transition);
+      margin-bottom: .8rem; text-align: center; letter-spacing: .1em;
+    }
+    .login-box input:focus { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(26,59,111,.1); }
+    .login-box .btn-login {
+      width: 100%; padding: .85rem; background: var(--navy); color: #fff;
+      border: none; border-radius: 10px; font-size: 1rem; font-weight: 700;
+      cursor: pointer; transition: var(--transition);
+    }
+    .login-box .btn-login:hover { background: var(--navy-dark); }
+    .login-error { color: var(--red); font-size: .85rem; margin-top: .6rem; display: none; }
+
+    /* ── Admin Layout ── */
+    .admin-wrap { display: none; }
+    .admin-header {
+      background: var(--navy); color: #fff;
+      padding: .9rem 2rem; display: flex; align-items: center;
+      justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+    }
+    .admin-header h1 { font-size: 1.1rem; font-weight: 700; }
+    .admin-header .admin-nav { display: flex; gap: .5rem; }
+    .admin-nav-btn {
+      padding: .4rem .9rem; border-radius: 8px; font-size: .82rem; font-weight: 600;
+      cursor: pointer; border: 1.5px solid rgba(255,255,255,.2); color: #fff; background: transparent;
+      transition: var(--transition);
+    }
+    .admin-nav-btn:hover, .admin-nav-btn.active { background: rgba(255,255,255,.15); }
+    .logout-btn {
+      padding: .4rem .9rem; background: rgba(220,38,38,.15); border: 1.5px solid #DC2626;
+      border-radius: 8px; color: #FCA5A5; font-size: .82rem; font-weight: 600;
+      cursor: pointer; transition: var(--transition);
+    }
+    .logout-btn:hover { background: #DC2626; color: #fff; }
+
+    .admin-body { padding: 2rem; max-width: 1200px; margin: 0 auto; }
+
+    /* ── Stats grid ── */
+    .stats-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.2rem;
+      margin-bottom: 2rem;
+    }
+    .stat-box {
+      background: #fff; border-radius: var(--radius); padding: 1.3rem 1.5rem;
+      box-shadow: var(--shadow-sm); border-left: 4px solid;
+    }
+    .stat-box.blue  { border-color: var(--navy); }
+    .stat-box.green { border-color: var(--green); }
+    .stat-box.gold  { border-color: var(--gold-dark); }
+    .stat-box.red   { border-color: var(--red); }
+    .stat-box .sb-label { font-size: .78rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: .05em; color: var(--gray-400); margin-bottom: .3rem; }
+    .stat-box .sb-value { font-size: 1.8rem; font-weight: 800; color: var(--gray-800); }
+    .stat-box .sb-sub   { font-size: .78rem; color: var(--gray-400); margin-top: .2rem; }
+
+    /* ── Section cards ── */
+    .admin-section {
+      background: #fff; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);
+      padding: 1.5rem; margin-bottom: 1.5rem;
+    }
+    .admin-section h2 { color: var(--navy); font-size: 1.05rem; margin-bottom: 1.2rem;
+      padding-bottom: .6rem; border-bottom: 1px solid var(--gray-200); }
+
+    /* ── Table ── */
+    .admin-table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+    .admin-table th { text-align: left; padding: .5rem .8rem; background: var(--gray-100);
+      color: var(--gray-600); font-weight: 600; font-size: .75rem;
+      text-transform: uppercase; letter-spacing: .05em; }
+    .admin-table td { padding: .65rem .8rem; border-bottom: 1px solid var(--gray-100); color: var(--gray-800); }
+    .admin-table tr:last-child td { border-bottom: none; }
+    .admin-table tr:hover td { background: var(--gray-50); }
+
+    /* Badges */
+    .badge {
+      display: inline-block; padding: .2rem .6rem; border-radius: 20px;
+      font-size: .72rem; font-weight: 700; text-transform: uppercase;
+    }
+    .badge-green { background: var(--green-light); color: var(--green-dark); }
+    .badge-navy  { background: var(--navy-light);  color: var(--navy); }
+    .badge-gold  { background: var(--gold-light);  color: var(--gold-dark); }
+
+    /* Panels */
+    .admin-panel { display: none; }
+    .admin-panel.active { display: block; }
+
+    /* Square link */
+    .square-link-card {
+      background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+      border-radius: var(--radius-lg); padding: 1.5rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem;
+    }
+    .square-link-card h3 { color: #fff; font-size: 1rem; margin-bottom: .2rem; }
+    .square-link-card p  { color: rgba(255,255,255,.6); font-size: .82rem; }
+    .square-link-card a  {
+      padding: .7rem 1.4rem; background: #fff; color: #000;
+      border-radius: 10px; font-weight: 700; font-size: .88rem;
+      text-decoration: none; white-space: nowrap; transition: var(--transition);
+    }
+    .square-link-card a:hover { background: var(--gray-100); }
+
+    @media (max-width: 640px) { .admin-body { padding: 1rem; } }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════ LOGIN GATE ════════════════════════════════ -->
+<div class="admin-login" id="admin-login">
+  <div class="login-box">
+    <div class="lb-logo">🇧🇷</div>
+    <h2>Bella Brasil Admin</h2>
+    <p>Acesso restrito à equipe da loja</p>
+    <input type="password" id="admin-pwd" placeholder="••••••••••" onkeydown="if(event.key==='Enter')doLogin()" />
+    <button class="btn-login" onclick="doLogin()">🔐 Entrar</button>
+    <div class="login-error" id="login-error">Senha incorreta. Tente novamente.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ ADMIN PANEL ══════════════════════════════ -->
+<div class="admin-wrap" id="admin-wrap">
+
+  <div class="admin-header">
+    <div>
+      <h1>🇧🇷 Bella Brasil — Painel Admin</h1>
+    </div>
+    <div class="admin-nav">
+      <button class="admin-nav-btn active" onclick="showPanel('dashboard', this)">📊 Dashboard</button>
+      <button class="admin-nav-btn" onclick="showPanel('produtos', this)">🛍️ Produtos</button>
+      <button class="admin-nav-btn" onclick="showPanel('clientes', this)">👥 Clientes</button>
+      <button class="admin-nav-btn" onclick="showPanel('links', this)">🔗 Links</button>
+    </div>
+    <button class="logout-btn" onclick="adminLogout()">Sair</button>
+  </div>
+
+  <div class="admin-body">
+
+    <!-- ══ DASHBOARD PANEL ══ -->
+    <div class="admin-panel active" id="panel-dashboard">
+
+      <!-- Stats -->
+      <div class="stats-grid" id="stats-grid">
+        <!-- Preenchido pelo JS -->
+      </div>
+
+      <!-- Square link -->
+      <div class="square-link-card">
+        <div>
+          <h3>■ Square Dashboard</h3>
+          <p>Gerencie pedidos, pagamentos e produtos no painel oficial do Square</p>
+        </div>
+        <a href="https://squareup.com/dashboard" target="_blank" rel="noopener">
+          Abrir Square →
+        </a>
+      </div>
+
+      <!-- Clientes registrados -->
+      <div class="admin-section">
+        <h2>👥 Clientes Cadastrados (últimos 10)</h2>
+        <div style="overflow-x:auto">
+          <table class="admin-table" id="clients-table">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>E-mail</th>
+                <th>Cidade</th>
+                <th>Cadastro</th>
+                <th>Via</th>
+              </tr>
+            </thead>
+            <tbody id="clients-tbody">
+              <tr><td colspan="5" style="color:var(--gray-400);text-align:center;padding:2rem">
+                Nenhum cliente cadastrado ainda.
+              </td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- /dashboard -->
+
+    <!-- ══ PRODUTOS PANEL ══ -->
+    <div class="admin-panel" id="panel-produtos">
+      <div class="admin-section">
+        <h2>🛍️ Produtos do Square (catálogo ativo)</h2>
+        <div id="products-loading" style="text-align:center;padding:2rem;color:var(--gray-400)">
+          <div class="spinner" style="margin:0 auto 1rem"></div> Carregando do Square...
+        </div>
+        <div style="overflow-x:auto">
+          <table class="admin-table" id="products-table" style="display:none">
+            <thead>
+              <tr><th>#</th><th>Nome</th><th>Categoria</th><th>Preço</th><th>Variações</th><th>Status</th></tr>
+            </thead>
+            <tbody id="products-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ CLIENTES PANEL ══ -->
+    <div class="admin-panel" id="panel-clientes">
+      <div class="admin-section">
+        <h2>👥 Todos os Clientes Cadastrados</h2>
+        <div style="overflow-x:auto">
+          <table class="admin-table">
+            <thead>
+              <tr><th>Nome</th><th>E-mail</th><th>Telefone</th><th>Cidade / Estado</th><th>Cadastro</th></tr>
+            </thead>
+            <tbody id="all-clients-tbody">
+              <tr><td colspan="5" style="color:var(--gray-400);text-align:center;padding:2rem">
+                Nenhum cliente ainda.
+              </td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ LINKS PANEL ══ -->
+    <div class="admin-panel" id="panel-links">
+      <div class="admin-section">
+        <h2>🔗 Links Úteis</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem">
+
+          <a href="https://squareup.com/dashboard" target="_blank" rel="noopener"
+             style="display:flex;align-items:center;gap:.8rem;padding:1.1rem 1.3rem;
+             background:#000;color:#fff;border-radius:var(--radius);text-decoration:none;transition:var(--transition)">
+            <span style="font-size:1.5rem">■</span>
+            <div><div style="font-weight:700">Square Dashboard</div><div style="font-size:.78rem;opacity:.6">Pedidos, pagamentos, catálogo</div></div>
+          </a>
+
+          <a href="https://squareup.com/dashboard/online-store" target="_blank" rel="noopener"
+             style="display:flex;align-items:center;gap:.8rem;padding:1.1rem 1.3rem;
+             background:#1a1a1a;color:#fff;border-radius:var(--radius);text-decoration:none">
+            <span style="font-size:1.5rem">🛒</span>
+            <div><div style="font-weight:700">Square Online Store</div><div style="font-size:.78rem;opacity:.6">Loja online do Square</div></div>
+          </a>
+
+          <a href="https://console.firebase.google.com" target="_blank" rel="noopener"
+             style="display:flex;align-items:center;gap:.8rem;padding:1.1rem 1.3rem;
+             background:#F57C00;color:#fff;border-radius:var(--radius);text-decoration:none">
+            <span style="font-size:1.5rem">🔥</span>
+            <div><div style="font-weight:700">Firebase Console</div><div style="font-size:.78rem;opacity:.7">Auth, banco de dados</div></div>
+          </a>
+
+          <a href="https://myaccount.google.com/security" target="_blank" rel="noopener"
+             style="display:flex;align-items:center;gap:.8rem;padding:1.1rem 1.3rem;
+             background:#4285F4;color:#fff;border-radius:var(--radius);text-decoration:none">
+            <span style="font-size:1.5rem">📧</span>
+            <div><div style="font-weight:700">Gmail / Senha de App</div><div style="font-size:.78rem;opacity:.8">Configurar e-mail automático</div></div>
+          </a>
+
+          <a href="https://www.instagram.com/bellabrasilmarketplus/" target="_blank" rel="noopener"
+             style="display:flex;align-items:center;gap:.8rem;padding:1.1rem 1.3rem;
+             background:linear-gradient(135deg,#833AB4,#E1306C,#F77737);color:#fff;border-radius:var(--radius);text-decoration:none">
+            <span style="font-size:1.5rem">📸</span>
+            <div><div style="font-weight:700">Instagram</div><div style="font-size:.78rem;opacity:.8">@bellabrasilmarketplus</div></div>
+          </a>
+
+          <a href="index.html" target="_blank"
+             style="display:flex;align-items:center;gap:.8rem;padding:1.1rem 1.3rem;
+             background:var(--navy);color:#fff;border-radius:var(--radius);text-decoration:none">
+            <span style="font-size:1.5rem">🌐</span>
+            <div><div style="font-weight:700">Ver Site</div><div style="font-size:.78rem;opacity:.8">Abrir loja em nova aba</div></div>
+          </a>
+
+        </div>
+      </div>
+
+      <!-- Configurações -->
+      <div class="admin-section">
+        <h2>⚙️ Alterar Senha Admin</h2>
+        <div style="max-width:380px">
+          <div style="margin-bottom:.7rem">
+            <input type="password" id="new-pwd-1" placeholder="Nova senha" style="width:100%;padding:.7rem 1rem;border:1.5px solid var(--gray-200);border-radius:8px;font-size:.95rem;outline:none;margin-bottom:.5rem"/>
+            <input type="password" id="new-pwd-2" placeholder="Confirmar nova senha" style="width:100%;padding:.7rem 1rem;border:1.5px solid var(--gray-200);border-radius:8px;font-size:.95rem;outline:none"/>
+          </div>
+          <button onclick="changeAdminPwd()" style="padding:.7rem 1.5rem;background:var(--navy);color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;">
+            🔐 Salvar nova senha
+          </button>
+          <div id="pwd-change-msg" style="margin-top:.6rem;font-size:.85rem;display:none"></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /admin-body -->
+</div><!-- /admin-wrap -->
+
+<script>
+// ── Auth ─────────────────────────────────────────────────────────────────────
+const ADMIN_KEY = 'bellabrasil_admin_session';
+const DEFAULT_PWD_HASH = btoa('bellabrasil2024'); // default password
+
+function getAdminPwdHash() {
+  return localStorage.getItem('bellabrasil_admin_pwd') || DEFAULT_PWD_HASH;
+}
+
+function doLogin() {
+  const pwd = document.getElementById('admin-pwd').value;
+  if (btoa(pwd) === getAdminPwdHash()) {
+    sessionStorage.setItem(ADMIN_KEY, '1');
+    showAdmin();
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+    document.getElementById('admin-pwd').value = '';
+  }
+}
+function adminLogout() {
+  sessionStorage.removeItem(ADMIN_KEY);
+  location.reload();
+}
+function changeAdminPwd() {
+  const p1 = document.getElementById('new-pwd-1').value;
+  const p2 = document.getElementById('new-pwd-2').value;
+  const msg = document.getElementById('pwd-change-msg');
+  if (!p1 || p1.length < 6) { msg.style.display='block'; msg.style.color='red'; msg.textContent='Senha precisa ter pelo menos 6 caracteres.'; return; }
+  if (p1 !== p2) { msg.style.display='block'; msg.style.color='red'; msg.textContent='As senhas não coincidem.'; return; }
+  localStorage.setItem('bellabrasil_admin_pwd', btoa(p1));
+  msg.style.display='block'; msg.style.color='green'; msg.textContent='✅ Senha alterada com sucesso!';
+  document.getElementById('new-pwd-1').value = '';
+  document.getElementById('new-pwd-2').value = '';
+}
+
+function showAdmin() {
+  document.getElementById('admin-login').style.display = 'none';
+  document.getElementById('admin-wrap').style.display   = 'block';
+  loadDashboard();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (sessionStorage.getItem(ADMIN_KEY)) showAdmin();
+  document.getElementById('admin-pwd').addEventListener('keydown', e => {
+    if (e.key === 'Enter') doLogin();
+  });
+});
+
+// ── Panel switching ───────────────────────────────────────────────────────────
+function showPanel(name, btn) {
+  document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.admin-nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(`panel-${name}`).classList.add('active');
+  btn.classList.add('active');
+  if (name === 'produtos') loadProducts();
+  if (name === 'clientes') loadAllClients();
+}
+
+// ── Dashboard ─────────────────────────────────────────────────────────────────
+function loadDashboard() {
+  const users = JSON.parse(localStorage.getItem('bellabrasil_users') || '[]');
+  const favs  = (() => {
+    try {
+      let total = 0;
+      Object.keys(localStorage).forEach(k => {
+        if (k.startsWith('bellabrasil_favorites')) {
+          total += (JSON.parse(localStorage.getItem(k)) || []).length;
+        }
+      });
+      return total;
+    } catch { return 0; }
+  })();
+
+  document.getElementById('stats-grid').innerHTML = `
+    <div class="stat-box blue">
+      <div class="sb-label">Clientes cadastrados</div>
+      <div class="sb-value">${users.length}</div>
+      <div class="sb-sub">Via e-mail/senha</div>
+    </div>
+    <div class="stat-box green">
+      <div class="sb-label">Favoritos salvos</div>
+      <div class="sb-value">${favs}</div>
+      <div class="sb-sub">Produtos marcados como ♥</div>
+    </div>
+    <div class="stat-box gold">
+      <div class="sb-label">Backend</div>
+      <div class="sb-value" id="stat-backend">...</div>
+      <div class="sb-sub">localhost:3333</div>
+    </div>
+    <div class="stat-box red">
+      <div class="sb-label">Produtos no Square</div>
+      <div class="sb-value" id="stat-products">...</div>
+      <div class="sb-sub">Catálogo ativo</div>
+    </div>`;
+
+  // Check backend
+  fetch('http://localhost:3333/')
+    .then(r => r.json())
+    .then(d => {
+      document.getElementById('stat-backend').textContent = '🟢 Online';
+      document.getElementById('stat-backend').style.fontSize = '1rem';
+    })
+    .catch(() => { document.getElementById('stat-backend').textContent = '🔴 Offline'; document.getElementById('stat-backend').style.fontSize = '1rem'; });
+
+  // Load product count
+  fetch('http://localhost:3333/products')
+    .then(r => r.json())
+    .then(d => {
+      document.getElementById('stat-products').textContent = d.count || d.products?.length || '–';
+    })
+    .catch(() => { document.getElementById('stat-products').textContent = '–'; });
+
+  // Load clients table
+  const tbody = document.getElementById('clients-tbody');
+  if (users.length === 0) return;
+  const recent = [...users].reverse().slice(0, 10);
+  tbody.innerHTML = recent.map(u => `
+    <tr>
+      <td><strong>${u.firstName} ${u.lastName}</strong></td>
+      <td>${u.email}</td>
+      <td>${u.address?.city || '–'}</td>
+      <td>${u.createdAt ? new Date(u.createdAt).toLocaleDateString('pt-BR') : '–'}</td>
+      <td><span class="badge badge-navy">E-mail</span></td>
+    </tr>`).join('');
+}
+
+// ── Products ──────────────────────────────────────────────────────────────────
+let _productsLoaded = false;
+function loadProducts() {
+  if (_productsLoaded) return;
+  fetch('http://localhost:3333/products')
+    .then(r => r.json())
+    .then(d => {
+      document.getElementById('products-loading').style.display = 'none';
+      const table = document.getElementById('products-table');
+      table.style.display = 'table';
+      const products = d.products || [];
+      document.getElementById('products-tbody').innerHTML = products.length === 0
+        ? `<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--gray-400)">Nenhum produto no Square.</td></tr>`
+        : products.map((p, i) => `
+            <tr>
+              <td style="color:var(--gray-400)">${i + 1}</td>
+              <td><strong>${p.name}</strong>${p.description ? `<br><span style="font-size:.78rem;color:var(--gray-400)">${p.description.slice(0,60)}${p.description.length>60?'...':''}</span>` : ''}</td>
+              <td>${p.category ? `<span class="badge badge-gold">${p.category}</span>` : '<span style="color:var(--gray-400)">–</span>'}</td>
+              <td><strong style="color:var(--green)">$${p.price?.toFixed(2) || '–'}</strong></td>
+              <td>${(p.variations?.length || 1) > 1 ? `<span class="badge badge-navy">${p.variations.length} variações</span>` : '–'}</td>
+              <td>${p.inStock ? '<span class="badge badge-green">Ativo</span>' : '<span style="color:var(--gray-400)">Inativo</span>'}</td>
+            </tr>`).join('');
+      _productsLoaded = true;
+    })
+    .catch(() => {
+      document.getElementById('products-loading').textContent = '❌ Backend offline. Inicie o servidor para ver os produtos.';
+    });
+}
+
+// ── All clients ───────────────────────────────────────────────────────────────
+function loadAllClients() {
+  const users = JSON.parse(localStorage.getItem('bellabrasil_users') || '[]');
+  const tbody = document.getElementById('all-clients-tbody');
+  if (users.length === 0) return;
+  tbody.innerHTML = [...users].reverse().map(u => `
+    <tr>
+      <td><strong>${u.firstName} ${u.lastName}</strong></td>
+      <td>${u.email}</td>
+      <td>${u.phone || '–'}</td>
+      <td>${[u.address?.city, u.address?.state].filter(Boolean).join(', ') || '–'}</td>
+      <td>${u.createdAt ? new Date(u.createdAt).toLocaleDateString('pt-BR') : '–'}</td>
+    </tr>`).join('');
+}
+</script>
+</body>
+</html>

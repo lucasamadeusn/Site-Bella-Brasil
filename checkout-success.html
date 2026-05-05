@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pedido Confirmado! — Bella Brasil Market Plus</title>
+  <link rel="stylesheet" href="css/style.css?v=2026" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#1A3B6F" />
+</head>
+<body>
+
+<header class="header">
+  <div class="top-bar">
+    🇧🇷 Bella Brasil Market Plus &nbsp;|&nbsp; 📞 <a href="tel:+14259682011">(425) 968-2011</a>
+  </div>
+  <nav class="navbar">
+    <a href="index.html" class="logo">
+      <img src="images/logo.svg" alt="Bella Brasil Market Plus" class="logo-img" />
+      <div class="logo-text">
+        <span class="brand-main">Bella Brasil</span>
+        <span class="brand-sub">Market Plus · Kirkland, WA</span>
+      </div>
+    </a>
+    <div style="flex:1"></div>
+    <a href="shop.html" class="btn-primary" style="font-size:.85rem;padding:.5rem 1rem;">🛍️ Continuar Comprando</a>
+  </nav>
+</header>
+
+<!-- ══════════════════════════ SUCCESS CONTENT ══════════════════════════ -->
+<section style="min-height:75vh;display:flex;align-items:center;justify-content:center;background:var(--gray-50);padding:3rem 1rem;">
+  <div style="max-width:580px;width:100%;text-align:center;">
+
+    <!-- Animated checkmark -->
+    <div style="width:96px;height:96px;background:var(--green);border-radius:50%;display:flex;align-items:center;
+                justify-content:center;margin:0 auto 1.5rem;box-shadow:0 8px 24px rgba(31,173,92,.35);
+                animation:popIn .5s cubic-bezier(.34,1.56,.64,1) both;">
+      <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+        <path d="M10 24l10 10 18-20" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"
+              style="stroke-dasharray:60;stroke-dashoffset:60;animation:drawCheck .5s .3s ease forwards"/>
+      </svg>
+    </div>
+
+    <div style="background:var(--white);border-radius:var(--radius-lg);padding:2.5rem 2rem;box-shadow:var(--shadow-lg);">
+      <div style="font-size:2.2rem;margin-bottom:.5rem">🎉</div>
+      <h1 style="color:var(--navy);font-size:1.8rem;margin-bottom:.5rem;">Pedido Confirmado!</h1>
+      <p style="color:var(--gray-600);margin-bottom:.3rem;font-size:.95rem;">
+        Obrigado por comprar na <strong style="color:var(--navy)">Bella Brasil Market Plus</strong>!
+      </p>
+      <p style="color:var(--gray-400);font-size:.82rem;margin-bottom:1.5rem;">
+        Você receberá uma confirmação por e-mail em breve com os detalhes do seu pedido.
+      </p>
+
+      <!-- Order summary from sessionStorage -->
+      <div id="order-details" style="background:var(--gray-50);border-radius:var(--radius);padding:1.2rem;margin-bottom:1.5rem;text-align:left;display:none;">
+        <div style="font-size:.82rem;font-weight:700;color:var(--navy);margin-bottom:.8rem;text-transform:uppercase;letter-spacing:.05em;">Resumo do Pedido</div>
+        <div style="font-size:.85rem;color:var(--gray-600);display:flex;flex-direction:column;gap:.4rem;" id="order-info"></div>
+      </div>
+
+      <!-- Delivery info -->
+      <div style="background:var(--navy-light);border-radius:var(--radius);padding:1rem 1.2rem;margin-bottom:1.5rem;border-left:4px solid var(--navy);">
+        <div style="font-size:.82rem;font-weight:700;color:var(--navy);margin-bottom:.4rem;">🚚 Informações de Entrega</div>
+        <div style="font-size:.8rem;color:var(--gray-600);line-height:1.7;">
+          • Você receberá um e-mail com o código de rastreamento<br>
+          • Entregamos via <strong>UPS</strong> em todo o estado de Washington<br>
+          • Dúvidas? Ligue <a href="tel:+14259682011" style="color:var(--navy)">(425) 968-2011</a>
+        </div>
+      </div>
+
+      <!-- Trust badges -->
+      <div style="display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.5rem;">
+        <div style="font-size:.75rem;color:var(--gray-500);display:flex;align-items:center;gap:.3rem;">🔒 Pagamento Seguro</div>
+        <div style="font-size:.75rem;color:var(--gray-500);display:flex;align-items:center;gap:.3rem;">📧 Confirmação por Email</div>
+        <div style="font-size:.75rem;color:var(--gray-500);display:flex;align-items:center;gap:.3rem;">↩️ Devolução Garantida</div>
+      </div>
+
+      <!-- CTAs -->
+      <div style="display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap;">
+        <a href="shop.html" class="btn-primary">🛍️ Continuar Comprando</a>
+        <a href="index.html" class="btn-secondary">🏠 Página Inicial</a>
+      </div>
+    </div>
+
+    <!-- Social share nudge -->
+    <div style="margin-top:1.5rem;font-size:.82rem;color:var(--gray-400);">
+      Siga-nos no Instagram
+      <a href="https://www.instagram.com/bellabrasilmarketplus/" target="_blank" rel="noopener"
+         style="color:var(--navy);font-weight:600;margin-left:.3rem;">@bellabrasilmarketplus</a> 📸
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ GOOGLE REVIEW POPUP ══════════════════════ -->
+<div id="review-popup" style="display:none;position:fixed;inset:0;z-index:9999;
+     background:rgba(0,0,0,.55);backdrop-filter:blur(3px);
+     align-items:center;justify-content:center;padding:1rem;">
+  <div style="background:#fff;border-radius:20px;max-width:440px;width:100%;
+              padding:2.2rem 2rem;text-align:center;position:relative;
+              box-shadow:0 24px 64px rgba(0,0,0,.22);
+              animation:popIn .45s cubic-bezier(.34,1.56,.64,1) both;">
+    <!-- Close -->
+    <button onclick="closeReviewPopup()"
+            style="position:absolute;top:1rem;right:1rem;background:none;border:none;
+                   font-size:1.3rem;cursor:pointer;color:var(--gray-400);line-height:1">×</button>
+    <!-- Stars -->
+    <div style="font-size:2.6rem;margin-bottom:.5rem">⭐⭐⭐⭐⭐</div>
+    <h2 style="color:var(--navy);font-size:1.25rem;margin-bottom:.5rem">
+      Amou a Bella Brasil? 🇧🇷
+    </h2>
+    <p style="color:var(--gray-600);font-size:.9rem;line-height:1.6;margin-bottom:1.5rem;">
+      Sua avaliação no Google nos ajuda a crescer e a atender ainda mais famílias brasileiras em Washington!
+      Leva menos de 1 minuto. 😊
+    </p>
+    <!-- Stars row clickable (decorative) -->
+    <div style="display:flex;justify-content:center;gap:.4rem;margin-bottom:1.4rem;">
+      <span style="font-size:2rem;cursor:default">⭐</span>
+      <span style="font-size:2rem;cursor:default">⭐</span>
+      <span style="font-size:2rem;cursor:default">⭐</span>
+      <span style="font-size:2rem;cursor:default">⭐</span>
+      <span style="font-size:2rem;cursor:default">⭐</span>
+    </div>
+    <a href="https://g.page/r/COLE_SEU_LINK_AQUI/review"
+       target="_blank" rel="noopener"
+       onclick="closeReviewPopup()"
+       style="display:inline-block;background:#4285F4;color:#fff;border-radius:10px;
+              padding:.85rem 2rem;font-weight:700;font-size:.95rem;text-decoration:none;
+              transition:background .2s;width:100%;box-sizing:border-box;">
+      ⭐ Deixar minha avaliação no Google
+    </a>
+    <button onclick="closeReviewPopup()"
+            style="margin-top:.8rem;background:none;border:none;color:var(--gray-400);
+                   font-size:.82rem;cursor:pointer;">
+      Agora não
+    </button>
+  </div>
+</div>
+
+<footer class="footer" style="padding:1.5rem 0;">
+  <div class="footer-bottom" style="max-width:1280px;margin:0 auto;padding:0 2rem;">
+    <span>© 2024 Bella Brasil Market Plus. Todos os direitos reservados.</span>
+    <span class="footer-flags">🇧🇷 🇺🇸</span>
+  </div>
+</footer>
+
+<style>
+@keyframes popIn {
+  from { transform: scale(0); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+@keyframes drawCheck {
+  to { stroke-dashoffset: 0; }
+}
+</style>
+
+<script src="js/products.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script src="js/i18n.js"></script>
+<script>
+// ── Backend URL auto-detection ──────────────────────────────────────────────
+const BACKEND_URL = window.location.hostname === 'localhost'
+  ? 'http://localhost:3333'
+  : 'https://SEU-APP.up.railway.app';
+
+// ── Show a small toast notice ────────────────────────────────────────────────
+function showEmailToast(message, type = 'success') {
+  let container = document.querySelector('.toast-container');
+  if (!container) {
+    container = document.createElement('div');
+    container.className = 'toast-container';
+    document.body.appendChild(container);
+  }
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.textContent = message;
+  container.appendChild(toast);
+  setTimeout(() => toast.remove(), 5000);
+}
+
+// ── Send confirmation email to backend ──────────────────────────────────────
+async function sendConfirmationEmail(deliveryData, cartItems, sqProducts) {
+  // Build enriched items list from cart + product cache
+  const enrichedItems = (cartItems || []).map(ci => {
+    const product = (sqProducts || []).find(p => p.id === ci.id) || {};
+    return {
+      id:       ci.id,
+      name:     ci.name || product.name || 'Produto',
+      quantity: ci.qty  || ci.quantity || 1,
+      price:    ci.price != null ? ci.price : (product.price || 0),
+    };
+  });
+
+  const subtotal = enrichedItems.reduce((sum, i) => sum + i.price * i.quantity, 0);
+
+  const payload = {
+    customerName:   deliveryData.name,
+    customerEmail:  deliveryData.email,
+    items:          enrichedItems,
+    subtotal:       deliveryData.subtotal != null ? Number(deliveryData.subtotal) : subtotal,
+    deliveryFee:    Number(deliveryData.fee   || 0),
+    total:          Number(deliveryData.total || 0),
+    deliveryMethod: deliveryData.method,
+  };
+
+  const res = await fetch(`${BACKEND_URL}/send-confirmation`, {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify(payload),
+  });
+
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.json();
+}
+
+// ── Main DOMContentLoaded handler ───────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', async () => {
+  // Inicializa o carrinho (atualiza contador no header)
+  Cart.init();
+
+  // Mostra resumo salvo antes do redirect
+  const raw = sessionStorage.getItem('bb_delivery');
+  let deliveryData = null;
+
+  if (raw) {
+    try {
+      deliveryData = JSON.parse(raw);
+      const infoEl = document.getElementById('order-info');
+      const wrap   = document.getElementById('order-details');
+      infoEl.innerHTML = `
+        <div style="display:flex;justify-content:space-between"><span>Cliente</span><strong>${deliveryData.name}</strong></div>
+        <div style="display:flex;justify-content:space-between"><span>E-mail</span><strong>${deliveryData.email}</strong></div>
+        <div style="display:flex;justify-content:space-between"><span>Endereço</span><strong>${deliveryData.addr}, ${deliveryData.city}, WA ${deliveryData.zip}</strong></div>
+        <div style="display:flex;justify-content:space-between"><span>Entrega</span><strong>${deliveryData.method}</strong></div>
+        <div style="display:flex;justify-content:space-between;border-top:1px solid var(--gray-200);padding-top:.4rem;margin-top:.4rem">
+          <span style="font-weight:700">Total pago</span>
+          <strong style="color:var(--green)">$${Number(deliveryData.total).toFixed(2)}</strong>
+        </div>`;
+      wrap.style.display = 'block';
+    } catch(e) {
+      console.warn('[checkout-success] Could not parse bb_delivery:', e);
+    }
+  }
+
+  // ── Send confirmation email ──────────────────────────────────────────────
+  if (deliveryData && deliveryData.email) {
+    try {
+      // Read cart items and Square product cache before clearing
+      let cartItems  = [];
+      let sqProducts = [];
+      try {
+        const cartRaw = localStorage.getItem('bellabrasil_cart');
+        if (cartRaw) cartItems = JSON.parse(cartRaw);
+      } catch {}
+      try {
+        const sqRaw = localStorage.getItem('bellabrasil_sq_products');
+        if (sqRaw) sqProducts = JSON.parse(sqRaw);
+      } catch {}
+
+      await sendConfirmationEmail(deliveryData, cartItems, sqProducts);
+      showEmailToast(`📧 Confirmação enviada para ${deliveryData.email}!`, 'success');
+    } catch(err) {
+      console.warn('[checkout-success] Email confirmation failed:', err);
+      // Silent fail — don't show an error to the customer on the success page
+    }
+  }
+
+  // ── Clear cart after everything is done ─────────────────────────────────
+  sessionStorage.removeItem('bb_delivery');
+  localStorage.removeItem('bellabrasil_cart');
+  localStorage.removeItem('bellabrasil_square_cart');
+  Cart.clear();
+
+  // ── Google Review popup (aparece 7s após carregamento) ───────────────────
+  const reviewShown = sessionStorage.getItem('bb_review_shown');
+  if (!reviewShown) {
+    setTimeout(() => {
+      const popup = document.getElementById('review-popup');
+      if (popup) {
+        popup.style.display = 'flex';
+        sessionStorage.setItem('bb_review_shown', '1');
+      }
+    }, 7000);
+  }
+});
+
+function closeReviewPopup() {
+  const popup = document.getElementById('review-popup');
+  if (popup) {
+    popup.style.opacity = '0';
+    popup.style.transition = 'opacity .3s';
+    setTimeout(() => popup.style.display = 'none', 300);
+  }
+}
+</script>
+</body>
+</html>

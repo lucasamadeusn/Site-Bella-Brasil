@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Minha Conta — Bella Brasil Market Plus</title>
+  <meta name="description" content="Crie sua conta ou faça login na Bella Brasil Market Plus. Acompanhe seus pedidos e gerencie seu perfil." />
+  <link rel="stylesheet" href="css/style.css?v=2026" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#1A3B6F" />
+  <style>
+    /* ── Auth Page Layout ── */
+    .auth-page {
+      min-height: calc(100vh - 160px);
+      background: linear-gradient(135deg, var(--navy-light) 0%, #fff 60%, var(--green-light) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2.5rem 1rem;
+    }
+
+    .auth-wrapper {
+      width: 100%;
+      max-width: 480px;
+    }
+
+    /* ── Card ── */
+    .auth-card {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      box-shadow: 0 12px 48px rgba(26,59,111,.13);
+      overflow: hidden;
+    }
+
+    /* ── Tabs ── */
+    .auth-tabs {
+      display: flex;
+      background: var(--gray-100);
+    }
+    .auth-tab {
+      flex: 1;
+      padding: 1rem;
+      border: none;
+      background: transparent;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--gray-400);
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+    }
+    .auth-tab.active {
+      background: #fff;
+      color: var(--navy);
+    }
+    .auth-tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--green);
+      border-radius: 3px 3px 0 0;
+    }
+
+    /* ── Panel ── */
+    .auth-panel {
+      display: none;
+      padding: 2rem 2rem 2.2rem;
+    }
+    .auth-panel.active { display: block; }
+
+    .auth-panel h2 {
+      font-size: 1.4rem;
+      color: var(--navy);
+      margin-bottom: .35rem;
+    }
+    .auth-panel .auth-sub {
+      font-size: .9rem;
+      color: var(--gray-400);
+      margin-bottom: 1.6rem;
+    }
+
+    /* ── Social Buttons ── */
+    .social-btns {
+      display: flex;
+      flex-direction: column;
+      gap: .7rem;
+      margin-bottom: 1.4rem;
+    }
+    .social-btn {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      padding: .75rem 1.1rem;
+      border: 1.5px solid var(--gray-200);
+      border-radius: 10px;
+      background: #fff;
+      font-size: .95rem;
+      font-weight: 500;
+      color: var(--gray-800);
+      cursor: pointer;
+      transition: var(--transition);
+      width: 100%;
+      text-align: left;
+    }
+    .social-btn:hover {
+      border-color: var(--navy);
+      background: var(--navy-light);
+    }
+    .social-btn .social-icon {
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+    }
+    .social-btn .social-label { flex: 1; }
+    .social-btn .social-arrow { font-size: .8rem; color: var(--gray-400); }
+
+    /* ── Divider ── */
+    .auth-divider {
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+      margin: 1.2rem 0;
+      color: var(--gray-400);
+      font-size: .85rem;
+    }
+    .auth-divider::before,
+    .auth-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--gray-200);
+    }
+
+    /* ── Form Fields ── */
+    .auth-form .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .7rem;
+    }
+    @media (max-width: 420px) {
+      .auth-form .field-row { grid-template-columns: 1fr; }
+    }
+
+    .field-group {
+      margin-bottom: .85rem;
+    }
+    .field-group label {
+      display: block;
+      font-size: .82rem;
+      font-weight: 600;
+      color: var(--gray-600);
+      margin-bottom: .3rem;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+    .field-group input,
+    .field-group select {
+      width: 100%;
+      padding: .7rem .9rem;
+      border: 1.5px solid var(--gray-200);
+      border-radius: 8px;
+      font-size: .95rem;
+      color: var(--gray-800);
+      background: #fff;
+      transition: var(--transition);
+      outline: none;
+    }
+    .field-group input:focus,
+    .field-group select:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(31,173,92,.12);
+    }
+    .field-group input.error {
+      border-color: var(--red);
+      box-shadow: 0 0 0 3px rgba(220,38,38,.1);
+    }
+    .field-error {
+      font-size: .78rem;
+      color: var(--red);
+      margin-top: .2rem;
+      display: none;
+    }
+    .field-error.show { display: block; }
+
+    /* Password eye toggle */
+    .pwd-wrapper {
+      position: relative;
+    }
+    .pwd-wrapper input { padding-right: 2.8rem; }
+    .pwd-eye {
+      position: absolute;
+      right: .75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.1rem;
+      color: var(--gray-400);
+      padding: 0;
+      line-height: 1;
+    }
+
+    /* Password strength */
+    .pwd-strength {
+      height: 4px;
+      border-radius: 4px;
+      background: var(--gray-200);
+      margin-top: .4rem;
+      overflow: hidden;
+    }
+    .pwd-strength-bar {
+      height: 100%;
+      width: 0;
+      border-radius: 4px;
+      transition: width .3s, background .3s;
+    }
+    .pwd-strength-label {
+      font-size: .75rem;
+      color: var(--gray-400);
+      margin-top: .2rem;
+    }
+
+    /* ── Section title inside form ── */
+    .form-section-title {
+      font-size: .78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--green);
+      border-bottom: 1px solid var(--gray-200);
+      padding-bottom: .3rem;
+      margin: 1rem 0 .75rem;
+    }
+
+    /* ── Submit Button ── */
+    .auth-submit {
+      width: 100%;
+      padding: .9rem;
+      background: var(--green);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-top: .4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+    }
+    .auth-submit:hover { background: var(--green-dark); transform: translateY(-1px); }
+    .auth-submit:active { transform: translateY(0); }
+    .auth-submit.loading { opacity: .7; pointer-events: none; }
+
+    /* ── Terms note ── */
+    .auth-terms {
+      font-size: .78rem;
+      color: var(--gray-400);
+      text-align: center;
+      margin-top: .8rem;
+      line-height: 1.5;
+    }
+    .auth-terms a { color: var(--green); }
+
+    /* ── Alert ── */
+    .auth-alert {
+      padding: .8rem 1rem;
+      border-radius: 8px;
+      font-size: .9rem;
+      margin-bottom: 1rem;
+      display: none;
+      align-items: center;
+      gap: .5rem;
+    }
+    .auth-alert.show { display: flex; }
+    .auth-alert.success { background: var(--green-light); color: var(--green-dark); border: 1px solid var(--green); }
+    .auth-alert.error   { background: #FEF2F2; color: #991B1B; border: 1px solid var(--red); }
+
+    /* ── Forgot password ── */
+    .auth-forgot {
+      text-align: right;
+      font-size: .82rem;
+      margin-top: -.4rem;
+      margin-bottom: .8rem;
+    }
+    .auth-forgot a { color: var(--green); font-weight: 500; }
+
+    /* ── Logged-in state ── */
+    .account-dashboard { display: none; padding: 2rem; }
+    .account-dashboard.active { display: block; }
+    .account-avatar {
+      width: 68px; height: 68px;
+      border-radius: 50%;
+      background: var(--navy);
+      color: #fff;
+      font-size: 1.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      margin: 0 auto 1rem;
+    }
+    .account-welcome {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .account-welcome h2 { color: var(--navy); }
+    .account-welcome p  { color: var(--gray-400); font-size: .9rem; }
+
+    .account-menu {
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+      margin-bottom: 1.2rem;
+    }
+    .account-menu-item {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      padding: .8rem 1rem;
+      border-radius: 10px;
+      border: 1.5px solid var(--gray-200);
+      color: var(--gray-800);
+      font-size: .95rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: var(--transition);
+      background: #fff;
+      cursor: pointer;
+      width: 100%;
+      text-align: left;
+    }
+    .account-menu-item:hover { border-color: var(--green); background: var(--green-light); color: var(--green-dark); }
+    .account-menu-item .ami-icon { font-size: 1.2rem; }
+    .account-menu-item .ami-label { flex: 1; }
+    .account-menu-item .ami-arrow { color: var(--gray-400); font-size: .85rem; }
+
+    .account-logout {
+      width: 100%;
+      padding: .75rem;
+      background: #FEF2F2;
+      border: 1.5px solid #FECACA;
+      border-radius: 10px;
+      color: var(--red);
+      font-size: .9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .account-logout:hover { background: #FEE2E2; }
+
+    /* ── Side branding ── */
+    .auth-brand-aside {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .auth-brand-aside img { width: 72px; margin: 0 auto .5rem; }
+    .auth-brand-aside p {
+      font-size: .83rem;
+      color: var(--gray-400);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 520px) {
+      .auth-panel { padding: 1.5rem 1.2rem 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════ HEADER ═══════════════════════════════ -->
+<header class="header">
+  <div class="top-bar">
+    📍 12545 116th Ave NE, Kirkland, WA 98034 &nbsp;|&nbsp;
+    📞 <a href="tel:+14259682011">(425) 968-2011</a> &nbsp;|&nbsp;
+    🚚 Frete grátis acima de $60 para todo WA
+  </div>
+  <nav class="navbar">
+    <a href="index.html" class="logo">
+      <img src="images/logo.svg" alt="Bella Brasil Market Plus" class="logo-img" />
+      <div class="logo-text">
+        <span class="brand-main">Bella Brasil</span>
+        <span class="brand-sub">Market Plus · Kirkland, WA</span>
+      </div>
+    </a>
+    <form class="search-bar" id="search-form">
+      <input type="text" placeholder="Buscar produtos..." aria-label="Buscar" />
+      <button type="submit">🔍</button>
+    </form>
+    <div class="nav-links">
+      <a href="index.html">Início</a>
+      <a href="shop.html">Produtos</a>
+      <a href="about.html">Sobre</a>
+      <a href="contact.html">Contato</a>
+      <a href="conta.html" id="nav-account-link" style="color:var(--gold);font-weight:600">Minha Conta</a>
+    </div>
+    <a href="cart.html" class="cart-btn">
+      🛒 Carrinho
+      <span class="cart-count" style="display:none">0</span>
+    </a>
+    <button class="hamburger" id="hamburger-btn" aria-label="Menu">☰</button>
+  </nav>
+  <nav class="mobile-nav" id="mobile-nav">
+    <a href="index.html">🏠 Início</a>
+    <a href="shop.html">🛍️ Produtos</a>
+    <a href="about.html">ℹ️ Sobre Nós</a>
+    <a href="contact.html">📞 Contato</a>
+    <a href="conta.html">👤 Minha Conta</a>
+    <a href="cart.html">🛒 Ver Carrinho</a>
+  </nav>
+</header>
+
+<!-- ═════════════════════════ TRUST BAR ════════════════════════════════ -->
+<div class="trust-bar">
+  <div class="trust-bar-inner">
+    <div class="trust-item green"><span class="t-icon">🔒</span> Checkout 100% Seguro</div>
+    <div class="trust-item"><span class="t-icon">💳</span> Powered by Square Checkout</div>
+    <div class="trust-item"><span class="t-icon">🚚</span> Frete Grátis acima de $60</div>
+    <div class="trust-item navy"><span class="t-icon">⭐</span> 4.9 no Google (90+ avaliações)</div>
+    <div class="trust-item"><span class="t-icon">↩️</span> Devolução Garantida</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ AUTH PAGE ════════════════════════════════ -->
+<main class="auth-page">
+  <div class="auth-wrapper">
+
+    <!-- Branding -->
+    <div class="auth-brand-aside">
+      <img src="images/logo.svg" alt="Bella Brasil" />
+      <p>Seu mercado brasileiro favorito em Kirkland, WA</p>
+    </div>
+
+    <!-- Card -->
+    <div class="auth-card" id="auth-card">
+
+      <!-- ── TABS ── -->
+      <div class="auth-tabs" id="auth-tabs">
+        <button class="auth-tab active" data-tab="login">Entrar</button>
+        <button class="auth-tab" data-tab="register">Criar Conta</button>
+      </div>
+
+      <!-- ══ LOGIN PANEL ══ -->
+      <div class="auth-panel active" id="panel-login">
+        <h2>Bem-vindo de volta! 👋</h2>
+        <p class="auth-sub">Entre na sua conta para acompanhar seus pedidos</p>
+
+        <!-- Alert -->
+        <div class="auth-alert" id="login-alert"></div>
+
+        <!-- Social Login -->
+        <div class="social-btns">
+          <button class="social-btn" onclick="socialLogin('google')">
+            <svg class="social-icon" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+            <span class="social-label">Continuar com Google</span>
+            <span class="social-arrow">›</span>
+          </button>
+          <button class="social-btn" onclick="socialLogin('facebook')">
+            <svg class="social-icon" viewBox="0 0 24 24"><path fill="#1877F2" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            <span class="social-label">Continuar com Facebook</span>
+            <span class="social-arrow">›</span>
+          </button>
+          <button class="social-btn" onclick="socialLogin('apple')">
+            <svg class="social-icon" viewBox="0 0 24 24"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>
+            <span class="social-label">Continuar com Apple</span>
+            <span class="social-arrow">›</span>
+          </button>
+        </div>
+
+        <div class="auth-divider">ou entre com e-mail</div>
+
+        <!-- Email/Password Login -->
+        <form class="auth-form" id="login-form" novalidate>
+          <div class="field-group">
+            <label for="login-email">E-mail</label>
+            <input type="email" id="login-email" placeholder="seu@email.com" autocomplete="email" required />
+            <span class="field-error" id="login-email-err">Informe um e-mail válido.</span>
+          </div>
+          <div class="field-group">
+            <label for="login-pwd">Senha</label>
+            <div class="pwd-wrapper">
+              <input type="password" id="login-pwd" placeholder="Sua senha" autocomplete="current-password" required />
+              <button type="button" class="pwd-eye" onclick="togglePwd('login-pwd', this)">👁️</button>
+            </div>
+            <span class="field-error" id="login-pwd-err">Informe sua senha.</span>
+          </div>
+          <div class="auth-forgot"><a href="#" onclick="showForgotModal(event)">Esqueceu a senha?</a></div>
+          <button type="submit" class="auth-submit" id="login-submit">
+            <span>🔐</span> Entrar na minha conta
+          </button>
+        </form>
+
+        <p class="auth-terms">
+          Não tem conta? <a href="#" onclick="switchTab('register')">Crie agora — é grátis!</a>
+        </p>
+      </div><!-- /panel-login -->
+
+      <!-- ══ REGISTER PANEL ══ -->
+      <div class="auth-panel" id="panel-register">
+        <h2>Criar minha conta 🎉</h2>
+        <p class="auth-sub">Cadastre-se e aproveite frete especial e ofertas exclusivas</p>
+
+        <!-- Alert -->
+        <div class="auth-alert" id="register-alert"></div>
+
+        <!-- Social Register -->
+        <div class="social-btns">
+          <button class="social-btn" onclick="socialLogin('google')">
+            <svg class="social-icon" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+            <span class="social-label">Cadastrar com Google</span>
+            <span class="social-arrow">›</span>
+          </button>
+          <button class="social-btn" onclick="socialLogin('facebook')">
+            <svg class="social-icon" viewBox="0 0 24 24"><path fill="#1877F2" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            <span class="social-label">Cadastrar com Facebook</span>
+            <span class="social-arrow">›</span>
+          </button>
+          <button class="social-btn" onclick="socialLogin('apple')">
+            <svg class="social-icon" viewBox="0 0 24 24"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>
+            <span class="social-label">Cadastrar com Apple</span>
+            <span class="social-arrow">›</span>
+          </button>
+        </div>
+
+        <div class="auth-divider">ou preencha o formulário</div>
+
+        <!-- Registration Form -->
+        <form class="auth-form" id="register-form" novalidate>
+
+          <!-- Dados pessoais -->
+          <div class="form-section-title">👤 Dados Pessoais</div>
+          <div class="field-row">
+            <div class="field-group">
+              <label for="reg-fname">Nome *</label>
+              <input type="text" id="reg-fname" placeholder="Seu nome" autocomplete="given-name" required />
+              <span class="field-error" id="reg-fname-err">Informe seu nome.</span>
+            </div>
+            <div class="field-group">
+              <label for="reg-lname">Sobrenome *</label>
+              <input type="text" id="reg-lname" placeholder="Sobrenome" autocomplete="family-name" required />
+              <span class="field-error" id="reg-lname-err">Informe seu sobrenome.</span>
+            </div>
+          </div>
+          <div class="field-group">
+            <label for="reg-email">E-mail *</label>
+            <input type="email" id="reg-email" placeholder="seu@email.com" autocomplete="email" required />
+            <span class="field-error" id="reg-email-err">Informe um e-mail válido.</span>
+          </div>
+          <div class="field-group">
+            <label for="reg-phone">Telefone / WhatsApp *</label>
+            <input type="tel" id="reg-phone" placeholder="(206) 555-0100" autocomplete="tel" required />
+            <span class="field-error" id="reg-phone-err">Informe um telefone válido.</span>
+          </div>
+          <div class="field-group">
+            <label for="reg-dob">Data de Nascimento</label>
+            <input type="date" id="reg-dob" autocomplete="bday" />
+          </div>
+
+          <!-- Endereço -->
+          <div class="form-section-title">📦 Endereço de Entrega</div>
+          <div class="field-group">
+            <label for="reg-addr">Endereço *</label>
+            <input type="text" id="reg-addr" placeholder="123 Main St, Apt 4B" autocomplete="street-address" required />
+            <span class="field-error" id="reg-addr-err">Informe seu endereço.</span>
+          </div>
+          <div class="field-row">
+            <div class="field-group">
+              <label for="reg-city">Cidade *</label>
+              <input type="text" id="reg-city" placeholder="Kirkland" autocomplete="address-level2" required />
+              <span class="field-error" id="reg-city-err">Informe a cidade.</span>
+            </div>
+            <div class="field-group">
+              <label for="reg-state">Estado</label>
+              <select id="reg-state" autocomplete="address-level1">
+                <option value="WA" selected>Washington (WA)</option>
+                <option value="OR">Oregon (OR)</option>
+                <option value="CA">California (CA)</option>
+                <option value="ID">Idaho (ID)</option>
+                <option value="MT">Montana (MT)</option>
+                <option value="AK">Alaska (AK)</option>
+                <option value="outros">Outro estado</option>
+              </select>
+            </div>
+          </div>
+          <div class="field-group">
+            <label for="reg-zip">CEP / ZIP Code *</label>
+            <input type="text" id="reg-zip" placeholder="98034" autocomplete="postal-code" maxlength="10" required />
+            <span class="field-error" id="reg-zip-err">Informe um CEP válido.</span>
+          </div>
+
+          <!-- Senha -->
+          <div class="form-section-title">🔒 Segurança</div>
+          <div class="field-group">
+            <label for="reg-pwd">Senha *</label>
+            <div class="pwd-wrapper">
+              <input type="password" id="reg-pwd" placeholder="Mínimo 8 caracteres" autocomplete="new-password" required />
+              <button type="button" class="pwd-eye" onclick="togglePwd('reg-pwd', this)">👁️</button>
+            </div>
+            <div class="pwd-strength"><div class="pwd-strength-bar" id="pwd-strength-bar"></div></div>
+            <div class="pwd-strength-label" id="pwd-strength-label"></div>
+            <span class="field-error" id="reg-pwd-err">Senha precisa ter pelo menos 8 caracteres.</span>
+          </div>
+          <div class="field-group">
+            <label for="reg-pwd2">Confirmar Senha *</label>
+            <div class="pwd-wrapper">
+              <input type="password" id="reg-pwd2" placeholder="Repita a senha" autocomplete="new-password" required />
+              <button type="button" class="pwd-eye" onclick="togglePwd('reg-pwd2', this)">👁️</button>
+            </div>
+            <span class="field-error" id="reg-pwd2-err">As senhas não coincidem.</span>
+          </div>
+
+          <!-- Preferências -->
+          <div class="form-section-title">🇧🇷 Preferências</div>
+          <div class="field-group">
+            <label for="reg-pref">Categorias favoritas</label>
+            <select id="reg-pref">
+              <option value="">Selecione (opcional)</option>
+              <option value="carnes">🥩 Carnes & Frios</option>
+              <option value="padaria">🥐 Padaria & Laticínios</option>
+              <option value="bebidas">🥤 Bebidas</option>
+              <option value="salgadinhos">🥨 Salgadinhos & Snacks</option>
+              <option value="doces">🍬 Doces & Sobremesas</option>
+              <option value="temperos">🧂 Temperos & Condimentos</option>
+              <option value="hortifruti">🥬 Hortifruti</option>
+              <option value="todos">🛒 Todos os produtos</option>
+            </select>
+          </div>
+
+          <!-- Optin -->
+          <div class="field-group" style="display:flex;align-items:flex-start;gap:.6rem;margin-top:.3rem">
+            <input type="checkbox" id="reg-optin" style="width:auto;margin-top:.2rem" checked />
+            <label for="reg-optin" style="font-size:.85rem;color:var(--gray-600);text-transform:none;letter-spacing:0;font-weight:400">
+              Quero receber ofertas exclusivas e novidades da Bella Brasil por e-mail e WhatsApp
+            </label>
+          </div>
+
+          <button type="submit" class="auth-submit" id="register-submit" style="background:var(--navy);margin-top:.8rem">
+            <span>🎉</span> Criar minha conta gratuita
+          </button>
+        </form>
+
+        <p class="auth-terms">
+          Ao criar sua conta você concorda com os <a href="#">Termos de Uso</a>
+          e a <a href="#">Política de Privacidade</a> da Bella Brasil.
+        </p>
+      </div><!-- /panel-register -->
+
+      <!-- ══ ACCOUNT DASHBOARD (when logged in) ══ -->
+      <div class="account-dashboard" id="account-dashboard">
+        <div class="account-avatar" id="acc-avatar">?</div>
+        <div class="account-welcome">
+          <h2 id="acc-name">Olá!</h2>
+          <p id="acc-email"></p>
+        </div>
+        <nav class="account-menu">
+          <a href="shop.html" class="account-menu-item">
+            <span class="ami-icon">🛍️</span>
+            <span class="ami-label">Fazer um pedido</span>
+            <span class="ami-arrow">›</span>
+          </a>
+          <button class="account-menu-item" onclick="showOrderHistory()">
+            <span class="ami-icon">📦</span>
+            <span class="ami-label">Meus pedidos</span>
+            <span class="ami-arrow">›</span>
+          </button>
+          <button class="account-menu-item" onclick="showEditProfile()">
+            <span class="ami-icon">✏️</span>
+            <span class="ami-label">Editar meu perfil</span>
+            <span class="ami-arrow">›</span>
+          </button>
+          <button class="account-menu-item" onclick="showAddresses()">
+            <span class="ami-icon">📍</span>
+            <span class="ami-label">Meus endereços</span>
+            <span class="ami-arrow">›</span>
+          </button>
+          <button class="account-menu-item" onclick="showNotifications()">
+            <span class="ami-icon">🔔</span>
+            <span class="ami-label">Notificações e ofertas</span>
+            <span class="ami-arrow">›</span>
+          </button>
+        </nav>
+        <button class="account-logout" onclick="logout()">Sair da conta</button>
+      </div><!-- /account-dashboard -->
+
+    </div><!-- /auth-card -->
+  </div><!-- /auth-wrapper -->
+</main>
+
+<!-- ═══════════════════════════ FOOTER ═══════════════════════════════════ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">
+          <img src="images/logo.svg" alt="Bella Brasil" style="width:44px;display:inline-block;vertical-align:middle;margin-right:.5rem"/>
+          <strong>Bella Brasil Market Plus</strong>
+        </div>
+        <p style="font-size:.85rem;margin-top:.5rem;opacity:.8">Seu mercado brasileiro em Kirkland, WA</p>
+      </div>
+      <div>
+        <h4 class="footer-title">Navegação</h4>
+        <ul class="footer-links">
+          <li><a href="index.html">Início</a></li>
+          <li><a href="shop.html">Produtos</a></li>
+          <li><a href="about.html">Sobre Nós</a></li>
+          <li><a href="contact.html">Contato</a></li>
+          <li><a href="conta.html">Minha Conta</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="footer-title">Contato</h4>
+        <ul class="footer-links">
+          <li>📍 12545 116th Ave NE, Kirkland</li>
+          <li>📞 <a href="tel:+14259682011">(425) 968-2011</a></li>
+          <li>📧 <a href="mailto:bellabrasilmarket@gmail.com">bellabrasilmarket@gmail.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2024 Bella Brasil Market Plus — Kirkland, WA. Todos os direitos reservados.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════ SCRIPTS ════════════════════════════════ -->
+<!-- Firebase Auth SDK (compat) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<!-- Config do Firebase (preencha js/firebase-config.js) -->
+<script src="js/firebase-config.js"></script>
+
+<script src="js/products.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/auth.js"></script>
+
+</body>
+</html>

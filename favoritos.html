@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meus Favoritos — Bella Brasil Market Plus</title>
+  <link rel="stylesheet" href="css/style.css?v=2026" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#1A3B6F" />
+</head>
+<body>
+
+<header class="header">
+  <div class="top-bar">
+    📍 12545 116th Ave NE, Kirkland, WA 98034 &nbsp;|&nbsp;
+    📞 <a href="tel:+14259682011">(425) 968-2011</a> &nbsp;|&nbsp;
+    🚚 Frete grátis acima de $60 para todo WA
+  </div>
+  <nav class="navbar">
+    <a href="index.html" class="logo">
+      <img src="images/logo.svg" alt="Bella Brasil Market Plus" class="logo-img" />
+      <div class="logo-text">
+        <span class="brand-main">Bella Brasil</span>
+        <span class="brand-sub">Market Plus · Kirkland, WA</span>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Início</a>
+      <a href="shop.html">Produtos</a>
+      <a href="about.html">Sobre</a>
+      <a href="contact.html">Contato</a>
+      <a href="conta.html" id="nav-account-link">👤 Minha Conta</a>
+    </div>
+    <a href="cart.html" class="cart-btn">
+      🛒 Carrinho
+      <span class="cart-count" style="display:none">0</span>
+    </a>
+    <button class="hamburger" id="hamburger-btn" aria-label="Menu">☰</button>
+  </nav>
+  <nav class="mobile-nav" id="mobile-nav">
+    <a href="index.html">🏠 Início</a>
+    <a href="shop.html">🛍️ Produtos</a>
+    <a href="about.html">ℹ️ Sobre Nós</a>
+    <a href="contact.html">📞 Contato</a>
+    <a href="conta.html">👤 Minha Conta</a>
+    <a href="cart.html">🛒 Ver Carrinho</a>
+  </nav>
+</header>
+
+<div class="trust-bar">
+  <div class="trust-bar-inner">
+    <div class="trust-item green"><span class="t-icon">🔒</span> Checkout 100% Seguro</div>
+    <div class="trust-item"><span class="t-icon">💳</span> Powered by Square Checkout</div>
+    <div class="trust-item"><span class="t-icon">🚚</span> Frete Grátis acima de $60</div>
+    <div class="trust-item navy"><span class="t-icon">⭐</span> 4.9 no Google (90+ avaliações)</div>
+    <div class="trust-item"><span class="t-icon">↩️</span> Devolução Garantida</div>
+  </div>
+</div>
+
+<div class="page-header">
+  <div class="page-header-inner">
+    <h1>❤️ Meus Favoritos</h1>
+    <nav class="breadcrumb">
+      <a href="index.html">Início</a><span>›</span><span>Favoritos</span>
+    </nav>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+
+    <!-- Empty -->
+    <div id="fav-empty" style="display:none;text-align:center;padding:4rem 2rem">
+      <div style="font-size:4rem;margin-bottom:1rem">💔</div>
+      <h2 style="color:var(--navy);margin-bottom:.5rem">Nenhum favorito ainda</h2>
+      <p style="color:var(--gray-600);margin-bottom:1.5rem">
+        Clique no ❤️ em qualquer produto para salvá-lo aqui.
+      </p>
+      <a href="shop.html" class="btn-primary">🛍️ Explorar Produtos</a>
+    </div>
+
+    <!-- Grid -->
+    <div class="product-grid" id="fav-grid">
+      <div class="loading"><div class="spinner"></div></div>
+    </div>
+
+    <!-- Clear all -->
+    <div id="fav-actions" style="display:none;margin-top:1.5rem;text-align:center">
+      <button onclick="clearAllFavorites()"
+        style="background:none;border:1px solid var(--gray-200);color:var(--gray-500);
+               padding:.6rem 1.2rem;border-radius:8px;cursor:pointer;font-size:.85rem">
+        🗑️ Remover todos os favoritos
+      </button>
+    </div>
+
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-bottom" style="text-align:center;padding:1.5rem">
+    <span>© 2024 Bella Brasil Market Plus — Kirkland, WA</span>
+    <span class="footer-flags" style="margin-left:1rem">🇧🇷 🇺🇸</span>
+  </div>
+</footer>
+
+<script src="js/products.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/square-integration.js"></script>
+<script>
+const FAV_KEY = 'bellabrasil_favorites';
+function getFavIds() { try { return JSON.parse(localStorage.getItem(FAV_KEY)) || []; } catch { return []; } }
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const user = (() => { try { return JSON.parse(localStorage.getItem('bellabrasil_user')); } catch { return null; } })();
+  if (user) document.querySelectorAll('#nav-account-link').forEach(l => { l.textContent = `👤 ${user.firstName||'Conta'}`; });
+
+  const favIds = getFavIds();
+  const grid   = document.getElementById('fav-grid');
+  const empty  = document.getElementById('fav-empty');
+  const actions = document.getElementById('fav-actions');
+
+  if (favIds.length === 0) {
+    grid.style.display = 'none';
+    empty.style.display = 'block';
+    return;
+  }
+
+  // Try to load from Square backend
+  try {
+    const resp = await fetch('http://localhost:3333/products');
+    const data = await resp.json();
+    if (data.success && data.products) {
+      const favProducts = data.products.filter(p => favIds.includes(p.id));
+      if (favProducts.length === 0) {
+        grid.style.display = 'none';
+        empty.style.display = 'block';
+        return;
+      }
+      grid.innerHTML = favProducts.map(buildSquareProductCard).join('');
+      actions.style.display = 'block';
+      return;
+    }
+  } catch {}
+
+  // Fallback: show from cache
+  const cached = (() => { try { return JSON.parse(localStorage.getItem('bellabrasil_sq_products')) || {}; } catch { return {}; } })();
+  const fromCache = favIds.map(id => cached[id]).filter(Boolean);
+  if (fromCache.length > 0) {
+    fromCache.forEach(p => { window._sqProductMap = window._sqProductMap || {}; window._sqProductMap[p.id] = p; });
+    grid.innerHTML = fromCache.map(buildSquareProductCard).join('');
+    actions.style.display = 'block';
+  } else {
+    grid.style.display = 'none';
+    empty.style.display = 'block';
+  }
+});
+
+function clearAllFavorites() {
+  if (!confirm('Remover todos os favoritos?')) return;
+  localStorage.removeItem(FAV_KEY);
+  location.reload();
+}
+</script>
+</body>
+</html>

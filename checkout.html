@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkout — Bella Brasil Market Plus</title>
+  <link rel="stylesheet" href="css/style.css?v=2026" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#1A3B6F" />
+</head>
+<body>
+
+<!-- ═══════════════════════════════ HEADER ═══════════════════════════════ -->
+<header class="header">
+  <div class="top-bar">
+    🔒 Checkout Seguro &nbsp;|&nbsp; 📞 <a href="tel:+14259682011">(425) 968-2011</a> &nbsp;|&nbsp; 🚚 Delivery para todo WA
+  </div>
+  <nav class="navbar">
+    <a href="index.html" class="logo">
+      <img src="images/logo.svg" alt="Bella Brasil Market Plus" class="logo-img" />
+      <div class="logo-text">
+        <span class="brand-main">Bella Brasil</span>
+        <span class="brand-sub">Market Plus · Kirkland, WA</span>
+      </div>
+    </a>
+    <div style="flex:1"></div>
+    <div style="display:flex;align-items:center;gap:.5rem;font-size:.85rem;color:rgba(255,255,255,.8);">
+      <span>🔒</span> <span>Conexão Segura</span>
+    </div>
+    <a href="cart.html" class="cart-btn" style="margin-left:1rem">
+      🛒 Carrinho
+      <span class="cart-count" style="display:none">0</span>
+    </a>
+  </nav>
+</header>
+
+<!-- ═════════════════════════ TRUST BAR ════════════════════════════════ -->
+<div class="trust-bar">
+  <div class="trust-bar-inner">
+    <div class="trust-item green"><span class="t-icon">🔒</span> Checkout 100% Seguro</div>
+    <div class="trust-item"><span class="t-icon">💳</span> Powered by Square Checkout</div>
+    <div class="trust-item"><span class="t-icon">🚚</span> Frete Grátis acima de $60</div>
+    <div class="trust-item navy"><span class="t-icon">⭐</span> 4.9 no Google (90+ avaliações)</div>
+    <div class="trust-item"><span class="t-icon">↩️</span> Devolução Garantida</div>
+  </div>
+</div>
+
+<!-- Checkout Steps -->
+<div style="background:var(--white);border-bottom:1px solid var(--gray-200);">
+  <div class="container" style="padding-top:.8rem;padding-bottom:.8rem;">
+    <div style="display:flex;align-items:center;justify-content:center;gap:0;max-width:500px;margin:0 auto;">
+      <div style="display:flex;align-items:center;gap:.4rem;">
+        <div style="width:28px;height:28px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;">✓</div>
+        <span style="font-size:.82rem;font-weight:600;color:var(--green)">Carrinho</span>
+      </div>
+      <div style="flex:1;height:2px;background:var(--green);margin:0 .5rem;max-width:80px;"></div>
+      <div style="display:flex;align-items:center;gap:.4rem;">
+        <div style="width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;">2</div>
+        <span style="font-size:.82rem;font-weight:600;color:var(--navy)">Entrega</span>
+      </div>
+      <div style="flex:1;height:2px;background:var(--gray-200);margin:0 .5rem;max-width:80px;"></div>
+      <div style="display:flex;align-items:center;gap:.4rem;">
+        <div style="width:28px;height:28px;border-radius:50%;background:var(--gray-200);color:var(--gray-600);display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;">3</div>
+        <span style="font-size:.82rem;color:var(--gray-400)">Pagamento</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════ PAGE HEADER ═════════════════════════════════ -->
+<div class="page-header">
+  <div class="page-header-inner">
+    <h1>🔒 Finalizar Pedido</h1>
+    <nav class="breadcrumb">
+      <a href="index.html">Início</a>
+      <span>›</span>
+      <a href="cart.html">Carrinho</a>
+      <span>›</span>
+      <span>Checkout</span>
+    </nav>
+  </div>
+</div>
+
+<!-- ═══════════════════ EMPTY CART REDIRECT ══════════════════════════════ -->
+<div id="empty-cart-msg" style="display:none">
+  <div class="container" style="padding:4rem 2rem;text-align:center;">
+    <div style="font-size:4rem;margin-bottom:1rem">🛒</div>
+    <h2 style="color:var(--navy);margin-bottom:.5rem">Seu carrinho está vazio</h2>
+    <p style="color:var(--gray-600);margin-bottom:1.5rem">Adicione produtos antes de finalizar o pedido.</p>
+    <a href="shop.html" class="btn-primary">🛍️ Ver Produtos</a>
+  </div>
+</div>
+
+<!-- ═════════════════════ CHECKOUT CONTENT ═══════════════════════════════ -->
+<section class="section" id="checkout-content" style="display:none">
+  <div class="container">
+    <div class="checkout-layout">
+
+      <!-- ── Formulário de entrega ── -->
+      <div>
+        <div class="checkout-form">
+
+          <!-- Dados pessoais -->
+          <div class="form-section">
+            <h3>👤 Seus Dados</h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Nome *</label>
+                <input type="text" id="field-first-name" placeholder="Seu nome" required />
+              </div>
+              <div class="form-group">
+                <label>Sobrenome *</label>
+                <input type="text" id="field-last-name" placeholder="Seu sobrenome" required />
+              </div>
+              <div class="form-group">
+                <label>E-mail *</label>
+                <input type="email" id="field-email" placeholder="seu@email.com" required />
+              </div>
+              <div class="form-group">
+                <label>Telefone / WhatsApp</label>
+                <input type="tel" id="field-phone" placeholder="(000) 000-0000" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Endereço de entrega -->
+          <div class="form-section">
+            <h3>📍 Endereço de Entrega</h3>
+            <div class="form-grid">
+              <div class="form-group" style="grid-column:1/-1">
+                <label>Endereço *</label>
+                <input type="text" id="field-address" placeholder="Rua, número, apto" required />
+              </div>
+              <div class="form-group">
+                <label>Cidade *</label>
+                <input type="text" id="field-city" placeholder="Ex: Kirkland" required />
+              </div>
+              <div class="form-group">
+                <label>Estado *</label>
+                <select id="field-state" required>
+                  <option value="">Selecione</option>
+                  <option value="WA" selected>Washington (WA)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>ZIP Code *</label>
+                <input type="text" id="field-zip" placeholder="98034" maxlength="10" required />
+              </div>
+              <div class="form-group" style="grid-column:1/-1">
+                <label>Instruções de entrega</label>
+                <textarea id="field-notes" rows="2" placeholder="Portão, apartamento, instruções especiais..."></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Opções de entrega -->
+          <div class="form-section">
+            <h3>🚚 Forma de Entrega</h3>
+            <div class="delivery-options" id="delivery-options">
+              <label class="delivery-option selected" data-fee="5.99" data-method="UPS Ground (2–5 dias)">
+                <input type="radio" name="delivery" value="ground" checked />
+                <div class="delivery-info">
+                  <strong>📦 UPS Ground</strong>
+                  <span>2–5 dias úteis — disponível em todo WA</span>
+                </div>
+                <div class="delivery-price" id="price-ground">$5.99</div>
+              </label>
+              <label class="delivery-option" data-fee="12.99" data-method="UPS 2-Day Air">
+                <input type="radio" name="delivery" value="twoday" />
+                <div class="delivery-info">
+                  <strong>⚡ UPS 2-Day Air</strong>
+                  <span>2 dias úteis</span>
+                </div>
+                <div class="delivery-price">$12.99</div>
+              </label>
+              <label class="delivery-option" data-fee="24.99" data-method="UPS Next Day Air">
+                <input type="radio" name="delivery" value="overnight" />
+                <div class="delivery-info">
+                  <strong>🚀 UPS Next Day Air</strong>
+                  <span>Próximo dia útil</span>
+                </div>
+                <div class="delivery-price">$24.99</div>
+              </label>
+              <label class="delivery-option" data-fee="0" data-method="Retirada na Loja">
+                <input type="radio" name="delivery" value="pickup" />
+                <div class="delivery-info">
+                  <strong>🏪 Retirada na Loja — Grátis</strong>
+                  <span>12545 116th Ave NE, Kirkland, WA • Pronto em 2h</span>
+                </div>
+                <div class="delivery-price" style="color:var(--green);font-weight:800">GRÁTIS</div>
+              </label>
+            </div>
+            <!-- Free shipping notice -->
+            <div id="free-ship-notice" style="display:none;margin-top:.6rem;background:var(--green-light);border-radius:8px;padding:.6rem .9rem;font-size:.82rem;color:var(--green-dark);font-weight:600;">
+              🎉 Seu pedido qualifica para frete grátis! UPS Ground selecionado sem custo.
+            </div>
+          </div>
+
+        </div><!-- /checkout-form -->
+
+        <!-- ── Botão Square ── -->
+        <div style="background:var(--white);border-radius:var(--radius);padding:1.5rem;box-shadow:var(--shadow-sm);margin-top:1.5rem;">
+          <h3 style="color:var(--navy);margin-bottom:1rem;">💳 Pagamento</h3>
+
+          <!-- Square badge -->
+          <div style="display:flex;align-items:center;gap:.8rem;margin-bottom:1rem;padding:.8rem;background:var(--gray-50);border-radius:8px;border:1px solid var(--gray-200);">
+            <div style="width:36px;height:36px;background:#000;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <span style="color:#fff;font-weight:900;font-size:.85rem">■</span>
+            </div>
+            <div>
+              <div style="font-size:.88rem;font-weight:700;color:var(--gray-800)">Powered by Square</div>
+              <div style="font-size:.75rem;color:var(--gray-400)">Você será redirecionado para a página segura de pagamento do Square</div>
+            </div>
+            <div style="margin-left:auto;font-size:1.2rem">🔒</div>
+          </div>
+
+          <!-- Accepted cards -->
+          <div style="display:flex;gap:.5rem;margin-bottom:1.2rem;flex-wrap:wrap;">
+            <span style="background:var(--white);border:1px solid var(--gray-200);border-radius:6px;padding:.3rem .7rem;font-size:.75rem;font-weight:600;color:var(--gray-600);">💳 Visa</span>
+            <span style="background:var(--white);border:1px solid var(--gray-200);border-radius:6px;padding:.3rem .7rem;font-size:.75rem;font-weight:600;color:var(--gray-600);">💳 Mastercard</span>
+            <span style="background:var(--white);border:1px solid var(--gray-200);border-radius:6px;padding:.3rem .7rem;font-size:.75rem;font-weight:600;color:var(--gray-600);">💳 Amex</span>
+            <span style="background:var(--white);border:1px solid var(--gray-200);border-radius:6px;padding:.3rem .7rem;font-size:.75rem;font-weight:600;color:var(--gray-600);">💳 Discover</span>
+            <span style="background:var(--white);border:1px solid var(--gray-200);border-radius:6px;padding:.3rem .7rem;font-size:.75rem;font-weight:600;color:var(--gray-600);">📱 Apple Pay</span>
+            <span style="background:var(--white);border:1px solid var(--gray-200);border-radius:6px;padding:.3rem .7rem;font-size:.75rem;font-weight:600;color:var(--gray-600);">📱 Google Pay</span>
+          </div>
+
+          <!-- Error message -->
+          <div id="checkout-error" style="display:none;background:#FEF2F2;border:1px solid #FECACA;border-radius:8px;padding:.8rem 1rem;margin-bottom:1rem;font-size:.85rem;color:var(--red);"></div>
+
+          <!-- Main CTA -->
+          <button id="square-pay-btn" onclick="startSquareCheckout()" class="btn-primary"
+            style="width:100%;justify-content:center;padding:1rem;font-size:1.05rem;border-radius:8px;gap:.6rem;">
+            🔒 Pagar com Square
+          </button>
+
+          <p style="font-size:.72rem;color:var(--gray-400);text-align:center;margin-top:.7rem;line-height:1.5;">
+            Ao continuar, você concorda com nossos <a href="#" style="color:var(--navy)">Termos de Uso</a>.
+            Seus dados de pagamento são processados com segurança pelo Square — nunca armazenamos números de cartão.
+          </p>
+        </div>
+      </div>
+
+      <!-- ── Resumo do pedido ── -->
+      <div>
+        <div class="order-summary" id="checkout-summary">
+          <h3 style="color:var(--navy);">📋 Resumo do Pedido</h3>
+          <div id="checkout-items" style="margin-bottom:.8rem;max-height:320px;overflow-y:auto;"></div>
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <span id="summary-subtotal">$0.00</span>
+          </div>
+          <div class="summary-row">
+            <span>Frete</span>
+            <span id="summary-delivery">$5.99</span>
+          </div>
+          <div class="summary-total">
+            <span>Total</span>
+            <span id="summary-total">$0.00</span>
+          </div>
+
+          <!-- Frete grátis progress -->
+          <div id="free-ship-progress-wrap" style="margin-top:.8rem;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:.3rem;">
+              <span style="font-size:.75rem;color:var(--gray-600)" id="free-ship-label">—</span>
+              <span style="font-size:.75rem;color:var(--green);font-weight:700">Grátis em $60+</span>
+            </div>
+            <div style="background:var(--gray-200);border-radius:20px;height:5px;">
+              <div id="free-ship-bar" style="background:var(--green);height:100%;border-radius:20px;width:0%;transition:width .4s;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Trust block -->
+        <div style="background:var(--white);border-radius:var(--radius);padding:1.2rem;box-shadow:var(--shadow-sm);margin-top:1rem;">
+          <div style="font-size:.82rem;font-weight:700;color:var(--navy);margin-bottom:.8rem;text-align:center;">🔒 Compra Segura &amp; Garantida</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;">
+            <div style="font-size:.75rem;color:var(--gray-600);display:flex;align-items:center;gap:.4rem;">
+              <span>🔐</span> Criptografia SSL
+            </div>
+            <div style="font-size:.75rem;color:var(--gray-600);display:flex;align-items:center;gap:.4rem;">
+              <span>🛡️</span> PCI Compliance
+            </div>
+            <div style="font-size:.75rem;color:var(--gray-600);display:flex;align-items:center;gap:.4rem;">
+              <span>↩️</span> Reembolso Garantido
+            </div>
+            <div style="font-size:.75rem;color:var(--gray-600);display:flex;align-items:center;gap:.4rem;">
+              <span>📧</span> Confirmação por email
+            </div>
+          </div>
+        </div>
+
+        <!-- Store info -->
+        <div style="background:var(--navy-light);border-radius:var(--radius);padding:1.1rem;margin-top:1rem;border-left:4px solid var(--navy);">
+          <div style="font-size:.82rem;font-weight:700;color:var(--navy);margin-bottom:.4rem;">📍 Bella Brasil Market Plus</div>
+          <div style="font-size:.78rem;color:var(--gray-600);line-height:1.7;">
+            12545 116th Ave NE, Kirkland, WA 98034<br>
+            📞 (425) 968-2011<br>
+            ⭐ 4.9/5 — 90+ avaliações no Google
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ FOOTER ═══════════════════════════════════════ -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-col footer-brand">
+      <div class="brand-name">🇧🇷 Bella Brasil Market Plus</div>
+      <p>Sua loja brasileira de confiança em Kirkland, Washington.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Links</h4>
+      <a href="index.html">Início</a>
+      <a href="shop.html">Produtos</a>
+      <a href="contact.html">Contato</a>
+    </div>
+    <div class="footer-col">
+      <h4>Horário</h4>
+      <ul class="footer-hours">
+        <li>Seg–Sex <span>9:30–19:30</span></li>
+        <li>Sábado <span>9:30–19:00</span></li>
+        <li>Domingo <span>9:00–14:00</span></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contato</h4>
+      <p>📍 12545 116th Ave NE, Kirkland, WA 98034</p>
+      <p>📞 <a href="tel:+14259682011">(425) 968-2011</a></p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2024 Bella Brasil Market Plus. Todos os direitos reservados.</span>
+    <span class="footer-flags">🇧🇷 🇺🇸</span>
+  </div>
+</footer>
+
+<script src="js/products.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/square-integration.js"></script>
+<script>
+// ── Config ───────────────────────────────────────────────────────
+const BACKEND = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? 'http://localhost:3333'
+  : 'https://SEU-APP.up.railway.app'; // ← troque quando publicar
+
+// ── Init: verifica carrinho e renderiza resumo ───────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  Cart.init();
+
+  if (Cart.count() === 0) {
+    document.getElementById('empty-cart-msg').style.display = 'block';
+    return;
+  }
+  document.getElementById('checkout-content').style.display = 'block';
+  renderCheckoutSummary();
+  setupDeliveryOptions();
+});
+
+// ── Renderiza os itens e totais no resumo ────────────────────────
+function renderCheckoutSummary() {
+  const items    = Cart.getItems();
+  const sub      = Cart.subtotal();
+  const fee      = getSelectedDeliveryFee();
+  const total    = sub + fee;
+
+  document.getElementById('checkout-items').innerHTML = items.map(i => `
+    <div style="display:flex;justify-content:space-between;align-items:center;
+                padding:.5rem 0;border-bottom:1px solid var(--gray-100);gap:.5rem">
+      <div style="display:flex;align-items:center;gap:.5rem;min-width:0">
+        <span style="font-size:1.3rem;flex-shrink:0">${i.product.emoji}</span>
+        <span style="font-size:.82rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
+          ${i.product.name} × ${i.qty}
+        </span>
+      </div>
+      <span style="font-size:.82rem;font-weight:600;white-space:nowrap">$${i.lineTotal.toFixed(2)}</span>
+    </div>`).join('');
+
+  document.getElementById('summary-subtotal').textContent = `$${sub.toFixed(2)}`;
+  document.getElementById('summary-total').textContent    = `$${total.toFixed(2)}`;
+
+  // Frete
+  const feeEl = document.getElementById('summary-delivery');
+  feeEl.textContent = fee === 0 ? '🎉 GRÁTIS' : `$${fee.toFixed(2)}`;
+  feeEl.style.color = fee === 0 ? 'var(--green)' : '';
+
+  // Free shipping bar
+  const remaining = Math.max(0, 60 - sub);
+  const pct       = Math.min(100, (sub / 60) * 100);
+  document.getElementById('free-ship-bar').style.width = `${pct}%`;
+  document.getElementById('free-ship-label').textContent =
+    remaining > 0 ? `Faltam $${remaining.toFixed(2)} para frete grátis` : '🎉 Frete grátis aplicado!';
+}
+
+// ── Delivery option selection ─────────────────────────────────────
+function setupDeliveryOptions() {
+  const opts = document.querySelectorAll('.delivery-option');
+  opts.forEach(opt => {
+    opt.addEventListener('click', () => {
+      opts.forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+      opt.querySelector('input[type=radio]').checked = true;
+      renderCheckoutSummary();
+
+      // Show free shipping notice if subtotal >= 60
+      const fee = parseFloat(opt.dataset.fee || 0);
+      const sub = Cart.subtotal();
+      const notice = document.getElementById('free-ship-notice');
+      if (sub >= 60 && fee > 0 && opt.dataset.fee !== '0') {
+        notice.style.display = 'block';
+        // Auto-select free option & fee=0
+        document.getElementById('summary-delivery').textContent = '🎉 GRÁTIS';
+      } else {
+        notice.style.display = 'none';
+      }
+    });
+  });
+
+  // Auto-apply free shipping if subtotal >= 60
+  const sub = Cart.subtotal();
+  if (sub >= 60) {
+    const groundOpt = document.querySelector('.delivery-option[data-fee="5.99"]');
+    if (groundOpt) {
+      groundOpt.dataset.fee = '0'; // zero out the fee
+      groundOpt.querySelector('.delivery-price').textContent = 'GRÁTIS';
+      groundOpt.querySelector('.delivery-price').style.color = 'var(--green)';
+      document.getElementById('free-ship-notice').style.display = 'block';
+    }
+  }
+  renderCheckoutSummary();
+}
+
+function getSelectedDeliveryFee() {
+  const selected = document.querySelector('.delivery-option.selected');
+  const sub = Cart.subtotal();
+  const fee = parseFloat(selected?.dataset.fee ?? 5.99);
+  // Free shipping if subtotal >= $60 and not overnight
+  return (sub >= 60 && fee <= 12.99) ? 0 : fee;
+}
+
+function getSelectedDeliveryMethod() {
+  const selected = document.querySelector('.delivery-option.selected');
+  return selected?.dataset.method || 'UPS Ground';
+}
+
+// ── Validate form fields ─────────────────────────────────────────
+function validateForm() {
+  const required = ['field-first-name','field-last-name','field-email','field-address','field-city','field-zip'];
+  for (const id of required) {
+    const el = document.getElementById(id);
+    if (!el || !el.value.trim()) {
+      el?.focus();
+      el?.style.setProperty('border-color','var(--red)');
+      showError(`Por favor, preencha o campo: ${el?.labels?.[0]?.textContent || id}`);
+      return false;
+    }
+    el.style.removeProperty('border-color');
+  }
+  return true;
+}
+
+function showError(msg) {
+  const el = document.getElementById('checkout-error');
+  el.textContent = `⚠️ ${msg}`;
+  el.style.display = 'block';
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function hideError() {
+  document.getElementById('checkout-error').style.display = 'none';
+}
+
+// ── Main checkout function ────────────────────────────────────────
+async function startSquareCheckout() {
+  hideError();
+  if (!validateForm()) return;
+
+  const btn = document.getElementById('square-pay-btn');
+  btn.disabled    = true;
+  btn.innerHTML   = '<span style="display:inline-flex;align-items:center;gap:.5rem"><span class="spinner" style="width:18px;height:18px;border-width:3px"></span> Processando...</span>';
+
+  try {
+    const cartItems = Cart.getItems();
+    if (cartItems.length === 0) {
+      showError('Seu carrinho está vazio!');
+      resetBtn(btn);
+      return;
+    }
+
+    const firstName = document.getElementById('field-first-name').value.trim();
+    const lastName  = document.getElementById('field-last-name').value.trim();
+    const fee       = getSelectedDeliveryFee();
+    const method    = getSelectedDeliveryMethod();
+
+    // Formata itens para o backend
+    const items = cartItems.map(i => ({
+      name:     i.product.name,
+      quantity: i.qty,
+      priceRaw: Math.round(i.product.price * 100),
+    }));
+
+    const response = await fetch(`${BACKEND}/create-checkout`, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        items,
+        delivery:     { method, fee },
+        customerName: `${firstName} ${lastName}`.trim(),
+      }),
+    });
+
+    const data = await response.json();
+
+    if (data.success && data.checkoutUrl) {
+      // Salva dados da entrega para a página de sucesso
+      sessionStorage.setItem('bb_delivery', JSON.stringify({
+        name:  `${firstName} ${lastName}`,
+        email: document.getElementById('field-email').value,
+        addr:  document.getElementById('field-address').value,
+        city:  document.getElementById('field-city').value,
+        zip:   document.getElementById('field-zip').value,
+        method, fee,
+        total: Cart.subtotal() + fee,
+        items: items.length,
+      }));
+      // Redireciona para o Square
+      window.location.href = data.checkoutUrl;
+    } else {
+      throw new Error(data.error || 'Erro ao criar checkout');
+    }
+
+  } catch (err) {
+    console.error(err);
+    const isOffline = err.message.includes('fetch') || err.message.includes('network') || err.message.includes('Failed');
+    if (isOffline) {
+      showError('Servidor offline. Certifique-se de que o backend está rodando em http://localhost:3333 e tente novamente.');
+    } else {
+      showError(`Erro ao processar: ${err.message}`);
+    }
+    resetBtn(btn);
+  }
+}
+
+function resetBtn(btn) {
+  btn.disabled  = false;
+  btn.innerHTML = '🔒 Pagar com Square';
+}
+</script>
+</body>
+</html>

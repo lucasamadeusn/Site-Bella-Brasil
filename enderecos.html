@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meus Endereços — Bella Brasil Market Plus</title>
+  <link rel="stylesheet" href="css/style.css?v=2026" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#1A3B6F" />
+  <style>
+    .addr-page {
+      min-height: calc(100vh - 160px);
+      background: var(--gray-100);
+      padding: 2.5rem 1rem 4rem;
+    }
+    .addr-container { max-width: 700px; margin: 0 auto; }
+
+    .addr-back {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-size: .88rem; color: var(--navy); font-weight: 600;
+      margin-bottom: 1.5rem; text-decoration: none; transition: var(--transition);
+    }
+    .addr-back:hover { color: var(--green); }
+
+    .addr-title-row {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.2rem; flex-wrap: wrap; gap: .8rem;
+    }
+    .addr-title-row h1 { font-size: 1.4rem; color: var(--navy); }
+
+    /* ── Address cards ── */
+    .addr-list { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem; }
+    .addr-card {
+      background: #fff;
+      border-radius: var(--radius);
+      border: 1.5px solid var(--gray-200);
+      padding: 1.2rem 1.4rem;
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem;
+      transition: var(--transition);
+    }
+    .addr-card:hover { border-color: var(--green); box-shadow: var(--shadow-sm); }
+    .addr-card.default-card { border-color: var(--green); background: var(--green-light); }
+    .addr-card-body { flex: 1; }
+    .addr-card-type {
+      font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
+      color: var(--green); margin-bottom: .3rem; display: flex; align-items: center; gap: .3rem;
+    }
+    .addr-default-badge {
+      background: var(--green); color: #fff; font-size: .65rem;
+      padding: .15rem .5rem; border-radius: 20px; font-weight: 700;
+    }
+    .addr-card-name { font-size: .95rem; font-weight: 600; color: var(--gray-800); margin-bottom: .2rem; }
+    .addr-card-line { font-size: .88rem; color: var(--gray-600); line-height: 1.6; }
+    .addr-card-actions { display: flex; gap: .5rem; flex-shrink: 0; }
+    .addr-btn {
+      padding: .4rem .85rem; border-radius: 8px; font-size: .82rem; font-weight: 600;
+      cursor: pointer; transition: var(--transition); border: 1.5px solid;
+    }
+    .addr-btn-edit {
+      border-color: var(--navy); color: var(--navy); background: #fff;
+    }
+    .addr-btn-edit:hover { background: var(--navy); color: #fff; }
+    .addr-btn-del {
+      border-color: var(--gray-200); color: var(--gray-400); background: #fff;
+    }
+    .addr-btn-del:hover { border-color: var(--red); color: var(--red); }
+    .addr-btn-default {
+      border-color: var(--green); color: var(--green); background: #fff;
+    }
+    .addr-btn-default:hover { background: var(--green); color: #fff; }
+
+    /* ── Empty state ── */
+    .addr-empty {
+      text-align: center; padding: 3rem 2rem;
+      background: #fff; border-radius: var(--radius-lg);
+      border: 2px dashed var(--gray-200);
+    }
+    .addr-empty .empty-icon { font-size: 3rem; margin-bottom: .8rem; }
+    .addr-empty h3 { color: var(--navy); margin-bottom: .4rem; }
+    .addr-empty p  { color: var(--gray-400); font-size: .9rem; }
+
+    /* ── Form card ── */
+    .addr-form-card {
+      background: #fff; border-radius: var(--radius-lg);
+      box-shadow: var(--shadow); padding: 2rem 2.5rem;
+    }
+    .addr-form-card h2 { color: var(--navy); font-size: 1.2rem; margin-bottom: 1.4rem; }
+    .field-row-2 {
+      display: grid; grid-template-columns: 1fr 1fr; gap: .8rem;
+    }
+    @media (max-width: 520px) {
+      .field-row-2 { grid-template-columns: 1fr; }
+      .addr-form-card { padding: 1.5rem 1.2rem; }
+    }
+    .field-group { margin-bottom: .9rem; }
+    .field-group label {
+      display: block; font-size: .8rem; font-weight: 600;
+      color: var(--gray-600); margin-bottom: .3rem;
+      text-transform: uppercase; letter-spacing: .04em;
+    }
+    .field-group input,
+    .field-group select {
+      width: 100%; padding: .72rem 1rem;
+      border: 1.5px solid var(--gray-200); border-radius: 8px;
+      font-size: .95rem; color: var(--gray-800); background: #fff;
+      transition: var(--transition); outline: none;
+    }
+    .field-group input:focus,
+    .field-group select:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(31,173,92,.12);
+    }
+    .form-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; padding-top: 1.2rem; border-top: 1px solid var(--gray-200);
+      flex-wrap: wrap; margin-top: .4rem;
+    }
+    .form-footer-left { display: flex; align-items: center; gap: .6rem; font-size: .88rem; color: var(--gray-600); }
+    .btn-primary-sm {
+      padding: .75rem 1.8rem; background: var(--green); color: #fff;
+      border: none; border-radius: 10px; font-size: .95rem; font-weight: 700;
+      cursor: pointer; transition: var(--transition);
+      display: flex; align-items: center; gap: .5rem;
+    }
+    .btn-primary-sm:hover { background: var(--green-dark); transform: translateY(-1px); }
+    .btn-secondary-sm {
+      padding: .75rem 1.4rem; border: 1.5px solid var(--gray-200);
+      background: #fff; border-radius: 10px; font-size: .9rem; font-weight: 600;
+      color: var(--gray-600); cursor: pointer; transition: var(--transition);
+    }
+    .btn-secondary-sm:hover { border-color: var(--gray-400); }
+
+    .addr-alert {
+      padding: .85rem 1.1rem; border-radius: 8px; font-size: .9rem;
+      margin-bottom: 1rem; display: none; align-items: center; gap: .5rem;
+    }
+    .addr-alert.show { display: flex; }
+    .addr-alert.success { background: var(--green-light); color: var(--green-dark); border: 1px solid var(--green); }
+    .addr-alert.error   { background: #FEF2F2; color: #991B1B; border: 1px solid var(--red); }
+
+    .btn-add-addr {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .7rem 1.4rem; background: var(--navy); color: #fff;
+      border: none; border-radius: 10px; font-size: .9rem; font-weight: 600;
+      cursor: pointer; transition: var(--transition); text-decoration: none;
+    }
+    .btn-add-addr:hover { background: var(--navy-dark); transform: translateY(-1px); }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════ HEADER ═══════════════════════════════ -->
+<header class="header">
+  <div class="top-bar">
+    📍 12545 116th Ave NE, Kirkland, WA 98034 &nbsp;|&nbsp;
+    📞 <a href="tel:+14259682011">(425) 968-2011</a> &nbsp;|&nbsp;
+    🚚 Frete grátis acima de $60 para todo WA
+  </div>
+  <nav class="navbar">
+    <a href="index.html" class="logo">
+      <img src="images/logo.svg" alt="Bella Brasil Market Plus" class="logo-img" />
+      <div class="logo-text">
+        <span class="brand-main">Bella Brasil</span>
+        <span class="brand-sub">Market Plus · Kirkland, WA</span>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Início</a>
+      <a href="shop.html">Produtos</a>
+      <a href="about.html">Sobre</a>
+      <a href="contact.html">Contato</a>
+      <a href="conta.html" id="nav-account-link">👤 Minha Conta</a>
+    </div>
+    <a href="cart.html" class="cart-btn">
+      🛒 Carrinho
+      <span class="cart-count" style="display:none">0</span>
+    </a>
+    <button class="hamburger" id="hamburger-btn" aria-label="Menu">☰</button>
+  </nav>
+  <nav class="mobile-nav" id="mobile-nav">
+    <a href="index.html">🏠 Início</a>
+    <a href="shop.html">🛍️ Produtos</a>
+    <a href="about.html">ℹ️ Sobre Nós</a>
+    <a href="contact.html">📞 Contato</a>
+    <a href="conta.html">👤 Minha Conta</a>
+    <a href="cart.html">🛒 Ver Carrinho</a>
+  </nav>
+</header>
+
+<!-- ═══════════════════════ ADDRESSES PAGE ═══════════════════════════════ -->
+<main class="addr-page">
+  <div class="addr-container">
+
+    <a href="conta.html" class="addr-back">← Voltar para Minha Conta</a>
+
+    <div class="addr-title-row">
+      <h1>📍 Meus Endereços</h1>
+      <button class="btn-add-addr" id="btn-add-addr" onclick="showAddressForm()">
+        + Adicionar endereço
+      </button>
+    </div>
+
+    <!-- Alert -->
+    <div class="addr-alert" id="addr-alert"></div>
+
+    <!-- Address list -->
+    <div class="addr-list" id="addr-list">
+      <!-- Preenchido pelo JS -->
+    </div>
+
+    <!-- Add/Edit form (hidden by default) -->
+    <div class="addr-form-card" id="addr-form-card" style="display:none">
+      <h2 id="form-card-title">➕ Novo Endereço</h2>
+      <input type="hidden" id="edit-addr-id" />
+
+      <div class="field-row-2">
+        <div class="field-group" style="grid-column:1/-1">
+          <label for="af-label">Identificação (ex: Casa, Trabalho)</label>
+          <input type="text" id="af-label" placeholder="Casa" maxlength="30" />
+        </div>
+      </div>
+      <div class="field-group">
+        <label for="af-street">Endereço *</label>
+        <input type="text" id="af-street" placeholder="123 Main St, Apt 4B" autocomplete="street-address" />
+      </div>
+      <div class="field-row-2">
+        <div class="field-group">
+          <label for="af-city">Cidade *</label>
+          <input type="text" id="af-city" placeholder="Kirkland" autocomplete="address-level2" />
+        </div>
+        <div class="field-group">
+          <label for="af-state">Estado</label>
+          <select id="af-state" autocomplete="address-level1">
+            <option value="WA">Washington (WA)</option>
+            <option value="OR">Oregon (OR)</option>
+            <option value="CA">California (CA)</option>
+            <option value="ID">Idaho (ID)</option>
+            <option value="MT">Montana (MT)</option>
+            <option value="AK">Alaska (AK)</option>
+            <option value="outros">Outro estado</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-group" style="max-width:200px">
+        <label for="af-zip">ZIP Code *</label>
+        <input type="text" id="af-zip" placeholder="98034" autocomplete="postal-code" maxlength="10" />
+      </div>
+      <div class="form-footer">
+        <div class="form-footer-left">
+          <input type="checkbox" id="af-default" style="width:auto" />
+          <label for="af-default" style="text-transform:none;letter-spacing:0;font-weight:400;font-size:.88rem;color:var(--gray-600)">
+            Usar como endereço padrão
+          </label>
+        </div>
+        <div style="display:flex;gap:.7rem">
+          <button class="btn-secondary-sm" onclick="hideAddressForm()">Cancelar</button>
+          <button class="btn-primary-sm" onclick="saveAddress()">
+            <span>💾</span> Salvar endereço
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- ═══════════════════════ FOOTER SIMPLES ═══════════════════════════════ -->
+<footer class="footer">
+  <div class="footer-bottom" style="text-align:center;padding:1.5rem">
+    <span>© 2024 Bella Brasil Market Plus — Kirkland, WA</span>
+    <span class="footer-flags" style="margin-left:1rem">🇧🇷 🇺🇸</span>
+  </div>
+</footer>
+
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script src="js/i18n.js"></script>
+<script>
+const AUTH_KEY    = 'bellabrasil_user';
+const ADDRS_KEY   = 'bellabrasil_addresses';
+
+function getUser()     { try { return JSON.parse(localStorage.getItem(AUTH_KEY)); } catch { return null; } }
+function getAddresses(userId) {
+  try { return JSON.parse(localStorage.getItem(`${ADDRS_KEY}_${userId}`)) || []; } catch { return []; }
+}
+function saveAddresses(userId, addrs) {
+  localStorage.setItem(`${ADDRS_KEY}_${userId}`, JSON.stringify(addrs));
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const user = getUser();
+  if (!user) { location.href = 'conta.html'; return; }
+  document.querySelectorAll('#nav-account-link').forEach(l => {
+    l.textContent = `👤 ${user.firstName || 'Conta'}`;
+  });
+
+  // Pré-popula com o endereço do cadastro, se não houver nenhum
+  let addrs = getAddresses(user.id || user.email);
+  if (addrs.length === 0 && user.address?.street) {
+    addrs = [{
+      id:      'main',
+      label:   'Principal',
+      street:  user.address.street,
+      city:    user.address.city   || '',
+      state:   user.address.state  || 'WA',
+      zip:     user.address.zip    || '',
+      default: true,
+    }];
+    saveAddresses(user.id || user.email, addrs);
+  }
+  renderAddresses(addrs);
+});
+
+function renderAddresses(addrs) {
+  const list = document.getElementById('addr-list');
+  if (!list) return;
+
+  if (addrs.length === 0) {
+    list.innerHTML = `
+      <div class="addr-empty">
+        <div class="empty-icon">📍</div>
+        <h3>Nenhum endereço cadastrado</h3>
+        <p>Adicione um endereço de entrega para agilizar seus próximos pedidos.</p>
+      </div>`;
+    return;
+  }
+
+  list.innerHTML = addrs.map(addr => `
+    <div class="addr-card ${addr.default ? 'default-card' : ''}" id="addr-card-${addr.id}">
+      <div class="addr-card-body">
+        <div class="addr-card-type">
+          📍 ${addr.label || 'Endereço'}
+          ${addr.default ? '<span class="addr-default-badge">Padrão</span>' : ''}
+        </div>
+        <div class="addr-card-name">${addr.street}</div>
+        <div class="addr-card-line">${addr.city}${addr.state ? ', ' + addr.state : ''} ${addr.zip}</div>
+      </div>
+      <div class="addr-card-actions">
+        ${!addr.default ? `<button class="addr-btn addr-btn-default" onclick="setDefault('${addr.id}')">Padrão</button>` : ''}
+        <button class="addr-btn addr-btn-edit" onclick="editAddress('${addr.id}')">Editar</button>
+        <button class="addr-btn addr-btn-del"  onclick="deleteAddress('${addr.id}')">✕</button>
+      </div>
+    </div>`).join('');
+}
+
+function showAddressForm(addrId) {
+  const card = document.getElementById('addr-form-card');
+  const title = document.getElementById('form-card-title');
+  card.style.display = 'block';
+  card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if (!addrId) {
+    title.textContent = '➕ Novo Endereço';
+    ['af-label','af-street','af-city','af-zip'].forEach(id => { document.getElementById(id).value = ''; });
+    document.getElementById('af-state').value = 'WA';
+    document.getElementById('af-default').checked = false;
+    document.getElementById('edit-addr-id').value = '';
+  }
+}
+
+function hideAddressForm() {
+  document.getElementById('addr-form-card').style.display = 'none';
+}
+
+function editAddress(id) {
+  const user = getUser(); if (!user) return;
+  const addrs = getAddresses(user.id || user.email);
+  const addr = addrs.find(a => a.id === id); if (!addr) return;
+  document.getElementById('form-card-title').textContent = '✏️ Editar Endereço';
+  document.getElementById('edit-addr-id').value = id;
+  document.getElementById('af-label').value  = addr.label  || '';
+  document.getElementById('af-street').value = addr.street || '';
+  document.getElementById('af-city').value   = addr.city   || '';
+  document.getElementById('af-zip').value    = addr.zip    || '';
+  document.getElementById('af-state').value  = addr.state  || 'WA';
+  document.getElementById('af-default').checked = !!addr.default;
+  showAddressForm(id);
+}
+
+function saveAddress() {
+  const user = getUser(); if (!user) return;
+  const street = document.getElementById('af-street').value.trim();
+  const city   = document.getElementById('af-city').value.trim();
+  const zip    = document.getElementById('af-zip').value.trim();
+  if (!street || !city || !zip) {
+    showAddrAlert('Preencha endereço, cidade e CEP.', 'error'); return;
+  }
+  const editId  = document.getElementById('edit-addr-id').value;
+  const isDefault = document.getElementById('af-default').checked;
+  let addrs = getAddresses(user.id || user.email);
+
+  if (editId) {
+    // Edit existing
+    const idx = addrs.findIndex(a => a.id === editId);
+    if (idx >= 0) addrs[idx] = {
+      ...addrs[idx],
+      label:  document.getElementById('af-label').value.trim() || 'Endereço',
+      street, city, state: document.getElementById('af-state').value, zip,
+      default: isDefault || addrs[idx].default,
+    };
+  } else {
+    // New address
+    addrs.push({
+      id:      Date.now().toString(),
+      label:   document.getElementById('af-label').value.trim() || 'Endereço',
+      street, city, state: document.getElementById('af-state').value, zip,
+      default: isDefault || addrs.length === 0,
+    });
+  }
+
+  // If this is default, clear others
+  if (isDefault) addrs = addrs.map(a => ({ ...a, default: a.id === (editId || addrs[addrs.length - 1].id) }));
+
+  saveAddresses(user.id || user.email, addrs);
+  renderAddresses(addrs);
+  hideAddressForm();
+  showAddrAlert('Endereço salvo com sucesso! ✅', 'success');
+}
+
+function deleteAddress(id) {
+  if (!confirm('Remover este endereço?')) return;
+  const user = getUser(); if (!user) return;
+  let addrs = getAddresses(user.id || user.email).filter(a => a.id !== id);
+  // If deleted was default, make first default
+  if (addrs.length > 0 && !addrs.some(a => a.default)) addrs[0].default = true;
+  saveAddresses(user.id || user.email, addrs);
+  renderAddresses(addrs);
+  showAddrAlert('Endereço removido.', 'success');
+}
+
+function setDefault(id) {
+  const user = getUser(); if (!user) return;
+  const addrs = getAddresses(user.id || user.email).map(a => ({ ...a, default: a.id === id }));
+  saveAddresses(user.id || user.email, addrs);
+  renderAddresses(addrs);
+}
+
+function showAddrAlert(msg, type) {
+  const el = document.getElementById('addr-alert'); if (!el) return;
+  el.textContent = msg;
+  el.className = `addr-alert show ${type}`;
+  el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  setTimeout(() => el.classList.remove('show'), 4000);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carrinho — Bella Brasil Market Plus</title>
+  <link rel="stylesheet" href="css/style.css?v=2026" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#1A3B6F" />
+</head>
+<body>
+
+<!-- ═══════════════════════════════ HEADER ═══════════════════════════════ -->
+<header class="header">
+  <div class="top-bar">
+    📍 12545 116th Ave NE, Kirkland, WA 98034 &nbsp;|&nbsp;
+    📞 <a href="tel:+14259682011">(425) 968-2011</a> &nbsp;|&nbsp;
+    🚚 Frete grátis acima de $60 para todo WA
+  </div>
+  <nav class="navbar">
+    <a href="index.html" class="logo">
+      <img src="images/logo.svg" alt="Bella Brasil Market Plus" class="logo-img" />
+      <div class="logo-text">
+        <span class="brand-main">Bella Brasil</span>
+        <span class="brand-sub">Market Plus · Kirkland, WA</span>
+      </div>
+    </a>
+    <form class="search-bar" id="search-form">
+      <input type="text" placeholder="Buscar produtos..." aria-label="Buscar" />
+      <button type="submit">🔍</button>
+    </form>
+    <div class="nav-links">
+      <a href="index.html">Início</a>
+      <a href="shop.html">Produtos</a>
+      <a href="about.html">Sobre</a>
+      <a href="contact.html">Contato</a>
+      <a href="conta.html" id="nav-account-link">👤 Minha Conta</a>
+    </div>
+    <a href="cart.html" class="cart-btn">
+      🛒 Carrinho
+      <span class="cart-count" style="display:none">0</span>
+    </a>
+    <button class="hamburger" id="hamburger-btn" aria-label="Menu">☰</button>
+  </nav>
+  <nav class="mobile-nav" id="mobile-nav">
+    <a href="index.html">🏠 Início</a>
+    <a href="shop.html">🛍️ Produtos</a>
+    <a href="about.html">ℹ️ Sobre Nós</a>
+    <a href="contact.html">📞 Contato</a>
+    <a href="conta.html">👤 Minha Conta</a>
+    <a href="cart.html">🛒 Ver Carrinho</a>
+  </nav>
+</header>
+
+<!-- ═════════════════════════ TRUST BAR ════════════════════════════════ -->
+<div class="trust-bar">
+  <div class="trust-bar-inner">
+    <div class="trust-item green"><span class="t-icon">🔒</span> Checkout 100% Seguro</div>
+    <div class="trust-item"><span class="t-icon">💳</span> Powered by Square Checkout</div>
+    <div class="trust-item"><span class="t-icon">🚚</span> Frete Grátis acima de $60</div>
+    <div class="trust-item navy"><span class="t-icon">⭐</span> 4.9 no Google (90+ avaliações)</div>
+    <div class="trust-item"><span class="t-icon">↩️</span> Devolução Garantida</div>
+  </div>
+</div>
+
+<!-- ════════════════════════ PAGE HEADER ══════════════════════════════════ -->
+<div class="page-header">
+  <div class="page-header-inner">
+    <h1>🛒 Meu Carrinho</h1>
+    <nav class="breadcrumb">
+      <a href="index.html">Início</a>
+      <span>›</span>
+      <a href="shop.html">Produtos</a>
+      <span>›</span>
+      <span>Carrinho</span>
+    </nav>
+  </div>
+</div>
+
+<!-- ═════════════════════════ CART CONTENT ═══════════════════════════════ -->
+<section class="section">
+  <div class="container">
+
+    <!-- Empty state -->
+    <div id="cart-empty" style="display:none">
+      <div class="empty-cart">
+        <div class="empty-icon">🛒</div>
+        <h3>Seu carrinho está vazio</h3>
+        <p style="margin-bottom:1.5rem">Adicione produtos brasileiros deliciosos ao seu carrinho!</p>
+        <a href="shop.html" class="btn-primary" style="display:inline-flex">🛍️ Ir às Compras</a>
+      </div>
+    </div>
+
+    <!-- Cart with items -->
+    <div id="cart-summary" style="display:none">
+      <div class="cart-layout">
+        <!-- Items list -->
+        <div>
+          <!-- Free delivery progress -->
+          <div style="background:var(--white);border-radius:10px;padding:1rem 1.2rem;margin-bottom:1rem;box-shadow:var(--shadow-sm);">
+            <div style="display:flex;justify-content:space-between;margin-bottom:.4rem;">
+              <span style="font-size:.82rem;font-weight:600;color:var(--gray-600)" id="free-delivery-msg">Carregando...</span>
+              <span style="font-size:.82rem;color:var(--green);font-weight:700">🚚 Frete Grátis em $60+</span>
+            </div>
+            <div style="background:var(--gray-200);border-radius:20px;height:6px;">
+              <div id="free-delivery-progress" style="background:var(--green);height:100%;border-radius:20px;width:0%;transition:width .4s;"></div>
+            </div>
+          </div>
+
+          <div class="cart-items" id="cart-items-container">
+            <!-- Preenchido pelo JS -->
+          </div>
+
+          <div style="margin-top:1rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.8rem;">
+            <a href="shop.html" class="btn-secondary">← Continuar Comprando</a>
+            <button onclick="if(confirm('Esvaziar o carrinho?')) { Cart.clear(); Cart.renderCartPage(); }"
+              style="background:none;border:1px solid var(--gray-200);color:var(--gray-600);padding:.6rem 1rem;border-radius:8px;font-size:.85rem;cursor:pointer;">
+              🗑️ Esvaziar Carrinho
+            </button>
+          </div>
+        </div>
+
+        <!-- Order summary -->
+        <div class="order-summary">
+          <h3>Resumo do Pedido</h3>
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <span id="summary-subtotal">$0.00</span>
+          </div>
+          <div class="summary-row">
+            <span>Frete</span>
+            <span id="summary-delivery">$5.99</span>
+          </div>
+          <div class="summary-row">
+            <span style="font-size:.78rem;color:var(--gray-400)">Frete grátis acima de $60</span>
+          </div>
+          <div class="summary-total">
+            <span>Total</span>
+            <span id="summary-total">$0.00</span>
+          </div>
+
+          <a href="checkout.html" class="checkout-btn">
+            🔒 Finalizar com Square
+          </a>
+
+          <!-- Square badge -->
+          <div style="margin-top:.8rem;display:flex;align-items:center;justify-content:center;gap:.5rem;
+                      background:var(--gray-50);border:1px solid var(--gray-200);border-radius:8px;padding:.55rem .8rem;">
+            <div style="width:22px;height:22px;background:#000;border-radius:5px;display:flex;align-items:center;
+                        justify-content:center;flex-shrink:0;">
+              <span style="color:#fff;font-weight:900;font-size:.65rem;line-height:1">■</span>
+            </div>
+            <span style="font-size:.75rem;font-weight:600;color:var(--gray-700)">Powered by Square Checkout</span>
+            <span style="font-size:.85rem">🔒</span>
+          </div>
+
+          <div style="margin-top:.7rem;text-align:center;">
+            <div style="font-size:.75rem;color:var(--gray-400);margin-bottom:.4rem">Formas de pagamento aceitas</div>
+            <div style="display:flex;justify-content:center;gap:.4rem;flex-wrap:wrap;">
+              <span style="font-size:.68rem;font-weight:600;color:var(--gray-600);background:var(--white);
+                           border:1px solid var(--gray-200);border-radius:4px;padding:.2rem .5rem;">💳 Visa</span>
+              <span style="font-size:.68rem;font-weight:600;color:var(--gray-600);background:var(--white);
+                           border:1px solid var(--gray-200);border-radius:4px;padding:.2rem .5rem;">Mastercard</span>
+              <span style="font-size:.68rem;font-weight:600;color:var(--gray-600);background:var(--white);
+                           border:1px solid var(--gray-200);border-radius:4px;padding:.2rem .5rem;">Amex</span>
+              <span style="font-size:.68rem;font-weight:600;color:var(--gray-600);background:var(--white);
+                           border:1px solid var(--gray-200);border-radius:4px;padding:.2rem .5rem;">📱 Apple/Google Pay</span>
+            </div>
+          </div>
+
+          <div style="margin-top:1.2rem;background:var(--green-light);border-radius:8px;padding:.8rem;font-size:.8rem;color:var(--green);text-align:center;">
+            🔒 Pagamento 100% seguro e criptografado
+          </div>
+
+          <!-- Delivery info -->
+          <div style="margin-top:1rem;border-top:1px solid var(--gray-100);padding-top:1rem;">
+            <div style="font-size:.82rem;color:var(--gray-600);margin-bottom:.5rem;font-weight:600">📦 Informações de Entrega</div>
+            <div style="font-size:.8rem;color:var(--gray-600);line-height:1.6">
+              • Entregamos em todo o estado de Washington<br>
+              • Prazo: 2–5 dias úteis<br>
+              • Rastreamento por e-mail<br>
+              • Frete grátis acima de $60
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════ VOCÊ PODE GOSTAR ════════════════════════════════ -->
+<section class="section" style="background:var(--gray-100)">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <div class="section-eyebrow">Continue Comprando</div>
+        <h2>Você pode <span>gostar</span> também</h2>
+      </div>
+      <a href="shop.html" class="see-all">Ver todos →</a>
+    </div>
+    <div class="product-grid" id="suggestions-grid"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ FOOTER ═══════════════════════════════════════ -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-col footer-brand">
+      <div class="brand-name">🇧🇷 Bella Brasil Market Plus</div>
+      <p>Sua loja brasileira de confiança em Kirkland, Washington.</p>
+      <div class="social-links">
+        <a href="https://www.instagram.com/bellabrasilmarketplus/" target="_blank" rel="noopener" class="social-link">📸</a>
+        <a href="https://www.facebook.com/p/Bella-Brasil-Market-Plus-100066759558798/" target="_blank" rel="noopener" class="social-link">👤</a>
+        <a href="https://wa.me/14259682011" target="_blank" rel="noopener" class="social-link">💬</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Links Rápidos</h4>
+      <a href="index.html">Início</a>
+      <a href="shop.html">Produtos</a>
+      <a href="about.html">Sobre Nós</a>
+      <a href="contact.html">Contato</a>
+    </div>
+    <div class="footer-col">
+      <h4>Horário</h4>
+      <ul class="footer-hours">
+        <li>Seg–Sex <span>9:30–19:30</span></li>
+        <li>Sábado <span>9:30–19:00</span></li>
+        <li>Domingo <span>9:00–14:00</span></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contato</h4>
+      <p>📍 12545 116th Ave NE, Kirkland, WA 98034</p>
+      <p>📞 <a href="tel:+14259682011">(425) 968-2011</a></p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2024 Bella Brasil Market Plus. Todos os direitos reservados.</span>
+    <span class="footer-flags">🇧🇷 🇺🇸</span>
+  </div>
+</footer>
+
+<script src="js/products.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/square-integration.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Show suggestions (random products)
+  const shuffled = [...PRODUCTS].sort(() => Math.random() - 0.5).slice(0, 4);
+  const grid = document.getElementById('suggestions-grid');
+  if (grid) grid.innerHTML = shuffled.map(buildProductCard).join('');
+});
+</script>
+</body>
+</html>

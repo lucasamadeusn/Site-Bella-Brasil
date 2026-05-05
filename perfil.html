@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Editar Perfil — Bella Brasil Market Plus</title>
+  <link rel="stylesheet" href="css/style.css?v=2026" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#1A3B6F" />
+  <style>
+    .profile-page {
+      min-height: calc(100vh - 160px);
+      background: var(--gray-100);
+      padding: 2.5rem 1rem 4rem;
+    }
+    .profile-container {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    /* ── Back link ── */
+    .profile-back {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      font-size: .88rem;
+      color: var(--navy);
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    .profile-back:hover { color: var(--green); }
+
+    /* ── Card ── */
+    .profile-card {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    /* ── Header band ── */
+    .profile-header {
+      background: linear-gradient(135deg, var(--navy) 0%, #1e4d8c 100%);
+      padding: 2rem 2.5rem 3.5rem;
+      text-align: center;
+      position: relative;
+    }
+    .profile-avatar-wrap {
+      position: relative;
+      display: inline-block;
+      margin-bottom: .8rem;
+    }
+    .profile-avatar {
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      border: 4px solid rgba(255,255,255,.3);
+      background: var(--green);
+      color: #fff;
+      font-size: 2rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+    .profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .profile-header h2 { color: #fff; font-size: 1.3rem; margin-bottom: .2rem; }
+    .profile-header p  { color: rgba(255,255,255,.7); font-size: .88rem; }
+
+    /* ── Tabs inside card ── */
+    .profile-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--gray-200);
+      margin-top: -1px;
+    }
+    .profile-tab {
+      flex: 1;
+      padding: 1rem;
+      border: none;
+      background: transparent;
+      font-size: .92rem;
+      font-weight: 600;
+      color: var(--gray-400);
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+    }
+    .profile-tab.active { color: var(--navy); }
+    .profile-tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px; left: 0; right: 0;
+      height: 2px;
+      background: var(--green);
+    }
+
+    /* ── Panels ── */
+    .profile-panel { display: none; padding: 2rem 2.5rem 2.5rem; }
+    .profile-panel.active { display: block; }
+
+    /* ── Section title ── */
+    .section-title {
+      font-size: .75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--green);
+      border-bottom: 1px solid var(--gray-200);
+      padding-bottom: .3rem;
+      margin: 1.4rem 0 .9rem;
+    }
+    .section-title:first-child { margin-top: 0; }
+
+    /* ── Fields ── */
+    .field-row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .8rem;
+    }
+    @media (max-width: 520px) {
+      .field-row-2 { grid-template-columns: 1fr; }
+      .profile-header { padding: 1.5rem 1.5rem 3rem; }
+      .profile-panel  { padding: 1.5rem 1.2rem 2rem; }
+    }
+    .field-group {
+      margin-bottom: .9rem;
+    }
+    .field-group label {
+      display: block;
+      font-size: .8rem;
+      font-weight: 600;
+      color: var(--gray-600);
+      margin-bottom: .3rem;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+    .field-group input,
+    .field-group select,
+    .field-group textarea {
+      width: 100%;
+      padding: .72rem 1rem;
+      border: 1.5px solid var(--gray-200);
+      border-radius: 8px;
+      font-size: .95rem;
+      color: var(--gray-800);
+      background: #fff;
+      transition: var(--transition);
+      outline: none;
+    }
+    .field-group input:focus,
+    .field-group select:focus,
+    .field-group textarea:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(31,173,92,.12);
+    }
+    .field-group input[readonly] {
+      background: var(--gray-100);
+      color: var(--gray-400);
+      cursor: not-allowed;
+    }
+    .field-hint {
+      font-size: .75rem;
+      color: var(--gray-400);
+      margin-top: .2rem;
+    }
+
+    /* ── Alert ── */
+    .profile-alert {
+      padding: .9rem 1.1rem;
+      border-radius: 8px;
+      font-size: .9rem;
+      margin-bottom: 1.2rem;
+      display: none;
+      align-items: center;
+      gap: .5rem;
+    }
+    .profile-alert.show { display: flex; }
+    .profile-alert.success { background: var(--green-light); color: var(--green-dark); border: 1px solid var(--green); }
+    .profile-alert.error   { background: #FEF2F2; color: #991B1B; border: 1px solid var(--red); }
+
+    /* ── Save button ── */
+    .profile-save {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--gray-200);
+      flex-wrap: wrap;
+    }
+    .btn-save {
+      padding: .8rem 2rem;
+      background: var(--green);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    .btn-save:hover { background: var(--green-dark); transform: translateY(-1px); }
+    .btn-save.loading { opacity: .7; pointer-events: none; }
+    .btn-cancel {
+      padding: .8rem 1.5rem;
+      border: 1.5px solid var(--gray-200);
+      background: #fff;
+      border-radius: 10px;
+      font-size: .95rem;
+      font-weight: 600;
+      color: var(--gray-600);
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+    .btn-cancel:hover { border-color: var(--gray-400); color: var(--gray-800); }
+
+    /* ── Password panel ── */
+    .pwd-wrapper { position: relative; }
+    .pwd-wrapper input { padding-right: 2.8rem; }
+    .pwd-eye {
+      position: absolute;
+      right: .75rem; top: 50%;
+      transform: translateY(-50%);
+      background: none; border: none;
+      cursor: pointer; font-size: 1.1rem;
+      color: var(--gray-400); padding: 0;
+    }
+    .pwd-strength {
+      height: 4px; border-radius: 4px;
+      background: var(--gray-200); margin-top: .4rem; overflow: hidden;
+    }
+    .pwd-strength-bar { height: 100%; width: 0; border-radius: 4px; transition: width .3s, background .3s; }
+    .pwd-strength-label { font-size: .74rem; color: var(--gray-400); margin-top: .2rem; }
+
+    /* ── Danger zone ── */
+    .danger-zone {
+      border: 1.5px solid #FECACA;
+      border-radius: var(--radius);
+      padding: 1.2rem 1.5rem;
+      background: #FFF5F5;
+    }
+    .danger-zone h4 { color: var(--red); margin-bottom: .4rem; font-size: .95rem; }
+    .danger-zone p  { font-size: .85rem; color: var(--gray-600); margin-bottom: 1rem; }
+    .btn-danger {
+      padding: .65rem 1.4rem;
+      background: transparent;
+      border: 1.5px solid var(--red);
+      border-radius: 8px;
+      color: var(--red);
+      font-size: .88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .btn-danger:hover { background: var(--red); color: #fff; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════ HEADER ═══════════════════════════════ -->
+<header class="header">
+  <div class="top-bar">
+    📍 12545 116th Ave NE, Kirkland, WA 98034 &nbsp;|&nbsp;
+    📞 <a href="tel:+14259682011">(425) 968-2011</a> &nbsp;|&nbsp;
+    🚚 Frete grátis acima de $60 para todo WA
+  </div>
+  <nav class="navbar">
+    <a href="index.html" class="logo">
+      <img src="images/logo.svg" alt="Bella Brasil Market Plus" class="logo-img" />
+      <div class="logo-text">
+        <span class="brand-main">Bella Brasil</span>
+        <span class="brand-sub">Market Plus · Kirkland, WA</span>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Início</a>
+      <a href="shop.html">Produtos</a>
+      <a href="about.html">Sobre</a>
+      <a href="contact.html">Contato</a>
+      <a href="conta.html" id="nav-account-link">👤 Minha Conta</a>
+    </div>
+    <a href="cart.html" class="cart-btn">
+      🛒 Carrinho
+      <span class="cart-count" style="display:none">0</span>
+    </a>
+    <button class="hamburger" id="hamburger-btn" aria-label="Menu">☰</button>
+  </nav>
+  <nav class="mobile-nav" id="mobile-nav">
+    <a href="index.html">🏠 Início</a>
+    <a href="shop.html">🛍️ Produtos</a>
+    <a href="about.html">ℹ️ Sobre Nós</a>
+    <a href="contact.html">📞 Contato</a>
+    <a href="conta.html">👤 Minha Conta</a>
+    <a href="cart.html">🛒 Ver Carrinho</a>
+  </nav>
+</header>
+
+<!-- ═══════════════════════ PROFILE PAGE ═════════════════════════════════ -->
+<main class="profile-page">
+  <div class="profile-container">
+
+    <a href="conta.html" class="profile-back">← Voltar para Minha Conta</a>
+
+    <div class="profile-card">
+
+      <!-- Header with avatar -->
+      <div class="profile-header">
+        <div class="profile-avatar-wrap">
+          <div class="profile-avatar" id="profile-avatar">?</div>
+        </div>
+        <h2 id="profile-name">Carregando...</h2>
+        <p id="profile-email-display"></p>
+      </div>
+
+      <!-- Tabs -->
+      <div class="profile-tabs">
+        <button class="profile-tab active" data-ptab="dados">Dados Pessoais</button>
+        <button class="profile-tab" data-ptab="senha">Segurança</button>
+        <button class="profile-tab" data-ptab="pref">Preferências</button>
+      </div>
+
+      <!-- ══ Dados Pessoais Panel ══ -->
+      <div class="profile-panel active" id="ptab-dados">
+        <div class="profile-alert" id="dados-alert"></div>
+
+        <div class="section-title">👤 Informações Básicas</div>
+        <div class="field-row-2">
+          <div class="field-group">
+            <label for="pf-fname">Nome *</label>
+            <input type="text" id="pf-fname" placeholder="Seu nome" autocomplete="given-name" />
+          </div>
+          <div class="field-group">
+            <label for="pf-lname">Sobrenome *</label>
+            <input type="text" id="pf-lname" placeholder="Sobrenome" autocomplete="family-name" />
+          </div>
+        </div>
+        <div class="field-group">
+          <label for="pf-email">E-mail</label>
+          <input type="email" id="pf-email" readonly />
+          <div class="field-hint">O e-mail não pode ser alterado aqui por questões de segurança.</div>
+        </div>
+        <div class="field-row-2">
+          <div class="field-group">
+            <label for="pf-phone">Telefone / WhatsApp</label>
+            <input type="tel" id="pf-phone" placeholder="(206) 555-0100" autocomplete="tel" />
+          </div>
+          <div class="field-group">
+            <label for="pf-dob">Data de Nascimento</label>
+            <input type="date" id="pf-dob" autocomplete="bday" />
+          </div>
+        </div>
+
+        <div class="section-title">📦 Endereço Principal</div>
+        <div class="field-group">
+          <label for="pf-addr">Endereço</label>
+          <input type="text" id="pf-addr" placeholder="123 Main St, Apt 4B" autocomplete="street-address" />
+        </div>
+        <div class="field-row-2">
+          <div class="field-group">
+            <label for="pf-city">Cidade</label>
+            <input type="text" id="pf-city" placeholder="Kirkland" autocomplete="address-level2" />
+          </div>
+          <div class="field-group">
+            <label for="pf-state">Estado</label>
+            <select id="pf-state" autocomplete="address-level1">
+              <option value="WA">Washington (WA)</option>
+              <option value="OR">Oregon (OR)</option>
+              <option value="CA">California (CA)</option>
+              <option value="ID">Idaho (ID)</option>
+              <option value="MT">Montana (MT)</option>
+              <option value="AK">Alaska (AK)</option>
+              <option value="outros">Outro estado</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-group" style="max-width:200px">
+          <label for="pf-zip">ZIP Code</label>
+          <input type="text" id="pf-zip" placeholder="98034" autocomplete="postal-code" maxlength="10" />
+        </div>
+
+        <div class="profile-save">
+          <a href="conta.html" class="btn-cancel">Cancelar</a>
+          <button class="btn-save" id="btn-save-dados" onclick="saveDados()">
+            <span>💾</span> Salvar alterações
+          </button>
+        </div>
+      </div>
+
+      <!-- ══ Segurança Panel ══ -->
+      <div class="profile-panel" id="ptab-senha">
+        <div class="profile-alert" id="senha-alert"></div>
+
+        <div class="section-title">🔒 Alterar Senha</div>
+        <div class="field-group" style="max-width:420px">
+          <label for="pf-pwd-current">Senha atual</label>
+          <div class="pwd-wrapper">
+            <input type="password" id="pf-pwd-current" placeholder="Sua senha atual" />
+            <button type="button" class="pwd-eye" onclick="togglePwdField('pf-pwd-current',this)">👁️</button>
+          </div>
+        </div>
+        <div class="field-group" style="max-width:420px">
+          <label for="pf-pwd-new">Nova senha</label>
+          <div class="pwd-wrapper">
+            <input type="password" id="pf-pwd-new" placeholder="Mínimo 8 caracteres" oninput="updatePwdStrength()" />
+            <button type="button" class="pwd-eye" onclick="togglePwdField('pf-pwd-new',this)">👁️</button>
+          </div>
+          <div class="pwd-strength"><div class="pwd-strength-bar" id="pf-pwd-bar"></div></div>
+          <div class="pwd-strength-label" id="pf-pwd-label"></div>
+        </div>
+        <div class="field-group" style="max-width:420px">
+          <label for="pf-pwd-confirm">Confirmar nova senha</label>
+          <div class="pwd-wrapper">
+            <input type="password" id="pf-pwd-confirm" placeholder="Repita a nova senha" />
+            <button type="button" class="pwd-eye" onclick="togglePwdField('pf-pwd-confirm',this)">👁️</button>
+          </div>
+        </div>
+        <div class="profile-save">
+          <span></span>
+          <button class="btn-save" onclick="saveSenha()">
+            <span>🔐</span> Atualizar senha
+          </button>
+        </div>
+
+        <div class="section-title" style="margin-top:2rem">⚠️ Zona de Perigo</div>
+        <div class="danger-zone">
+          <h4>Excluir minha conta</h4>
+          <p>Esta ação é permanente e não pode ser desfeita. Todos os seus dados serão removidos.</p>
+          <button class="btn-danger" onclick="confirmDeleteAccount()">Excluir minha conta</button>
+        </div>
+      </div>
+
+      <!-- ══ Preferências Panel ══ -->
+      <div class="profile-panel" id="ptab-pref">
+        <div class="profile-alert" id="pref-alert"></div>
+
+        <div class="section-title">🛍️ Categorias Favoritas</div>
+        <div class="field-group">
+          <label for="pf-pref">O que você mais compra?</label>
+          <select id="pf-pref">
+            <option value="">Selecione (opcional)</option>
+            <option value="carnes">🥩 Carnes & Frios</option>
+            <option value="padaria">🥐 Padaria & Laticínios</option>
+            <option value="bebidas">🥤 Bebidas</option>
+            <option value="salgadinhos">🥨 Salgadinhos & Snacks</option>
+            <option value="doces">🍬 Doces & Sobremesas</option>
+            <option value="temperos">🧂 Temperos & Condimentos</option>
+            <option value="hortifruti">🥬 Hortifruti</option>
+            <option value="todos">🛒 Todos os produtos</option>
+          </select>
+        </div>
+
+        <div class="section-title">🔔 Notificações</div>
+        <div style="display:flex;flex-direction:column;gap:.7rem;margin-bottom:1.5rem">
+          <label style="display:flex;align-items:center;gap:.7rem;cursor:pointer">
+            <input type="checkbox" id="notif-email" style="width:auto" />
+            <span style="font-size:.9rem;color:var(--gray-700)">📧 Receber ofertas e promoções por e-mail</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:.7rem;cursor:pointer">
+            <input type="checkbox" id="notif-whatsapp" style="width:auto" />
+            <span style="font-size:.9rem;color:var(--gray-700)">💬 Receber novidades pelo WhatsApp</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:.7rem;cursor:pointer">
+            <input type="checkbox" id="notif-pedido" style="width:auto" checked />
+            <span style="font-size:.9rem;color:var(--gray-700)">📦 Confirmações e status de pedidos (recomendado)</span>
+          </label>
+        </div>
+        <div class="profile-save">
+          <span></span>
+          <button class="btn-save" onclick="savePref()">
+            <span>✅</span> Salvar preferências
+          </button>
+        </div>
+      </div>
+
+    </div><!-- /profile-card -->
+  </div>
+</main>
+
+<!-- ═══════════════════════ FOOTER SIMPLES ═══════════════════════════════ -->
+<footer class="footer">
+  <div class="footer-bottom" style="text-align:center;padding:1.5rem">
+    <span>© 2024 Bella Brasil Market Plus — Kirkland, WA</span>
+    <span class="footer-flags" style="margin-left:1rem">🇧🇷 🇺🇸</span>
+  </div>
+</footer>
+
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script src="js/i18n.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<script>
+const AUTH_KEY = 'bellabrasil_user';
+function getUser() { try { return JSON.parse(localStorage.getItem(AUTH_KEY)); } catch { return null; } }
+function saveUser(u) { localStorage.setItem(AUTH_KEY, JSON.stringify(u)); }
+function initials(n) { return (n||'?').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase(); }
+
+/* Redirect if not logged in */
+document.addEventListener('DOMContentLoaded', () => {
+  const user = getUser();
+  if (!user) { location.href = 'conta.html'; return; }
+  renderProfileHeader(user);
+  fillDados(user);
+  fillPref(user);
+  // Nav link
+  document.querySelectorAll('#nav-account-link').forEach(l => {
+    l.textContent = `👤 ${user.firstName || 'Conta'}`;
+  });
+});
+
+function renderProfileHeader(user) {
+  const av = document.getElementById('profile-avatar');
+  if (user.photoURL) {
+    av.innerHTML = `<img src="${user.photoURL}" alt="${user.name}" />`;
+    av.style.background = 'transparent';
+  } else {
+    av.textContent = initials(user.name);
+    const colors = ['#1A3B6F','#1FAD5C','#E8A800','#7C3AED','#DC2626'];
+    av.style.background = colors[(user.name||'').charCodeAt(0) % colors.length];
+  }
+  document.getElementById('profile-name').textContent = user.name || 'Usuário';
+  document.getElementById('profile-email-display').textContent = user.email || '';
+}
+
+function fillDados(user) {
+  safeSet('pf-fname', user.firstName || '');
+  safeSet('pf-lname', user.lastName  || '');
+  safeSet('pf-email', user.email     || '');
+  safeSet('pf-phone', user.phone     || '');
+  safeSet('pf-dob',   user.dob       || '');
+  safeSet('pf-addr',  user.address?.street || '');
+  safeSet('pf-city',  user.address?.city   || '');
+  safeSet('pf-zip',   user.address?.zip    || '');
+  const stateEl = document.getElementById('pf-state');
+  if (stateEl && user.address?.state) stateEl.value = user.address.state;
+}
+
+function fillPref(user) {
+  const prefEl = document.getElementById('pf-pref');
+  if (prefEl && user.preference) prefEl.value = user.preference;
+  if (user.optin !== undefined) {
+    const e = document.getElementById('notif-email');
+    const w = document.getElementById('notif-whatsapp');
+    if (e) e.checked = !!user.optin;
+    if (w) w.checked = !!user.optin;
+  }
+}
+
+function safeSet(id, val) { const el = document.getElementById(id); if (el) el.value = val; }
+
+/* ── Tab switching ── */
+document.querySelectorAll('.profile-tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.profile-tab').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.profile-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(`ptab-${btn.dataset.ptab}`).classList.add('active');
+  });
+});
+
+/* ── Save dados ── */
+function saveDados() {
+  const user = getUser(); if (!user) return;
+  const btn = document.getElementById('btn-save-dados');
+  const fname = document.getElementById('pf-fname').value.trim();
+  const lname = document.getElementById('pf-lname').value.trim();
+  if (!fname || !lname) { showPAlert('dados-alert','Preencha nome e sobrenome.','error'); return; }
+  const updated = {
+    ...user,
+    firstName: fname,
+    lastName:  lname,
+    name:      `${fname} ${lname}`,
+    phone:     document.getElementById('pf-phone').value.trim(),
+    dob:       document.getElementById('pf-dob').value,
+    address: {
+      street: document.getElementById('pf-addr').value.trim(),
+      city:   document.getElementById('pf-city').value.trim(),
+      state:  document.getElementById('pf-state').value,
+      zip:    document.getElementById('pf-zip').value.trim(),
+    },
+  };
+  // Update users list too
+  const users = JSON.parse(localStorage.getItem('bellabrasil_users') || '[]');
+  const idx = users.findIndex(u => u.email === user.email);
+  if (idx >= 0) { users[idx] = { ...users[idx], ...updated }; localStorage.setItem('bellabrasil_users', JSON.stringify(users)); }
+  saveUser(updated);
+  renderProfileHeader(updated);
+  if (btn) { btn.classList.add('loading'); btn.innerHTML = '⏳ Salvando...'; }
+  setTimeout(() => {
+    showPAlert('dados-alert','Perfil atualizado com sucesso! ✅','success');
+    if (btn) { btn.classList.remove('loading'); btn.innerHTML = '<span>💾</span> Salvar alterações'; }
+  }, 600);
+}
+
+/* ── Save senha ── */
+function saveSenha() {
+  const user = getUser(); if (!user) return;
+  const cur  = document.getElementById('pf-pwd-current').value;
+  const nw   = document.getElementById('pf-pwd-new').value;
+  const conf = document.getElementById('pf-pwd-confirm').value;
+  if (!cur) { showPAlert('senha-alert','Informe a senha atual.','error'); return; }
+  const users = JSON.parse(localStorage.getItem('bellabrasil_users') || '[]');
+  const stored = users.find(u => u.email === user.email);
+  if (stored && stored.pwd !== btoa(cur)) { showPAlert('senha-alert','Senha atual incorreta.','error'); return; }
+  if (nw.length < 8) { showPAlert('senha-alert','A nova senha deve ter pelo menos 8 caracteres.','error'); return; }
+  if (nw !== conf) { showPAlert('senha-alert','As senhas não coincidem.','error'); return; }
+  if (stored) { stored.pwd = btoa(nw); localStorage.setItem('bellabrasil_users', JSON.stringify(users)); }
+  document.getElementById('pf-pwd-current').value = '';
+  document.getElementById('pf-pwd-new').value = '';
+  document.getElementById('pf-pwd-confirm').value = '';
+  showPAlert('senha-alert','Senha alterada com sucesso! 🔐','success');
+}
+
+/* ── Save pref ── */
+function savePref() {
+  const user = getUser(); if (!user) return;
+  const updated = {
+    ...user,
+    preference: document.getElementById('pf-pref').value,
+    optin: document.getElementById('notif-email').checked,
+  };
+  saveUser(updated);
+  const users = JSON.parse(localStorage.getItem('bellabrasil_users') || '[]');
+  const idx = users.findIndex(u => u.email === user.email);
+  if (idx >= 0) { users[idx] = { ...users[idx], ...updated }; localStorage.setItem('bellabrasil_users', JSON.stringify(users)); }
+  showPAlert('pref-alert','Preferências salvas! ✅','success');
+}
+
+/* ── Password toggles ── */
+function togglePwdField(id, btn) {
+  const el = document.getElementById(id); if (!el) return;
+  el.type = el.type === 'text' ? 'password' : 'text';
+  btn.textContent = el.type === 'text' ? '🙈' : '👁️';
+}
+function updatePwdStrength() {
+  const v = document.getElementById('pf-pwd-new').value;
+  const bar = document.getElementById('pf-pwd-bar');
+  const lbl = document.getElementById('pf-pwd-label');
+  let score = 0;
+  if (v.length >= 8) score++;
+  if (/[A-Z]/.test(v)) score++;
+  if (/[0-9]/.test(v)) score++;
+  if (/[^A-Za-z0-9]/.test(v)) score++;
+  const levels = [
+    {w:'0%',bg:'',txt:''},
+    {w:'25%',bg:'#DC2626',txt:'Fraca'},
+    {w:'55%',bg:'#E8A800',txt:'Razoável'},
+    {w:'80%',bg:'#1FAD5C',txt:'Boa'},
+    {w:'100%',bg:'#178048',txt:'Muito forte 💪'},
+  ];
+  const lvl = v.length === 0 ? levels[0] : levels[Math.min(score,4)];
+  if (bar) { bar.style.width = lvl.w; bar.style.background = lvl.bg; }
+  if (lbl) lbl.textContent = lvl.txt;
+}
+
+/* ── Delete account ── */
+function confirmDeleteAccount() {
+  if (!confirm('Tem certeza? Todos os seus dados serão excluídos permanentemente.')) return;
+  const user = getUser();
+  if (user) {
+    const users = JSON.parse(localStorage.getItem('bellabrasil_users') || '[]');
+    localStorage.setItem('bellabrasil_users', JSON.stringify(users.filter(u => u.email !== user.email)));
+    localStorage.removeItem(AUTH_KEY);
+  }
+  location.href = 'conta.html';
+}
+
+/* ── Alert helper ── */
+function showPAlert(id, msg, type) {
+  const el = document.getElementById(id); if (!el) return;
+  el.textContent = msg;
+  el.className = `profile-alert show ${type}`;
+  el.scrollIntoView({ behavior:'smooth', block:'nearest' });
+  setTimeout(() => el.classList.remove('show'), 5000);
+}
+</script>
+</body>
+</html>

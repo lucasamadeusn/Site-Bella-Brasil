@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bella Brasil Market Plus — Mercado Brasileiro em Kirkland, WA</title>
+  <meta name="description" content="Sua loja brasileira em Kirkland, WA. Carnes, frios, bebidas, salgadinhos, doces e muito mais. Delivery para todo o estado de Washington." />
+  <link rel="stylesheet" href="css/style.css?v=2026" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#1A3B6F" />
+</head>
+<body>
+
+<!-- ═══════════════════════════════ HEADER ═══════════════════════════════ -->
+<header class="header">
+  <div class="top-bar">
+    📍 12545 116th Ave NE, Kirkland, WA 98034 &nbsp;|&nbsp;
+    📞 <a href="tel:+14259682011">(425) 968-2011</a> &nbsp;|&nbsp;
+    ⏰ Seg–Sex 9:30–19:30 | Sáb 9:30–19:00 | Dom 9:00–14:00
+  </div>
+  <nav class="navbar">
+    <a href="index.html" class="logo">
+      <img src="images/logo.svg" alt="Bella Brasil Market Plus" class="logo-img" />
+      <div class="logo-text">
+        <span class="brand-main">Bella Brasil</span>
+        <span class="brand-sub">Market Plus · Kirkland, WA</span>
+      </div>
+    </a>
+
+    <form class="search-bar" id="search-form">
+      <input type="text" placeholder="Buscar produtos brasileiros..." aria-label="Buscar produtos" />
+      <button type="submit">🔍</button>
+    </form>
+
+    <div class="nav-links">
+      <a href="index.html">Início</a>
+      <a href="shop.html">Produtos</a>
+      <a href="about.html">Sobre</a>
+      <a href="contact.html">Contato</a>
+      <a href="conta.html" id="nav-account-link">👤 Minha Conta</a>
+    </div>
+    <a href="cart.html" class="cart-btn">
+      🛒 Carrinho
+      <span class="cart-count" style="display:none">0</span>
+    </a>
+    <button class="hamburger" id="hamburger-btn" aria-label="Menu">☰</button>
+  </nav>
+  <nav class="mobile-nav" id="mobile-nav">
+    <a href="index.html">🏠 Início</a>
+    <a href="shop.html">🛍️ Produtos</a>
+    <a href="about.html">ℹ️ Sobre Nós</a>
+    <a href="contact.html">📞 Contato</a>
+    <a href="conta.html">👤 Minha Conta</a>
+    <a href="cart.html">🛒 Ver Carrinho</a>
+  </nav>
+</header>
+
+<!-- ═════════════════════════ TRUST BAR ════════════════════════════════ -->
+<div class="trust-bar">
+  <div class="trust-bar-inner">
+    <div class="trust-item green"><span class="t-icon">🔒</span> Checkout 100% Seguro</div>
+    <div class="trust-item"><span class="t-icon">💳</span> Powered by Square Checkout</div>
+    <div class="trust-item"><span class="t-icon">🚚</span> Frete Grátis acima de $60</div>
+    <div class="trust-item navy"><span class="t-icon">⭐</span> 4.9 no Google (90+ avaliações)</div>
+    <div class="trust-item"><span class="t-icon">↩️</span> Devolução Garantida</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ HERO ════════════════════════════════ -->
+<section class="hero">
+
+  <!-- Real store photo background -->
+  <div class="hero-bg-photo"></div>
+
+  <!-- Brazil flag bottom accent stripe -->
+  <div class="hero-flag-stripe"></div>
+  <!-- USA flag right accent stripe -->
+  <div class="hero-usa-stripe"></div>
+
+  <div class="hero-inner">
+
+    <!-- LEFT: text content -->
+    <div class="hero-content">
+      <div class="hero-badge" data-i18n="hero-badge">🚚 Delivery para todo Washington</div>
+
+      <h1>
+        O sabor do<br>
+        <span>Brasil</span> 🇧🇷<br>
+        na sua porta!
+      </h1>
+
+      <p>
+        Carnes frescas, pão de queijo, guaraná, açaí e tudo que você sente saudade.
+        Delivery para todo o estado de Washington 🇺🇸
+      </p>
+
+      <div class="hero-cta">
+        <a href="shop.html" class="btn-primary" data-i18n="hero-cta-shop">🛒 Comprar Agora</a>
+        <a href="about.html" class="btn-outline" data-i18n="hero-cta-more">Saiba Mais →</a>
+      </div>
+
+      <!-- Trust stats -->
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <strong>⭐ 4.9</strong>
+          <span>Google</span>
+        </div>
+        <div class="hero-stat">
+          <strong>90+</strong>
+          <span>Avaliações</span>
+        </div>
+        <div class="hero-stat">
+          <strong>200+</strong>
+          <span>Produtos</span>
+        </div>
+        <div class="hero-stat">
+          <strong>🌎 WA</strong>
+          <span>Delivery</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: floating store photo card -->
+    <div class="hero-visual">
+      <div class="hero-store-card">
+
+        <!-- Top floating badges -->
+        <div class="hero-flag-badge badge-br">🇧🇷 Sabor Autêntico</div>
+        <div class="hero-flag-badge badge-us">🇺🇸 Kirkland, WA</div>
+
+        <!-- Image frame with gold ring -->
+        <div class="hero-store-card-frame">
+          <img
+            src="images/store-front.jpg"
+            alt="Bella Brasil Market Plus — Kirkland, WA"
+            onerror="this.style.display='none';document.querySelector('.hero-store-fallback').style.display='flex';"
+          />
+          <!-- Fallback -->
+          <div class="hero-store-fallback" style="display:none;height:340px;align-items:center;
+               justify-content:center;flex-direction:column;gap:1rem;
+               background:linear-gradient(135deg,#004e1a 0%,#001a5a 100%);">
+            <div style="font-size:4.5rem">🏪</div>
+            <div style="color:#fff;font-weight:700;font-size:1.05rem;text-align:center;padding:0 2rem;line-height:1.4">
+              Bella Brasil Market Plus
+              <div style="font-size:.78rem;opacity:.65;font-weight:400;margin-top:.4rem">12545 116th Ave NE · Kirkland, WA</div>
+            </div>
+          </div>
+
+          <!-- Gradient overlay with store name -->
+          <div class="hero-store-card-overlay">
+            <div class="hero-store-label">
+              Bella Brasil Market Plus
+              <small>12545 116th Ave NE · Kirkland, WA 98034</small>
+            </div>
+            <div class="hero-store-rating">⭐ 4.9</div>
+          </div>
+        </div>
+
+        <!-- Bottom badge -->
+        <div class="hero-flag-badge badge-delivery">🚚 Frete grátis acima de $60</div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═════════════════════════════ INFO STRIP ════════════════════════════ -->
+<div class="info-strip">
+  <div class="info-strip-inner">
+    <div class="info-item"><span class="icon">🚚</span> Frete grátis acima de $60</div>
+    <div class="info-item"><span class="icon">🇧🇷</span> Produtos 100% brasileiros</div>
+    <div class="info-item"><span class="icon">⭐</span> 4.9 estrelas no Google</div>
+    <div class="info-item"><span class="icon">📦</span> Delivery para todo WA</div>
+    <div class="info-item"><span class="icon">🔒</span> Pagamento seguro</div>
+  </div>
+</div>
+
+<!-- ════════════════════════════ CATEGORIES ═════════════════════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <div class="section-eyebrow">Explore por categoria</div>
+        <h2>O que você está <span>procurando?</span></h2>
+      </div>
+    </div>
+    <div class="category-grid" id="home-category-grid">
+      <!-- Preenchido dinamicamente pelo square-integration.js -->
+      <a href="shop.html?cat=Congelados" class="category-card">
+        <div class="cat-emoji">🧊</div>
+        <div class="cat-name">Congelados</div>
+        <div class="cat-count">Ver produtos</div>
+      </a>
+      <a href="shop.html?cat=Cacau+show+chocolates" class="category-card">
+        <div class="cat-emoji">🍫</div>
+        <div class="cat-name">Cacau Show Chocolates</div>
+        <div class="cat-count">Ver produtos</div>
+      </a>
+      <a href="shop.html" class="category-card">
+        <div class="cat-emoji">🛍️</div>
+        <div class="cat-name">Ver Todos</div>
+        <div class="cat-count">Todos os produtos</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ FEATURED PRODUCTS ════════════════════════════ -->
+<section class="section" style="background:var(--gray-100)">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <div class="section-eyebrow">Mais Vendidos</div>
+        <h2>Os <span>favoritos</span> da comunidade</h2>
+      </div>
+      <a href="shop.html" class="see-all">Ver todos →</a>
+    </div>
+    <div class="product-grid" id="featured-products">
+      <!-- Preenchido pelo JS -->
+      <div class="loading"><div class="spinner"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ PROMO BANNERS ════════════════════════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="promo-banners">
+      <div class="promo-card green">
+        <div class="promo-text">
+          <h3>Churrasco Perfeito</h3>
+          <p>Picanha, linguiça e costela fresquinha direto pra sua grelha!</p>
+          <a href="shop.html?cat=carnes" class="btn-primary" style="margin-top:1rem;display:inline-flex">Ver Carnes →</a>
+        </div>
+        <div class="promo-emoji">🔥</div>
+      </div>
+      <div class="promo-card yellow">
+        <div class="promo-text">
+          <h3>Café da Manhã Brasileiro</h3>
+          <p>Pão de queijo, requeijão, café Pilão e achocolatado Nescau!</p>
+          <a href="shop.html?cat=frios" class="btn-primary" style="margin-top:1rem;display:inline-flex">Ver Frios →</a>
+        </div>
+        <div class="promo-emoji">☕</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ PROMOÇÕES ════════════════════════════════════ -->
+<section class="section" style="background:var(--gray-100)">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <div class="section-eyebrow">Promoções</div>
+        <h2>Ofertas <span>imperdíveis</span></h2>
+      </div>
+      <a href="shop.html?sort=sale" class="see-all">Ver todas →</a>
+    </div>
+    <div class="product-grid" id="promo-products">
+      <div class="loading"><div class="spinner"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ WHY BELLA BRASIL ═════════════════════════════ -->
+<section class="section features-bg">
+  <div class="container">
+    <div class="section-header text-center" style="justify-content:center">
+      <div style="text-align:center">
+        <div class="section-eyebrow">Por que escolher a gente?</div>
+        <h2>A melhor experiência <span>brasileira</span> em WA</h2>
+      </div>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🥩</div>
+        <h4>Produtos Autênticos</h4>
+        <p>Direto importados do Brasil ou produzidos com receitas tradicionais brasileiras.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🚚</div>
+        <h4>Delivery para WA</h4>
+        <p>Entregamos em todo o estado de Washington. Frete grátis para pedidos acima de $60.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">❄️</div>
+        <h4>Produtos Frescos</h4>
+        <p>Carnes, frios e laticínios selecionados com cuidado para garantir máxima qualidade.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⭐</div>
+        <h4>4.9 Estrelas</h4>
+        <p>Nota quase perfeita no Google com dezenas de avaliações da comunidade brasileira de WA.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💚</div>
+        <h4>Atendimento Brasileiro</h4>
+        <p>Equipe simpática que fala português e inglês. Atendemos com amor e dedicação!</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h4>Pagamento Seguro</h4>
+        <p>Aceitamos cartões de crédito, débito e outros métodos de pagamento com total segurança.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ TESTIMONIALS ═════════════════════════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="section-header text-center" style="justify-content:center">
+      <div style="text-align:center">
+        <div class="section-eyebrow">Avaliações</div>
+        <h2>O que nossa <span>comunidade</span> diz</h2>
+      </div>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">"A melhor loja brasileira em toda a área de Seattle! A picanha é de cair o queixo. Me lembra muito o Brasil. Recomendo muito!"</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar">👩</div>
+          <div>
+            <div class="reviewer-name">Ana Paula S.</div>
+            <div class="reviewer-location">Redmond, WA • Google</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">"Já comprei online e chegou tudo fresquinho! O pão de queijo congelado é incrível. E o preço é melhor que no Amazon!"</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar">👨</div>
+          <div>
+            <div class="reviewer-name">Carlos M.</div>
+            <div class="reviewer-location">Bellevue, WA • Google</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">"Atendimento excelente, sempre sorrindo e dispostos a ajudar. O açaí congelado é top! Me salva nas tardes de verão aqui em WA."</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar">👩</div>
+          <div>
+            <div class="reviewer-name">Fernanda O.</div>
+            <div class="reviewer-location">Kirkland, WA • Yelp</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">"As trufas da Cacau Show são incríveis! Petit gateau, maracujá, pistache... difícil escolher só uma. Lugar imperdível para quem sente saudade do Brasil!"</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar">👨</div>
+          <div>
+            <div class="reviewer-name">Ricardo B.</div>
+            <div class="reviewer-location">Kirkland, WA • Google</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">"Moro em Seattle e vale cada quilômetro até Kirkland. Os produtos congelados são de qualidade incrível, chegam perfeitos em casa. Virei cliente fiel!"</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar">👩</div>
+          <div>
+            <div class="reviewer-name">Mariana C.</div>
+            <div class="reviewer-location">Seattle, WA • Google</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">"Finalmente um mercado brasileiro de verdade aqui em WA! O checkout online é super fácil e o delivery chegou antes do prazo. Nota 10!"</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar">👨</div>
+          <div>
+            <div class="reviewer-name">Paulo R.</div>
+            <div class="reviewer-location">Redmond, WA • Google</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-3">
+      <a href="https://www.google.com/search?q=bella+brasil+market+plus" target="_blank" rel="noopener" class="btn-secondary">
+        ⭐ Ver todas as avaliações no Google
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ NEWSLETTER ═══════════════════════════════════ -->
+<section class="newsletter-section">
+  <div class="container">
+    <div class="section-eyebrow" style="color:var(--yellow)">Fique por dentro</div>
+    <h2>Receba nossas <span style="color:var(--yellow)">ofertas</span> em primeira mão!</h2>
+    <p>Cadastre seu e-mail e receba promoções exclusivas, novidades e receitas brasileiras.</p>
+    <form class="newsletter-form">
+      <input type="email" placeholder="Seu melhor e-mail..." required />
+      <button type="submit">Quero Receber!</button>
+    </form>
+  </div>
+</section>
+
+<!-- ═══════════════════════ FOOTER ═══════════════════════════════════════ -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-col footer-brand">
+      <div class="brand-name">🇧🇷 Bella Brasil Market Plus</div>
+      <p>Sua loja brasileira de confiança em Kirkland, Washington. Trazemos o sabor autêntico do Brasil para a sua mesa!</p>
+      <div class="social-links">
+        <a href="https://www.instagram.com/bellabrasilmarketplus/" target="_blank" rel="noopener" class="social-link" title="Instagram">📸</a>
+        <a href="https://www.facebook.com/p/Bella-Brasil-Market-Plus-100066759558798/" target="_blank" rel="noopener" class="social-link" title="Facebook">👤</a>
+        <a href="https://wa.me/14259682011" target="_blank" rel="noopener" class="social-link" title="WhatsApp">💬</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Categorias</h4>
+      <a href="shop.html">🛒 Todos os Produtos</a>
+      <a href="shop.html?cat=Congelados">🧊 Congelados</a>
+      <a href="shop.html?cat=Cacau+show+chocolates">🍫 Cacau Show</a>
+      <a href="shop.html?cat=carnes">🥩 Carnes</a>
+      <a href="shop.html?cat=bebidas">🥤 Bebidas</a>
+      <a href="shop.html?cat=doces">🍬 Doces</a>
+      <a href="shop.html?cat=mercearia">🛍️ Mercearia</a>
+      <a href="rastreamento.html" style="margin-top:.5rem;opacity:.7;font-size:.82rem">📦 Rastrear Pedido</a>
+    </div>
+    <div class="footer-col">
+      <h4>Horário de Funcionamento</h4>
+      <ul class="footer-hours">
+        <li>Segunda <span>9:30–19:30</span></li>
+        <li>Terça <span>9:30–19:30</span></li>
+        <li>Quarta <span>9:30–19:30</span></li>
+        <li>Quinta <span>9:30–19:30</span></li>
+        <li>Sexta <span>9:30–19:30</span></li>
+        <li>Sábado <span>9:30–19:00</span></li>
+        <li>Domingo <span>9:00–14:00</span></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contato & Localização</h4>
+      <p>📍 12545 116th Ave NE<br>Kirkland, WA 98034</p>
+      <p>📞 <a href="tel:+14259682011">(425) 968-2011</a></p>
+      <p>📸 <a href="https://www.instagram.com/bellabrasilmarketplus/" target="_blank" rel="noopener">@bellabrasilmarketplus</a></p>
+      <p style="margin-top:.8rem;font-size:.8rem;opacity:.6">
+        Delivery disponível para todo o estado de Washington (WA)
+      </p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2024 Bella Brasil Market Plus. Todos os direitos reservados.</span>
+    <span class="footer-flags">🇧🇷 🇺🇸</span>
+  </div>
+</footer>
+
+<!-- ═══════════════════════ SCRIPTS ══════════════════════════════════════ -->
+<script src="js/products.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/square-integration.js"></script>
+</body>
+</html>

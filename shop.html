@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Produtos — Bella Brasil Market Plus</title>
+  <meta name="description" content="Explore todos os produtos brasileiros disponíveis na Bella Brasil Market Plus. Carnes, frios, bebidas, doces e muito mais." />
+  <link rel="stylesheet" href="css/style.css?v=2026" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#1A3B6F" />
+</head>
+<body>
+
+<!-- ═══════════════════════════════ HEADER ═══════════════════════════════ -->
+<header class="header">
+  <div class="top-bar">
+    📍 12545 116th Ave NE, Kirkland, WA 98034 &nbsp;|&nbsp;
+    📞 <a href="tel:+14259682011">(425) 968-2011</a> &nbsp;|&nbsp;
+    🚚 Frete grátis acima de $60 para todo WA
+  </div>
+  <nav class="navbar">
+    <a href="index.html" class="logo">
+      <img src="images/logo.svg" alt="Bella Brasil Market Plus" class="logo-img" />
+      <div class="logo-text">
+        <span class="brand-main">Bella Brasil</span>
+        <span class="brand-sub">Market Plus · Kirkland, WA</span>
+      </div>
+    </a>
+    <form class="search-bar" id="search-form">
+      <input type="text" id="shop-search" placeholder="Buscar produtos..." aria-label="Buscar" />
+      <button type="submit">🔍</button>
+    </form>
+    <div class="nav-links">
+      <a href="index.html">Início</a>
+      <a href="shop.html">Produtos</a>
+      <a href="about.html">Sobre</a>
+      <a href="contact.html">Contato</a>
+      <a href="conta.html" id="nav-account-link">👤 Minha Conta</a>
+    </div>
+    <a href="cart.html" class="cart-btn">
+      🛒 Carrinho
+      <span class="cart-count" style="display:none">0</span>
+    </a>
+    <button class="hamburger" id="hamburger-btn" aria-label="Menu">☰</button>
+  </nav>
+  <nav class="mobile-nav" id="mobile-nav">
+    <a href="index.html">🏠 Início</a>
+    <a href="shop.html">🛍️ Produtos</a>
+    <a href="about.html">ℹ️ Sobre Nós</a>
+    <a href="contact.html">📞 Contato</a>
+    <a href="conta.html">👤 Minha Conta</a>
+    <a href="cart.html">🛒 Ver Carrinho</a>
+  </nav>
+</header>
+
+<!-- ═════════════════════════ TRUST BAR ════════════════════════════════ -->
+<div class="trust-bar">
+  <div class="trust-bar-inner">
+    <div class="trust-item green"><span class="t-icon">🔒</span> Checkout 100% Seguro</div>
+    <div class="trust-item"><span class="t-icon">💳</span> Powered by Square Checkout</div>
+    <div class="trust-item"><span class="t-icon">🚚</span> Frete Grátis acima de $60</div>
+    <div class="trust-item navy"><span class="t-icon">⭐</span> 4.9 no Google (90+ avaliações)</div>
+    <div class="trust-item"><span class="t-icon">↩️</span> Devolução Garantida</div>
+  </div>
+</div>
+
+<!-- ════════════════════════ PAGE HEADER ══════════════════════════════════ -->
+<div class="page-header">
+  <div class="page-header-inner">
+    <h1>🛍️ Nossos Produtos</h1>
+    <nav class="breadcrumb">
+      <a href="index.html">Início</a>
+      <span>›</span>
+      <span>Produtos</span>
+    </nav>
+  </div>
+</div>
+
+<!-- ═══════════════════════ CATEGORY PILLS ══════════════════════════════ -->
+<div style="background:var(--white);border-bottom:1px solid var(--gray-200);overflow-x:auto;">
+  <div class="container" style="padding-top:.8rem;padding-bottom:.8rem;">
+    <div style="display:flex;gap:.6rem;flex-wrap:nowrap;min-width:max-content;">
+      <button class="category-card" data-cat="todos" style="padding:.5rem 1rem;white-space:nowrap;border-radius:20px;border:2px solid var(--green);background:var(--green);color:#fff;font-weight:600;font-size:.85rem;">
+        🛒 Todos
+      </button>
+      <button class="category-card" data-cat="carnes" style="padding:.5rem 1rem;white-space:nowrap;border-radius:20px;border:2px solid var(--gray-200);background:#fff;font-weight:600;font-size:.85rem;">
+        🥩 Carnes
+      </button>
+      <button class="category-card" data-cat="frios" style="padding:.5rem 1rem;white-space:nowrap;border-radius:20px;border:2px solid var(--gray-200);background:#fff;font-weight:600;font-size:.85rem;">
+        🧀 Frios & Laticínios
+      </button>
+      <button class="category-card" data-cat="bebidas" style="padding:.5rem 1rem;white-space:nowrap;border-radius:20px;border:2px solid var(--gray-200);background:#fff;font-weight:600;font-size:.85rem;">
+        🥤 Bebidas
+      </button>
+      <button class="category-card" data-cat="snacks" style="padding:.5rem 1rem;white-space:nowrap;border-radius:20px;border:2px solid var(--gray-200);background:#fff;font-weight:600;font-size:.85rem;">
+        🥔 Salgadinhos
+      </button>
+      <button class="category-card" data-cat="doces" style="padding:.5rem 1rem;white-space:nowrap;border-radius:20px;border:2px solid var(--gray-200);background:#fff;font-weight:600;font-size:.85rem;">
+        🍫 Doces
+      </button>
+      <button class="category-card" data-cat="mercearia" style="padding:.5rem 1rem;white-space:nowrap;border-radius:20px;border:2px solid var(--gray-200);background:#fff;font-weight:600;font-size:.85rem;">
+        🛍️ Mercearia
+      </button>
+      <button class="category-card" data-cat="temperos" style="padding:.5rem 1rem;white-space:nowrap;border-radius:20px;border:2px solid var(--gray-200);background:#fff;font-weight:600;font-size:.85rem;">
+        🧂 Temperos
+      </button>
+      <button class="category-card" data-cat="higiene" style="padding:.5rem 1rem;white-space:nowrap;border-radius:20px;border:2px solid var(--gray-200);background:#fff;font-weight:600;font-size:.85rem;">
+        🪥 Higiene
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ═════════════════════════ SHOP CONTENT ══════════════════════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="shop-header">
+      <div class="results-count" id="results-count">Carregando produtos...</div>
+      <select class="sort-select" id="sort-select">
+        <option value="default">Ordenar por: Padrão</option>
+        <option value="price-asc">Menor Preço</option>
+        <option value="price-desc">Maior Preço</option>
+        <option value="name">Nome A-Z</option>
+        <option value="sale">Em Promoção</option>
+      </select>
+    </div>
+
+    <!-- Frete grátis progress bar -->
+    <div style="background:var(--white);border-radius:10px;padding:1rem 1.2rem;margin-bottom:1.5rem;box-shadow:var(--shadow-sm);">
+      <div style="display:flex;justify-content:space-between;margin-bottom:.4rem;">
+        <span style="font-size:.82rem;font-weight:600;color:var(--gray-600)" id="free-delivery-msg">
+          Adicione $60 ao carrinho para frete grátis!
+        </span>
+        <span style="font-size:.82rem;color:var(--green);font-weight:700">🚚 Frete Grátis em $60+</span>
+      </div>
+      <div style="background:var(--gray-200);border-radius:20px;height:6px;">
+        <div id="free-delivery-progress" style="background:var(--green);height:100%;border-radius:20px;width:0%;transition:width .4s;"></div>
+      </div>
+    </div>
+
+    <div class="product-grid" id="product-grid">
+      <div class="loading"><div class="spinner"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ NEWSLETTER ═══════════════════════════════════ -->
+<section class="newsletter-section">
+  <div class="container">
+    <h2>Não perca nossas <span style="color:var(--yellow)">promoções!</span></h2>
+    <p>Cadastre seu e-mail e receba ofertas exclusivas toda semana.</p>
+    <form class="newsletter-form">
+      <input type="email" placeholder="Seu e-mail..." required />
+      <button type="submit">Quero!</button>
+    </form>
+  </div>
+</section>
+
+<!-- ═══════════════════════ FOOTER ═══════════════════════════════════════ -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-col footer-brand">
+      <div class="brand-name">🇧🇷 Bella Brasil Market Plus</div>
+      <p>Sua loja brasileira de confiança em Kirkland, Washington.</p>
+      <div class="social-links">
+        <a href="https://www.instagram.com/bellabrasilmarketplus/" target="_blank" rel="noopener" class="social-link">📸</a>
+        <a href="https://www.facebook.com/p/Bella-Brasil-Market-Plus-100066759558798/" target="_blank" rel="noopener" class="social-link">👤</a>
+        <a href="https://wa.me/14259682011" target="_blank" rel="noopener" class="social-link">💬</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Categorias</h4>
+      <a href="shop.html?cat=carnes">Carnes</a>
+      <a href="shop.html?cat=frios">Frios & Laticínios</a>
+      <a href="shop.html?cat=bebidas">Bebidas</a>
+      <a href="shop.html?cat=snacks">Salgadinhos</a>
+      <a href="shop.html?cat=doces">Doces</a>
+      <a href="shop.html?cat=mercearia">Mercearia</a>
+    </div>
+    <div class="footer-col">
+      <h4>Horário</h4>
+      <ul class="footer-hours">
+        <li>Seg–Sex <span>9:30–19:30</span></li>
+        <li>Sábado <span>9:30–19:00</span></li>
+        <li>Domingo <span>9:00–14:00</span></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contato</h4>
+      <p>📍 12545 116th Ave NE, Kirkland, WA 98034</p>
+      <p>📞 <a href="tel:+14259682011">(425) 968-2011</a></p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2024 Bella Brasil Market Plus. Todos os direitos reservados.</span>
+    <span class="footer-flags">🇧🇷 🇺🇸</span>
+  </div>
+</footer>
+
+<!-- ═══════════════════════ SCRIPTS ══════════════════════════════════════ -->
+<script src="js/products.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/square-integration.js"></script>
+
+<script>
+// Override category pill active state styling
+document.addEventListener('DOMContentLoaded', () => {
+  const pills = document.querySelectorAll('[data-cat]');
+  pills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      pills.forEach(p => {
+        p.style.background = '#fff';
+        p.style.color = 'var(--gray-800)';
+        p.style.borderColor = 'var(--gray-200)';
+      });
+      pill.style.background = 'var(--green)';
+      pill.style.color = '#fff';
+      pill.style.borderColor = 'var(--green)';
+    });
+  });
+  // Activate from URL param
+  const params = new URLSearchParams(location.search);
+  const cat = params.get('cat');
+  if (cat) {
+    const target = document.querySelector(`[data-cat="${cat}"]`);
+    if (target) {
+      pills.forEach(p => {
+        p.style.background = '#fff';
+        p.style.color = 'var(--gray-800)';
+        p.style.borderColor = 'var(--gray-200)';
+      });
+      target.style.background = 'var(--green)';
+      target.style.color = '#fff';
+      target.style.borderColor = 'var(--green)';
+    }
+  }
+  // Sort from URL param
+  const sort = params.get('sort');
+  if (sort === 'sale') {
+    const sortEl = document.getElementById('sort-select');
+    if (sortEl) sortEl.value = 'sale';
+  }
+
+  // Update free-delivery progress bar on cart events
+  window.addEventListener('cartUpdated', () => {
+    const sub = Cart.subtotal();
+    const remaining = Math.max(0, 60 - sub);
+    const pct = Math.min(100, (sub / 60) * 100);
+    const prog = document.getElementById('free-delivery-progress');
+    const msg  = document.getElementById('free-delivery-msg');
+    if (prog) prog.style.width = `${pct}%`;
+    if (msg) {
+      msg.textContent = remaining > 0
+        ? `Faltam $${remaining.toFixed(2)} para frete grátis!`
+        : '🎉 Você ganhou frete grátis!';
+    }
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rastrear Pedido — Bella Brasil Market Plus</title>
+  <link rel="stylesheet" href="css/style.css?v=2026" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#1A3B6F" />
+  <style>
+    .tracking-page {
+      min-height: calc(100vh - 160px);
+      background: var(--gray-100);
+      padding: 3rem 1rem 5rem;
+    }
+    .tracking-container { max-width: 680px; margin: 0 auto; }
+
+    .tracking-hero {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+    .tracking-hero .t-icon-big {
+      font-size: 3.5rem;
+      margin-bottom: .8rem;
+    }
+    .tracking-hero h1 { color: var(--navy); font-size: 2rem; margin-bottom: .4rem; }
+    .tracking-hero p  { color: var(--gray-600); font-size: .95rem; }
+
+    .tracking-card {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      padding: 2rem 2.5rem;
+      margin-bottom: 1.5rem;
+    }
+    @media (max-width: 520px) { .tracking-card { padding: 1.5rem 1.2rem; } }
+
+    .tracking-card h2 { color: var(--navy); font-size: 1.15rem; margin-bottom: 1.2rem; }
+
+    .track-input-row {
+      display: flex;
+      gap: .7rem;
+    }
+    @media (max-width: 480px) { .track-input-row { flex-direction: column; } }
+    .track-input {
+      flex: 1;
+      padding: .85rem 1.1rem;
+      border: 1.5px solid var(--gray-200);
+      border-radius: 10px;
+      font-size: 1rem;
+      color: var(--gray-800);
+      outline: none;
+      transition: var(--transition);
+      font-family: monospace;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+    .track-input:focus {
+      border-color: var(--navy);
+      box-shadow: 0 0 0 3px rgba(26,59,111,.1);
+    }
+    .track-btn {
+      padding: .85rem 1.6rem;
+      background: var(--navy);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: .95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+    }
+    .track-btn:hover { background: var(--navy-dark); transform: translateY(-1px); }
+
+    /* Carrier tabs */
+    .carrier-tabs {
+      display: flex;
+      gap: .5rem;
+      margin-bottom: 1.4rem;
+      flex-wrap: wrap;
+    }
+    .carrier-tab {
+      padding: .4rem .9rem;
+      border: 1.5px solid var(--gray-200);
+      border-radius: 20px;
+      font-size: .82rem;
+      font-weight: 600;
+      cursor: pointer;
+      background: #fff;
+      color: var(--gray-600);
+      transition: var(--transition);
+    }
+    .carrier-tab.active, .carrier-tab:hover {
+      border-color: var(--navy);
+      background: var(--navy);
+      color: #fff;
+    }
+
+    /* Result / status display */
+    .track-result {
+      margin-top: 1.4rem;
+      display: none;
+    }
+    .track-result.show { display: block; }
+    .track-result-card {
+      background: var(--navy-light);
+      border: 1.5px solid var(--navy);
+      border-radius: var(--radius);
+      padding: 1.2rem 1.4rem;
+    }
+    .track-result-label {
+      font-size: .75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--navy);
+      margin-bottom: .5rem;
+    }
+    .track-result-number {
+      font-family: monospace;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--navy);
+      word-break: break-all;
+    }
+    .track-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      margin-top: 1rem;
+      padding: .75rem 1.5rem;
+      background: var(--navy);
+      color: #fff;
+      border-radius: 10px;
+      font-size: .92rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    .track-cta:hover { background: var(--navy-dark); transform: translateY(-1px); }
+    .track-cta-ups   { background: #4B2C03; }
+    .track-cta-ups:hover { background: #3a2202; }
+    .track-cta-usps  { background: #003087; }
+    .track-cta-fedex { background: #4D148C; }
+
+    /* Tips cards */
+    .tips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .tip-card {
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 1.1rem 1.2rem;
+      border: 1px solid var(--gray-200);
+      text-align: center;
+    }
+    .tip-card .tip-icon { font-size: 1.8rem; margin-bottom: .5rem; }
+    .tip-card h4 { color: var(--navy); font-size: .9rem; margin-bottom: .3rem; }
+    .tip-card p  { font-size: .8rem; color: var(--gray-500); line-height: 1.5; }
+
+    /* Contact support */
+    .support-bar {
+      background: linear-gradient(135deg, var(--navy) 0%, #1e4d8c 100%);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem 2rem;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .support-bar h3 { margin-bottom: .2rem; font-size: 1.05rem; }
+    .support-bar p  { font-size: .85rem; opacity: .8; }
+    .support-bar a  {
+      background: var(--gold);
+      color: var(--navy);
+      padding: .65rem 1.4rem;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: .9rem;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: var(--transition);
+    }
+    .support-bar a:hover { background: var(--gold-dark); }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <div class="top-bar">
+    📍 12545 116th Ave NE, Kirkland, WA 98034 &nbsp;|&nbsp;
+    📞 <a href="tel:+14259682011">(425) 968-2011</a> &nbsp;|&nbsp;
+    🚚 Frete grátis acima de $60 para todo WA
+  </div>
+  <nav class="navbar">
+    <a href="index.html" class="logo">
+      <img src="images/logo.svg" alt="Bella Brasil Market Plus" class="logo-img" />
+      <div class="logo-text">
+        <span class="brand-main">Bella Brasil</span>
+        <span class="brand-sub">Market Plus · Kirkland, WA</span>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Início</a>
+      <a href="shop.html">Produtos</a>
+      <a href="about.html">Sobre</a>
+      <a href="contact.html">Contato</a>
+      <a href="conta.html" id="nav-account-link">👤 Minha Conta</a>
+    </div>
+    <a href="cart.html" class="cart-btn">
+      🛒 Carrinho
+      <span class="cart-count" style="display:none">0</span>
+    </a>
+    <button class="hamburger" id="hamburger-btn" aria-label="Menu">☰</button>
+  </nav>
+  <nav class="mobile-nav" id="mobile-nav">
+    <a href="index.html">🏠 Início</a>
+    <a href="shop.html">🛍️ Produtos</a>
+    <a href="about.html">ℹ️ Sobre Nós</a>
+    <a href="contact.html">📞 Contato</a>
+    <a href="conta.html">👤 Minha Conta</a>
+    <a href="cart.html">🛒 Ver Carrinho</a>
+  </nav>
+</header>
+
+<main class="tracking-page">
+  <div class="tracking-container">
+
+    <div class="tracking-hero">
+      <div class="t-icon-big">📦</div>
+      <h1>Rastrear Meu Pedido</h1>
+      <p>Cole o código de rastreamento do seu e-mail de confirmação para acompanhar a entrega.</p>
+    </div>
+
+    <!-- Main tracking card -->
+    <div class="tracking-card">
+      <h2>🔍 Informe o código de rastreamento</h2>
+
+      <!-- Carrier selector -->
+      <div class="carrier-tabs">
+        <button class="carrier-tab active" data-carrier="ups" onclick="selectCarrier('ups', this)">📦 UPS</button>
+        <button class="carrier-tab" data-carrier="usps" onclick="selectCarrier('usps', this)">🏛️ USPS</button>
+        <button class="carrier-tab" data-carrier="fedex" onclick="selectCarrier('fedex', this)">🟣 FedEx</button>
+      </div>
+
+      <div class="track-input-row">
+        <input
+          type="text"
+          class="track-input"
+          id="track-number"
+          placeholder="Ex: 1Z999AA10123456784"
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <button class="track-btn" onclick="trackPackage()">
+          🔍 Rastrear
+        </button>
+      </div>
+
+      <!-- Result area -->
+      <div class="track-result" id="track-result">
+        <div class="track-result-card">
+          <div class="track-result-label">Código de rastreamento</div>
+          <div class="track-result-number" id="track-result-number"></div>
+          <a href="#" id="track-cta-link" class="track-cta" target="_blank" rel="noopener">
+            📦 Rastrear no site da transportadora →
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tips -->
+    <div class="tracking-card">
+      <h2>💡 Onde encontrar meu código?</h2>
+      <div class="tips-grid">
+        <div class="tip-card">
+          <div class="tip-icon">📧</div>
+          <h4>E-mail de confirmação</h4>
+          <p>Após o envio, você recebe um e-mail com o código de rastreamento.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-icon">📱</div>
+          <h4>SMS da transportadora</h4>
+          <p>A UPS envia mensagens de texto com atualizações de entrega.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-icon">⏰</div>
+          <h4>Prazo de entrega</h4>
+          <p>UPS Ground: 2–5 dias úteis para todo o estado de Washington.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Support -->
+    <div class="support-bar">
+      <div>
+        <h3>Precisa de ajuda com seu pedido?</h3>
+        <p>Nossa equipe fala português e está pronta para te ajudar!</p>
+      </div>
+      <a href="tel:+14259682011">📞 (425) 968-2011</a>
+    </div>
+
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="footer-bottom" style="text-align:center;padding:1.5rem">
+    <span>© 2024 Bella Brasil Market Plus — Kirkland, WA</span>
+    <span class="footer-flags" style="margin-left:1rem">🇧🇷 🇺🇸</span>
+  </div>
+</footer>
+
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script src="js/i18n.js"></script>
+<script>
+const carriers = {
+  ups:   { name: 'UPS',   url: n => `https://www.ups.com/track?loc=en_US&tracknum=${n}`, cls: 'track-cta-ups',   placeholder: 'Ex: 1Z999AA10123456784' },
+  usps:  { name: 'USPS',  url: n => `https://tools.usps.com/go/TrackConfirmAction?tLabels=${n}`, cls: 'track-cta-usps', placeholder: 'Ex: 9400111899223397846800' },
+  fedex: { name: 'FedEx', url: n => `https://www.fedex.com/apps/fedextrack/?tracknumbers=${n}`, cls: 'track-cta-fedex', placeholder: 'Ex: 776648797798' },
+};
+let currentCarrier = 'ups';
+
+function selectCarrier(key, btn) {
+  currentCarrier = key;
+  document.querySelectorAll('.carrier-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const input = document.getElementById('track-number');
+  if (input) input.placeholder = carriers[key].placeholder;
+  document.getElementById('track-result').classList.remove('show');
+}
+
+function trackPackage() {
+  const num = (document.getElementById('track-number').value || '').trim().replace(/\s+/g,'');
+  if (!num) { alert('Por favor, informe o código de rastreamento.'); return; }
+
+  const c = carriers[currentCarrier];
+  const url = c.url(encodeURIComponent(num));
+
+  // Show result card
+  const result = document.getElementById('track-result');
+  const numEl  = document.getElementById('track-result-number');
+  const ctaEl  = document.getElementById('track-cta-link');
+  numEl.textContent = num;
+  ctaEl.href = url;
+  ctaEl.className = `track-cta ${c.cls}`;
+  ctaEl.textContent = `📦 Rastrear no site da ${c.name} →`;
+  result.classList.add('show');
+
+  // Open carrier tracking in new tab
+  window.open(url, '_blank', 'noopener');
+}
+
+// Allow Enter key
+document.getElementById('track-number').addEventListener('keydown', e => {
+  if (e.key === 'Enter') trackPackage();
+});
+
+// Pre-fill from URL param
+const urlNum = new URLSearchParams(location.search).get('code');
+if (urlNum) {
+  document.getElementById('track-number').value = urlNum;
+  trackPackage();
+}
+
+// Nav account link
+const user = (() => { try { return JSON.parse(localStorage.getItem('bellabrasil_user')); } catch { return null; } })();
+if (user) document.querySelectorAll('#nav-account-link').forEach(l => { l.textContent = `👤 ${user.firstName || 'Conta'}`; });
+</script>
+</body>
+</html>

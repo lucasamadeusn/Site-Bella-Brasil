@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="300" height="300">
+  <defs>
+    <linearGradient id="greenSwoosh" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#1FAD5C"/>
+      <stop offset="100%" style="stop-color:#26C96E"/>
+    </linearGradient>
+  </defs>
+
+  <!-- White circle background (no transparency) -->
+  <circle cx="150" cy="150" r="148" fill="#FFFFFF"/>
+
+  <!-- Outer ring -->
+  <circle cx="150" cy="150" r="148" fill="none" stroke="#1A3B6F" stroke-width="6"/>
+
+  <!-- Inner ring -->
+  <circle cx="150" cy="150" r="136" fill="none" stroke="#1A3B6F" stroke-width="1.5"/>
+
+  <!-- BELLA BRASIL arc text at top -->
+  <path id="topArc" d="M 42,150 A 108,108 0 0,1 258,150" fill="none"/>
+  <text font-family="Arial Black, Arial, sans-serif" font-size="22" font-weight="900" fill="#1A3B6F" letter-spacing="6">
+    <textPath href="#topArc" startOffset="5%">BELLA BRASIL</textPath>
+  </text>
+
+  <!-- MARKET PLUS arc text at bottom -->
+  <path id="bottomArc" d="M 72,190 A 95,95 0 0,0 228,190" fill="none"/>
+  <text font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#1A3B6F" letter-spacing="5">
+    <textPath href="#bottomArc" startOffset="8%">MARKET PLUS</textPath>
+  </text>
+
+  <!-- Decorative dots on sides -->
+  <circle cx="42" cy="150" r="4" fill="#1A3B6F"/>
+  <circle cx="258" cy="150" r="4" fill="#1A3B6F"/>
+
+  <!-- Shopping cart body -->
+  <g transform="translate(150, 152)">
+    <!-- Cart basket -->
+    <path d="M-42,-20 L-34,24 L34,24 L42,-20 Z" fill="none" stroke="#1A3B6F" stroke-width="5" stroke-linejoin="round"/>
+
+    <!-- Cart bottom bar -->
+    <rect x="-38" y="22" width="76" height="8" rx="4" fill="#1A3B6F"/>
+
+    <!-- Cart handle -->
+    <path d="M-50,-20 L-42,-20" stroke="#1A3B6F" stroke-width="5" stroke-linecap="round"/>
+    <path d="M-56,-38 L-50,-20" stroke="#1A3B6F" stroke-width="5" stroke-linecap="round"/>
+    <path d="M-70,-42 L-56,-38" stroke="#1A3B6F" stroke-width="5" stroke-linecap="round"/>
+
+    <!-- Cart wheels -->
+    <circle cx="-22" cy="36" r="8" fill="#1A3B6F"/>
+    <circle cx="-22" cy="36" r="4" fill="white"/>
+    <circle cx="22" cy="36" r="8" fill="#1A3B6F"/>
+    <circle cx="22" cy="36" r="4" fill="white"/>
+
+    <!-- Green swoosh -->
+    <path d="M-38,10 Q0,26 38,10" stroke="url(#greenSwoosh)" stroke-width="5" fill="none" stroke-linecap="round"/>
+
+    <!-- Bag 1 (left) -->
+    <ellipse cx="-16" cy="-18" rx="13" ry="18" fill="#1A3B6F" opacity="0.85"/>
+    <path d="M-22,-30 Q-16,-38 -10,-30" stroke="#1A3B6F" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+    <!-- Bag 2 (center, slightly taller) -->
+    <ellipse cx="0" cy="-22" rx="14" ry="20" fill="#1A3B6F"/>
+    <path d="M-6,-36 Q0,-46 6,-36" stroke="#1A3B6F" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+    <!-- Bag 3 (right) -->
+    <ellipse cx="16" cy="-18" rx="13" ry="18" fill="#1A3B6F" opacity="0.85"/>
+    <path d="M10,-30 Q16,-38 22,-30" stroke="#1A3B6F" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+    <!-- Yellow/gold element (sun peeking top-right) -->
+    <circle cx="28" cy="-38" r="14" fill="#FFD200" opacity="0.9"/>
+    <circle cx="28" cy="-38" r="9" fill="#FFB800"/>
+  </g>
+</svg>

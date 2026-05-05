@@ -1,0 +1,37 @@
+{
+  "name": "Bella Brasil Market Plus",
+  "short_name": "Bella Brasil",
+  "description": "Seu mercado brasileiro em Kirkland, WA. Carnes, frios, bebidas, doces e muito mais.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#1A3B6F",
+  "theme_color": "#1A3B6F",
+  "orientation": "portrait-primary",
+  "lang": "pt-BR",
+  "icons": [
+    {
+      "src": "images/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "categories": ["shopping", "food"],
+  "shortcuts": [
+    {
+      "name": "Ver Produtos",
+      "short_name": "Produtos",
+      "description": "Navegar pelo catálogo",
+      "url": "/shop.html",
+      "icons": [{ "src": "images/logo.svg", "sizes": "any" }]
+    },
+    {
+      "name": "Meu Carrinho",
+      "short_name": "Carrinho",
+      "description": "Ver meu carrinho",
+      "url": "/cart.html",
+      "icons": [{ "src": "images/logo.svg", "sizes": "any" }]
+    }
+  ]
+}

@@ -47,10 +47,11 @@ app.use(cors({
 app.use(express.json());
 
 // ================================================================
-//  GET /
+//  GET /health
 //  Health check — confirma que o servidor está no ar.
+//  (rota "/" removida para que express.static sirva index.html)
 // ================================================================
-app.get('/', (_req, res) => {
+app.get('/health', (_req, res) => {
   res.json({
     status:  'online',
     store:   'Bella Brasil Market Plus',

@@ -4,7 +4,7 @@
 
 const BACKEND_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
   ? 'http://localhost:3333'
-  : 'https://SEU-APP.up.railway.app';
+  : ''; // mesmo domínio no Vercel — rotas /products, /create-checkout etc.
 
 // ================================================================
 //  1. CARREGAR PRODUTOS DO SQUARE

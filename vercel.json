@@ -1,12 +1,7 @@
 {
-  "version": 2,
-  "builds": [
-    { "src": "server/server.js", "use": "@vercel/node" }
-  ],
-  "routes": [
-    { "src": "/products",          "dest": "/server/server.js" },
-    { "src": "/create-checkout",   "dest": "/server/server.js" },
-    { "src": "/send-confirmation", "dest": "/server/server.js" },
-    { "src": "/(.*)",              "dest": "/$1" }
+  "rewrites": [
+    { "source": "/products",          "destination": "/api/products" },
+    { "source": "/create-checkout",   "destination": "/api/create-checkout" },
+    { "source": "/send-confirmation", "destination": "/api/send-confirmation" }
   ]
 }

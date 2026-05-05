@@ -1,0 +1,12 @@
+{
+  "name": "bella-brasil-market",
+  "version": "1.0.0",
+  "description": "Bella Brasil Market Plus — frontend + API serverless",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "nodemailer": "^8.0.5",
+    "square": "^44.0.1"
+  }
+}

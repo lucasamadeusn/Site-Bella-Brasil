@@ -330,6 +330,9 @@ async function checkBackendAndLoad(...gridIds) {
     // Re-render do shop se filtros já estiverem inicializados
     if (typeof window._shopRender === 'function') window._shopRender();
 
+    // Notifica outras partes da página (ex: sugestões no carrinho)
+    window.dispatchEvent(new CustomEvent('squareProductsLoaded', { detail: data.products }));
+
   } catch {
     console.log('ℹ️ Backend offline — usando catálogo local (products.js)');
   }

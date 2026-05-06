@@ -139,9 +139,9 @@
             <span id="summary-total">$0.00</span>
           </div>
 
-          <a href="checkout.html" class="checkout-btn">
+          <button id="square-checkout-btn" class="checkout-btn" onclick="squareCheckout()">
             🔒 Finalizar com Square
-          </a>
+          </button>
 
           <!-- Square badge -->
           <div style="margin-top:.8rem;display:flex;align-items:center;justify-content:center;gap:.5rem;
@@ -250,10 +250,20 @@
 <script src="js/square-integration.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  // Show suggestions (random products)
-  const shuffled = [...PRODUCTS].sort(() => Math.random() - 0.5).slice(0, 4);
+  // Sugestões: usa produtos do Square quando disponíveis
   const grid = document.getElementById('suggestions-grid');
-  if (grid) grid.innerHTML = shuffled.map(buildProductCard).join('');
+  if (!grid) return;
+  const fill = () => {
+    const prods = window._squareProductsData || [];
+    if (prods.length === 0) return;
+    const shuffled = [...prods].sort(() => Math.random() - 0.5).slice(0, 4);
+    if (typeof buildSquareProductCard === 'function') {
+      grid.innerHTML = shuffled.map(buildSquareProductCard).join('');
+    }
+  };
+  // Tenta imediatamente e também quando os produtos chegarem
+  fill();
+  window.addEventListener('squareProductsLoaded', fill);
 });
 </script>
 </body>

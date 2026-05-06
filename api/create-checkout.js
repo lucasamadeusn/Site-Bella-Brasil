@@ -31,7 +31,7 @@ module.exports = async function handler(req, res) {
           items: items.map(i => ({
             name:     i.name,
             quantity: i.quantity,
-            price:    i.priceRaw / 100,
+            priceRaw: i.priceRaw, // em centavos — o template do email divide por 100
           })),
           subtotal:       sub,
           deliveryFee:    fee,

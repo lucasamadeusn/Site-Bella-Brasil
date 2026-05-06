@@ -177,41 +177,6 @@ function showEmailToast(message, type = 'success') {
   setTimeout(() => toast.remove(), 5000);
 }
 
-// ── Send confirmation email to backend ──────────────────────────────────────
-async function sendConfirmationEmail(deliveryData, cartItems, sqProducts) {
-  // Build enriched items list from cart + product cache
-  const enrichedItems = (cartItems || []).map(ci => {
-    const product = (sqProducts || []).find(p => p.id === ci.id) || {};
-    return {
-      id:       ci.id,
-      name:     ci.name || product.name || 'Produto',
-      quantity: ci.qty  || ci.quantity || 1,
-      price:    ci.price != null ? ci.price : (product.price || 0),
-    };
-  });
-
-  const subtotal = enrichedItems.reduce((sum, i) => sum + i.price * i.quantity, 0);
-
-  const payload = {
-    customerName:   deliveryData.name,
-    customerEmail:  deliveryData.email,
-    items:          enrichedItems,
-    subtotal:       deliveryData.subtotal != null ? Number(deliveryData.subtotal) : subtotal,
-    deliveryFee:    Number(deliveryData.fee   || 0),
-    total:          Number(deliveryData.total || 0),
-    deliveryMethod: deliveryData.method,
-  };
-
-  const res = await fetch(`${BACKEND_URL}/send-confirmation`, {
-    method:  'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body:    JSON.stringify(payload),
-  });
-
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  return res.json();
-}
-
 // ── Main DOMContentLoaded handler ───────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', async () => {
   // Inicializa o carrinho (atualiza contador no header)
@@ -241,40 +206,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  // ── Send confirmation email ──────────────────────────────────────────────
-  if (deliveryData && deliveryData.email) {
-    try {
-      // Se bb_delivery já tem os itens completos (nome+preço), usa direto
-      // Caso contrário, lê do localStorage e enriquece com o cache de produtos
-      let cartItems  = [];
-      let sqProducts = [];
-
-      if (Array.isArray(deliveryData.itemsFull) && deliveryData.itemsFull.length > 0) {
-        // Caminho feliz: itens já vêm completos do checkout.html
-        cartItems = deliveryData.itemsFull;
-      } else {
-        try {
-          const cartRaw = localStorage.getItem('bellabrasil_cart');
-          if (cartRaw) cartItems = JSON.parse(cartRaw);
-        } catch {}
-      }
-
-      try {
-        const sqRaw = localStorage.getItem('bellabrasil_sq_products');
-        if (sqRaw) {
-          const parsed = JSON.parse(sqRaw);
-          // sq_products é salvo como {id: produto} — converte para array
-          sqProducts = Array.isArray(parsed) ? parsed : Object.values(parsed);
-        }
-      } catch {}
-
-      await sendConfirmationEmail(deliveryData, cartItems, sqProducts);
-      showEmailToast(`📧 Confirmação enviada para ${deliveryData.email}!`, 'success');
-    } catch(err) {
-      console.warn('[checkout-success] Email confirmation failed:', err);
-      // Silent fail — don't show an error to the customer on the success page
-    }
-  }
+  // E-mail de confirmação é enviado pelo backend (create-checkout.js) no momento
+  // em que o pedido é criado — não precisa ser enviado novamente aqui.
 
   // ── Clear cart after everything is done ─────────────────────────────────
   sessionStorage.removeItem('bb_delivery');

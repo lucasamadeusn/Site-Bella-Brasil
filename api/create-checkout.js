@@ -15,6 +15,12 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ success: false, error: 'Nenhum item no carrinho.' });
     }
 
+    // Gera número de pedido único: BB-YYYYMMDD-XXXX
+    const now  = new Date();
+    const date = `${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}`;
+    const rand = Math.floor(1000 + Math.random() * 9000);
+    const orderId = `BB-${date}-${rand}`;
+
     const checkoutUrl = await createPaymentLink(items, delivery || {}, customerName || '');
 
     // Envia e-mail de confirmação direto do backend — não depende do browser
@@ -28,10 +34,11 @@ module.exports = async function handler(req, res) {
         await sendOrderConfirmation({
           customerName,
           customerEmail,
+          orderId,
           items: items.map(i => ({
             name:     i.name,
             quantity: i.quantity,
-            priceRaw: i.priceRaw, // em centavos — o template do email divide por 100
+            priceRaw: i.priceRaw,
           })),
           subtotal:       sub,
           deliveryFee:    fee,
@@ -39,13 +46,13 @@ module.exports = async function handler(req, res) {
           deliveryMethod: delivery?.method || 'delivery',
         });
         emailSent = true;
-        console.log(`✅ E-mail enviado para ${customerEmail}`);
+        console.log(`✅ E-mail enviado para ${customerEmail} | Pedido ${orderId}`);
       } catch (emailErr) {
         console.error('⚠️ Falha ao enviar e-mail:', emailErr.message);
       }
     }
 
-    res.status(200).json({ success: true, checkoutUrl, emailReady: isEmailConfigured(), emailSent });
+    res.status(200).json({ success: true, checkoutUrl, orderId, emailReady: isEmailConfigured(), emailSent });
   } catch (err) {
     console.error('❌ /api/create-checkout:', err.message);
     res.status(502).json({ success: false, error: err.message });

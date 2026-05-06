@@ -102,6 +102,16 @@
 
           <!-- Dados pessoais -->
           <div class="form-section">
+            <!-- Banner usuário logado -->
+            <div id="autofill-banner" style="display:none;align-items:center;gap:.7rem;
+                 background:linear-gradient(135deg,#EDF7F1,#D1F0E0);border:1px solid #1FAD5C33;
+                 border-radius:10px;padding:.75rem 1rem;margin-bottom:1.2rem">
+              <span style="font-size:1.3rem">👋</span>
+              <div>
+                <span style="font-size:.85rem;font-weight:700;color:#178048">Olá, <span class="autofill-name"></span>!</span>
+                <span style="font-size:.82rem;color:#374151;margin-left:.3rem">Seus dados foram preenchidos automaticamente.</span>
+              </div>
+            </div>
             <h3>👤 Seus Dados</h3>
             <div class="form-grid">
               <div class="form-group">
@@ -149,6 +159,13 @@
               <div class="form-group" style="grid-column:1/-1">
                 <label>Instruções de entrega</label>
                 <textarea id="field-notes" rows="2" placeholder="Portão, apartamento, instruções especiais..."></textarea>
+              </div>
+              <!-- Checkbox salvar endereço -->
+              <div style="grid-column:1/-1;margin-top:.2rem" id="save-address-wrap">
+                <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;font-size:.85rem;color:#374151;user-select:none">
+                  <input type="checkbox" id="save-address-cb" style="width:16px;height:16px;accent-color:#1FAD5C;cursor:pointer" />
+                  💾 Salvar endereço para a próxima compra
+                </label>
               </div>
             </div>
           </div>
@@ -359,6 +376,32 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('checkout-content').style.display = 'block';
   renderCheckoutSummary();
   setupDeliveryOptions();
+
+  // ── Auto-fill formulário com dados do usuário logado ─────────────
+  try {
+    const user = JSON.parse(localStorage.getItem('bellabrasil_user') || 'null');
+    if (user) {
+      // Dados pessoais
+      const setVal = (id, val) => { const el = document.getElementById(id); if (el && val) el.value = val; };
+      setVal('field-first-name', user.firstName);
+      setVal('field-last-name',  user.lastName);
+      setVal('field-email',      user.email);
+      setVal('field-phone',      user.phone);
+
+      // Endereço salvo
+      const addr = user.address || {};
+      setVal('field-address', addr.street);
+      setVal('field-city',    addr.city);
+      setVal('field-zip',     addr.zip);
+
+      // Banner de boas-vindas
+      const banner = document.getElementById('autofill-banner');
+      if (banner) {
+        banner.style.display = 'flex';
+        banner.querySelector('.autofill-name').textContent = user.firstName || 'você';
+      }
+    }
+  } catch(e) {}
 });
 
 // ── Renderiza os itens e totais no resumo ────────────────────────
@@ -523,6 +566,28 @@ async function startSquareCheckout() {
     const data = await response.json();
 
     if (data.success && data.checkoutUrl) {
+      // Salva endereço no perfil do usuário se checkbox marcado
+      const saveCb = document.getElementById('save-address-cb');
+      if (saveCb && saveCb.checked) {
+        try {
+          const user = JSON.parse(localStorage.getItem('bellabrasil_user') || 'null');
+          if (user) {
+            user.address = {
+              street: document.getElementById('field-address').value.trim(),
+              city:   document.getElementById('field-city').value.trim(),
+              state:  'WA',
+              zip:    document.getElementById('field-zip').value.trim(),
+            };
+            user.phone = document.getElementById('field-phone').value.trim() || user.phone;
+            localStorage.setItem('bellabrasil_user', JSON.stringify(user));
+            // Atualiza também na lista de usuários
+            const users = JSON.parse(localStorage.getItem('bellabrasil_users') || '[]');
+            const idx = users.findIndex(u => u.email === user.email);
+            if (idx >= 0) { users[idx] = { ...users[idx], ...user }; localStorage.setItem('bellabrasil_users', JSON.stringify(users)); }
+          }
+        } catch(e) {}
+      }
+
       // Salva dados da entrega para a página de sucesso (usado no checkout-success.html)
       sessionStorage.setItem('bb_delivery', JSON.stringify({
         name:  `${firstName} ${lastName}`,

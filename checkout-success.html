@@ -119,7 +119,7 @@
       <span style="font-size:2rem;cursor:default">⭐</span>
       <span style="font-size:2rem;cursor:default">⭐</span>
     </div>
-    <a href="https://www.google.com/maps?q=bella+brasil+market+plus#lrd=0x54900d1f2e4f05fb:0x45ce3167ecf10496,3,,,,"
+    <a href="https://www.google.com/search?q=bella+brasil+market+plus+kirkland+wa#lrd=0x54900d1f2e4f05fb:0x45ce3167ecf10496,3,,,,"
        target="_blank" rel="noopener"
        onclick="closeReviewPopup()"
        style="display:inline-block;background:#4285F4;color:#fff;border-radius:10px;
@@ -244,16 +244,28 @@ document.addEventListener('DOMContentLoaded', async () => {
   // ── Send confirmation email ──────────────────────────────────────────────
   if (deliveryData && deliveryData.email) {
     try {
-      // Read cart items and Square product cache before clearing
+      // Se bb_delivery já tem os itens completos (nome+preço), usa direto
+      // Caso contrário, lê do localStorage e enriquece com o cache de produtos
       let cartItems  = [];
       let sqProducts = [];
-      try {
-        const cartRaw = localStorage.getItem('bellabrasil_cart');
-        if (cartRaw) cartItems = JSON.parse(cartRaw);
-      } catch {}
+
+      if (Array.isArray(deliveryData.itemsFull) && deliveryData.itemsFull.length > 0) {
+        // Caminho feliz: itens já vêm completos do checkout.html
+        cartItems = deliveryData.itemsFull;
+      } else {
+        try {
+          const cartRaw = localStorage.getItem('bellabrasil_cart');
+          if (cartRaw) cartItems = JSON.parse(cartRaw);
+        } catch {}
+      }
+
       try {
         const sqRaw = localStorage.getItem('bellabrasil_sq_products');
-        if (sqRaw) sqProducts = JSON.parse(sqRaw);
+        if (sqRaw) {
+          const parsed = JSON.parse(sqRaw);
+          // sq_products é salvo como {id: produto} — converte para array
+          sqProducts = Array.isArray(parsed) ? parsed : Object.values(parsed);
+        }
       } catch {}
 
       await sendConfirmationEmail(deliveryData, cartItems, sqProducts);

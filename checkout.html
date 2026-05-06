@@ -520,6 +520,7 @@ async function startSquareCheckout() {
 
     if (data.success && data.checkoutUrl) {
       // Salva dados da entrega para a página de sucesso
+      const sub = Cart.subtotal();
       sessionStorage.setItem('bb_delivery', JSON.stringify({
         name:  `${firstName} ${lastName}`,
         email: document.getElementById('field-email').value,
@@ -527,8 +528,15 @@ async function startSquareCheckout() {
         city:  document.getElementById('field-city').value,
         zip:   document.getElementById('field-zip').value,
         method, fee,
-        total: Cart.subtotal() + fee,
-        items: items.length,
+        subtotal: sub,
+        total: sub + fee,
+        // Itens completos para o e-mail de confirmação
+        itemsFull: cartItems.map(i => ({
+          id:       i.product.id,
+          name:     i.product.name,
+          quantity: i.qty,
+          price:    i.product.price,
+        })),
       }));
       // Redireciona para o Square
       window.location.href = data.checkoutUrl;

@@ -140,9 +140,9 @@
             <span id="summary-total">$0.00</span>
           </div>
 
-          <a href="checkout.html" class="checkout-btn" style="display:block;text-align:center;text-decoration:none;">
+          <button onclick="handleCheckout()" class="checkout-btn" style="display:block;width:100%;text-align:center;border:none;cursor:pointer;">
             🔒 Finalizar Pedido
-          </a>
+          </button>
 
           <!-- Square badge -->
           <div style="margin-top:.8rem;display:flex;align-items:center;justify-content:center;gap:.5rem;
@@ -245,15 +245,117 @@
   </div>
 </footer>
 
+<!-- ══════════ MODAL LOGIN / CONVIDADO ══════════ -->
+<div id="checkout-gate" style="display:none;position:fixed;inset:0;z-index:9999;
+     background:rgba(0,0,0,.55);backdrop-filter:blur(4px);
+     align-items:center;justify-content:center;padding:1rem">
+  <div style="background:#fff;border-radius:20px;max-width:420px;width:100%;
+              box-shadow:0 20px 60px rgba(0,0,0,.25);overflow:hidden">
+
+    <!-- Header -->
+    <div style="background:linear-gradient(135deg,#1FAD5C,#0e8040);padding:24px 28px 20px;text-align:center">
+      <div style="font-size:2rem;margin-bottom:6px">🔒</div>
+      <h2 style="margin:0;font-size:1.2rem;font-weight:800;color:#fff">Como deseja continuar?</h2>
+      <p style="margin:6px 0 0;font-size:.82rem;color:rgba(255,255,255,.85)">
+        Escolha uma opção para finalizar seu pedido
+      </p>
+    </div>
+
+    <!-- Opções -->
+    <div style="padding:24px 28px">
+
+      <!-- Já tenho conta -->
+      <a href="conta.html?redirect=checkout" id="gate-login-btn"
+         style="display:flex;align-items:center;gap:12px;background:#F0FDF4;border:2px solid #1FAD5C;
+                border-radius:12px;padding:14px 16px;text-decoration:none;margin-bottom:10px;
+                transition:all .2s;cursor:pointer">
+        <span style="font-size:1.6rem">👤</span>
+        <div>
+          <div style="font-size:.92rem;font-weight:700;color:#178048">Entrar com minha conta</div>
+          <div style="font-size:.78rem;color:#6B7280">Dados preenchidos automaticamente</div>
+        </div>
+        <span style="margin-left:auto;color:#1FAD5C;font-size:1.1rem">→</span>
+      </a>
+
+      <!-- Criar conta -->
+      <a href="conta.html?redirect=checkout&tab=register"
+         style="display:flex;align-items:center;gap:12px;background:#F0F7FF;border:2px solid #1A3B6F;
+                border-radius:12px;padding:14px 16px;text-decoration:none;margin-bottom:10px;
+                transition:all .2s;cursor:pointer">
+        <span style="font-size:1.6rem">✨</span>
+        <div>
+          <div style="font-size:.92rem;font-weight:700;color:#1A3B6F">Criar conta grátis</div>
+          <div style="font-size:.78rem;color:#6B7280">Rastreie pedidos e compre mais rápido</div>
+        </div>
+        <span style="margin-left:auto;color:#1A3B6F;font-size:1.1rem">→</span>
+      </a>
+
+      <!-- Divisor -->
+      <div style="display:flex;align-items:center;gap:10px;margin:14px 0">
+        <div style="flex:1;height:1px;background:#E5E7EB"></div>
+        <span style="font-size:.75rem;color:#9CA3AF;font-weight:600">OU</span>
+        <div style="flex:1;height:1px;background:#E5E7EB"></div>
+      </div>
+
+      <!-- Convidado -->
+      <button onclick="continueAsGuest()"
+         style="display:flex;align-items:center;gap:12px;background:#fff;border:2px solid #E5E7EB;
+                border-radius:12px;padding:14px 16px;width:100%;text-align:left;cursor:pointer;
+                transition:all .2s">
+        <span style="font-size:1.6rem">🛍️</span>
+        <div>
+          <div style="font-size:.92rem;font-weight:700;color:#374151">Continuar como convidado</div>
+          <div style="font-size:.78rem;color:#9CA3AF">Você precisará preencher seus dados manualmente</div>
+        </div>
+        <span style="margin-left:auto;color:#9CA3AF;font-size:1.1rem">→</span>
+      </button>
+
+      <button onclick="closeGate()"
+        style="width:100%;margin-top:14px;background:none;border:none;
+               font-size:.8rem;color:#9CA3AF;cursor:pointer;padding:6px">
+        ← Voltar ao carrinho
+      </button>
+    </div>
+  </div>
+</div>
+
 <script src="js/products.js"></script>
 <script src="js/cart.js"></script>
 <script src="js/main.js"></script>
 <script src="js/i18n.js"></script>
 <script src="js/auth.js"></script>
+<script src="js/firebase-config.js"></script>
 <script src="js/square-integration.js"></script>
 <script>
+// ── Checkout gate: verifica login antes de prosseguir ──
+function handleCheckout() {
+  const user = (() => { try { return JSON.parse(localStorage.getItem('bellabrasil_user')); } catch { return null; } })();
+  if (user && user.email) {
+    // Já logado → vai direto
+    window.location.href = 'checkout.html';
+  } else {
+    // Não logado → mostra modal
+    document.getElementById('checkout-gate').style.display = 'flex';
+  }
+}
+
+function closeGate() {
+  document.getElementById('checkout-gate').style.display = 'none';
+}
+
+function continueAsGuest() {
+  // Marca como convidado e vai pro checkout
+  sessionStorage.setItem('bb_guest', '1');
+  window.location.href = 'checkout.html';
+}
+
+// Fecha modal clicando fora
+document.getElementById('checkout-gate').addEventListener('click', function(e) {
+  if (e.target === this) closeGate();
+});
+
 document.addEventListener('DOMContentLoaded', () => {
-  // Sugestões: usa produtos do Square quando disponíveis
+  // Sugestões
   const grid = document.getElementById('suggestions-grid');
   if (!grid) return;
   const fill = () => {
@@ -264,7 +366,6 @@ document.addEventListener('DOMContentLoaded', () => {
       grid.innerHTML = shuffled.map(buildSquareProductCard).join('');
     }
   };
-  // Tenta imediatamente e também quando os produtos chegarem
   fill();
   window.addEventListener('squareProductsLoaded', fill);
 });

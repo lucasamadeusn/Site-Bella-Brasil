@@ -5,9 +5,46 @@
 
 const AUTH_KEY = 'bellabrasil_user';
 
-function getUser()       { try { return JSON.parse(localStorage.getItem(AUTH_KEY)); } catch { return null; } }
-function saveUser(user)  { localStorage.setItem(AUTH_KEY, JSON.stringify(user)); }
-function clearUser()     { localStorage.removeItem(AUTH_KEY); }
+function getUser()      { try { return JSON.parse(localStorage.getItem(AUTH_KEY)); } catch { return null; } }
+function clearUser()    { localStorage.removeItem(AUTH_KEY); }
+
+function saveUser(user) {
+  const prev = getUser();
+  localStorage.setItem(AUTH_KEY, JSON.stringify(user));
+
+  // ── Persistência do carrinho ao fazer login ──────────────────────
+  // Se havia um carrinho de convidado E o usuário acabou de logar
+  // (conta diferente ou login novo), mantém o carrinho intacto.
+  // Se o usuário tinha um carrinho salvo em sua conta, mescla os itens.
+  try {
+    const CART_KEY = 'bellabrasil_cart';
+    const USER_CART_KEY = `bellabrasil_cart_${user.email}`;
+
+    const guestCart  = JSON.parse(localStorage.getItem(CART_KEY)  || '[]');
+    const savedCart  = JSON.parse(localStorage.getItem(USER_CART_KEY) || '[]');
+
+    if (savedCart.length > 0 && guestCart.length === 0) {
+      // Usuário tinha carrinho salvo → restaura
+      localStorage.setItem(CART_KEY, JSON.stringify(savedCart));
+    } else if (guestCart.length > 0 && savedCart.length > 0) {
+      // Mescla: some quantidades de itens duplicados
+      const merged = [...savedCart];
+      guestCart.forEach(gi => {
+        const existing = merged.find(m => m.id === gi.id);
+        if (existing) existing.qty = Math.min(existing.qty + gi.qty, 99);
+        else merged.push(gi);
+      });
+      localStorage.setItem(CART_KEY, JSON.stringify(merged));
+      localStorage.setItem(USER_CART_KEY, JSON.stringify(merged));
+    } else if (guestCart.length > 0) {
+      // Só carrinho de convidado → salva no perfil do usuário
+      localStorage.setItem(USER_CART_KEY, JSON.stringify(guestCart));
+    }
+
+    // Dispara atualização do badge
+    window.dispatchEvent(new Event('cartUpdated'));
+  } catch(e) {}
+}
 function initials(name)  { return (name || '?').split(' ').map(w => w[0]).slice(0,2).join('').toUpperCase(); }
 
 // ── Tabs
@@ -126,6 +163,8 @@ async function socialLogin(provider) {
 
     saveUser(profile);
     showAlert('login-alert', `Bem-vindo, ${profile.firstName}! 🎉`, 'success');
+    const redir = new URLSearchParams(location.search).get('redirect');
+    if (redir === 'checkout') { setTimeout(() => location.href = 'checkout.html', 800); return; }
     setTimeout(() => renderDashboard(), 700);
 
   } catch (err) {
@@ -197,6 +236,8 @@ if (loginForm) {
 
     saveUser({ ...found, pwd: undefined });
     showAlert('login-alert', `Bem-vindo de volta, ${found.firstName}! 🎉`, 'success');
+    const redir2 = new URLSearchParams(location.search).get('redirect');
+    if (redir2 === 'checkout') { setTimeout(() => location.href = 'checkout.html', 800); return; }
     setTimeout(() => renderDashboard(), 800);
   });
 }
@@ -288,8 +329,20 @@ function renderDashboard() {
 }
 
 function logout() {
+  // Salva o carrinho atual no perfil antes de sair
+  try {
+    const user = getUser();
+    if (user && user.email) {
+      const cart = localStorage.getItem('bellabrasil_cart');
+      if (cart) localStorage.setItem(`bellabrasil_cart_${user.email}`, cart);
+    }
+  } catch(e) {}
+
   if (window._firebaseReady && window.firebase) firebase.auth().signOut().catch(()=>{});
   clearUser();
+  // Limpa carrinho da sessão (não fica no browser de outra pessoa)
+  localStorage.removeItem('bellabrasil_cart');
+  window.dispatchEvent(new Event('cartUpdated'));
   document.getElementById('auth-tabs')?.style.removeProperty('display');
   document.getElementById('account-dashboard')?.classList.remove('active');
   switchTab('login');

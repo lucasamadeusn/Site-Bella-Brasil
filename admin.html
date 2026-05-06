@@ -312,6 +312,11 @@
 </div><!-- /admin-wrap -->
 
 <script>
+// ── Backend URL ───────────────────────────────────────────────────────────────
+const BACKEND_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? 'http://localhost:3333'
+  : ''; // mesmo domínio no Vercel
+
 // ── Auth ─────────────────────────────────────────────────────────────────────
 const ADMIN_KEY = 'bellabrasil_admin_session';
 const DEFAULT_PWD_HASH = btoa('bellabrasil2024'); // default password
@@ -396,9 +401,9 @@ function loadDashboard() {
       <div class="sb-sub">Produtos marcados como ♥</div>
     </div>
     <div class="stat-box gold">
-      <div class="sb-label">Backend</div>
+      <div class="sb-label">Backend / API</div>
       <div class="sb-value" id="stat-backend">...</div>
-      <div class="sb-sub">localhost:3333</div>
+      <div class="sb-sub" id="stat-backend-sub">Verificando...</div>
     </div>
     <div class="stat-box red">
       <div class="sb-label">Produtos no Square</div>
@@ -407,16 +412,23 @@ function loadDashboard() {
     </div>`;
 
   // Check backend
-  fetch('http://localhost:3333/')
+  const backendEl = document.getElementById('stat-backend');
+  const backendSub = document.getElementById('stat-backend-sub');
+  fetch(`${BACKEND_URL}/products`)
     .then(r => r.json())
     .then(d => {
-      document.getElementById('stat-backend').textContent = '🟢 Online';
-      document.getElementById('stat-backend').style.fontSize = '1rem';
+      backendEl.textContent = '🟢 Online';
+      backendEl.style.fontSize = '1rem';
+      backendSub.textContent = BACKEND_URL || 'Vercel Serverless';
     })
-    .catch(() => { document.getElementById('stat-backend').textContent = '🔴 Offline'; document.getElementById('stat-backend').style.fontSize = '1rem'; });
+    .catch(() => {
+      backendEl.textContent = '🔴 Offline';
+      backendEl.style.fontSize = '1rem';
+      backendSub.textContent = BACKEND_URL || 'Vercel /api';
+    });
 
   // Load product count
-  fetch('http://localhost:3333/products')
+  fetch(`${BACKEND_URL}/products`)
     .then(r => r.json())
     .then(d => {
       document.getElementById('stat-products').textContent = d.count || d.products?.length || '–';
@@ -441,7 +453,7 @@ function loadDashboard() {
 let _productsLoaded = false;
 function loadProducts() {
   if (_productsLoaded) return;
-  fetch('http://localhost:3333/products')
+  fetch(`${BACKEND_URL}/products`)
     .then(r => r.json())
     .then(d => {
       document.getElementById('products-loading').style.display = 'none';

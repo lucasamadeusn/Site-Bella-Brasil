@@ -44,6 +44,7 @@
     <a href="contact.html">📞 Contato</a>
     <a href="conta.html">👤 Minha Conta</a>
     <a href="cart.html">🛒 Ver Carrinho</a>
+    <a href="rastreamento.html">📦 Rastrear Pedido</a>
   </nav>
 </header>
 
@@ -109,6 +110,10 @@
 <script src="js/i18n.js"></script>
 <script src="js/square-integration.js"></script>
 <script>
+const BACKEND_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? 'http://localhost:3333'
+  : ''; // mesmo domínio no Vercel
+
 const FAV_KEY = 'bellabrasil_favorites';
 function getFavIds() { try { return JSON.parse(localStorage.getItem(FAV_KEY)) || []; } catch { return []; } }
 
@@ -129,7 +134,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Try to load from Square backend
   try {
-    const resp = await fetch('http://localhost:3333/products');
+    const resp = await fetch(`${BACKEND_URL}/products`);
     const data = await resp.json();
     if (data.success && data.products) {
       const favProducts = data.products.filter(p => favIds.includes(p.id));

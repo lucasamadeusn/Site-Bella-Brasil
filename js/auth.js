@@ -113,108 +113,6 @@ function clearFieldErrors(formId) {
 }
 
 // ================================================================
-//  SOCIAL LOGIN (Firebase Auth)
-// ================================================================
-
-async function socialLogin(provider) {
-  const providerNames = { google:'Google', facebook:'Facebook', apple:'Apple' };
-
-  if (!window._firebaseReady || !window.firebase) {
-    showFirebaseSetupGuide(provider);
-    return;
-  }
-
-  const btn = document.activeElement;
-  if (btn && btn.classList.contains('social-btn')) { btn.disabled = true; btn.style.opacity = '.6'; }
-
-  try {
-    let authProvider;
-    if (provider === 'google') {
-      authProvider = new firebase.auth.GoogleAuthProvider();
-      authProvider.addScope('email'); authProvider.addScope('profile');
-    } else if (provider === 'facebook') {
-      authProvider = new firebase.auth.FacebookAuthProvider();
-      authProvider.addScope('email'); authProvider.addScope('public_profile');
-    } else if (provider === 'apple') {
-      authProvider = new firebase.auth.OAuthProvider('apple.com');
-      authProvider.addScope('email'); authProvider.addScope('name');
-    }
-
-    const result = await firebase.auth().signInWithPopup(authProvider);
-    const fbUser = result.user;
-    const nameParts = (fbUser.displayName || '').split(' ');
-
-    const profile = {
-      id:        fbUser.uid,
-      firstName: nameParts[0] || '',
-      lastName:  nameParts.slice(1).join(' ') || '',
-      name:      fbUser.displayName || fbUser.email,
-      email:     fbUser.email || '',
-      phone:     fbUser.phoneNumber || '',
-      photoURL:  fbUser.photoURL || null,
-      provider,
-      createdAt: new Date().toISOString(),
-    };
-
-    // Preserva dados locais adicionais se já tinha conta
-    const existing = JSON.parse(localStorage.getItem('bellabrasil_users') || '[]')
-      .find(u => u.email === profile.email);
-    if (existing) Object.assign(profile, { address: existing.address, phone: existing.phone || profile.phone });
-
-    saveUser(profile);
-    showAlert('login-alert', `Bem-vindo, ${profile.firstName}! 🎉`, 'success');
-    const redir = new URLSearchParams(location.search).get('redirect');
-    if (redir === 'checkout') { setTimeout(() => location.href = 'checkout.html', 800); return; }
-    setTimeout(() => renderDashboard(), 700);
-
-  } catch (err) {
-    if (btn && btn.classList.contains('social-btn')) { btn.disabled = false; btn.style.opacity = '1'; }
-    if (err.code === 'auth/popup-closed-by-user') return;
-    if (err.code === 'auth/account-exists-with-different-credential') {
-      showAlert('login-alert', 'Este e-mail já está cadastrado com outro método de login.');
-    } else if (err.code === 'auth/operation-not-allowed') {
-      showAlert('login-alert', `${providerNames[provider]} não está habilitado. Ative em Firebase Console → Authentication.`);
-    } else {
-      showAlert('login-alert', err.message || 'Erro ao fazer login. Tente novamente.');
-    }
-  }
-}
-
-function showFirebaseSetupGuide(provider) {
-  const names = { google:'Google', facebook:'Facebook', apple:'Apple' };
-  const overlay = document.createElement('div');
-  overlay.style.cssText = `position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;
-    display:flex;align-items:center;justify-content:center;padding:1rem;`;
-  overlay.innerHTML = `
-    <div style="background:#fff;border-radius:16px;padding:1.8rem 2rem;max-width:400px;width:100%;
-                box-shadow:0 20px 60px rgba(0,0,0,.3);position:relative">
-      <button onclick="this.closest('div[style]').remove()"
-        style="position:absolute;top:.8rem;right:1rem;background:none;border:none;font-size:1.5rem;
-               cursor:pointer;color:var(--gray-400);line-height:1">×</button>
-      <div style="font-size:2rem;text-align:center;margin-bottom:.8rem">⚙️</div>
-      <h3 style="color:var(--navy);text-align:center;margin-bottom:.5rem">
-        Configure Login com ${names[provider]}
-      </h3>
-      <p style="color:var(--gray-600);font-size:.88rem;text-align:center;margin-bottom:1.2rem">
-        Para ativar o login social é necessário configurar o Firebase (gratuito, ~5 min).
-      </p>
-      <ol style="font-size:.84rem;color:var(--gray-600);line-height:2;padding-left:1.2rem;margin-bottom:1.2rem">
-        <li>Acesse <a href="https://console.firebase.google.com" target="_blank"
-            style="color:var(--green);font-weight:600">console.firebase.google.com</a></li>
-        <li>Crie um projeto → Authentication → Get started</li>
-        <li>Ative o provedor <strong>${names[provider]}</strong></li>
-        <li>Cole o <code>firebaseConfig</code> em <code>js/firebase-config.js</code></li>
-        <li>Recarregue a página</li>
-      </ol>
-      <div style="background:var(--green-light);border-radius:8px;padding:.8rem;font-size:.82rem;color:var(--green-dark)">
-        💡 Enquanto isso, use <strong>e-mail e senha</strong> — funciona sem configuração!
-      </div>
-    </div>`;
-  document.body.appendChild(overlay);
-  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
-}
-
-// ================================================================
 //  LOGIN COM E-MAIL
 // ================================================================
 const loginForm = document.getElementById('login-form');
@@ -338,7 +236,6 @@ function logout() {
     }
   } catch(e) {}
 
-  if (window._firebaseReady && window.firebase) firebase.auth().signOut().catch(()=>{});
   clearUser();
   // Limpa carrinho da sessão (não fica no browser de outra pessoa)
   localStorage.removeItem('bellabrasil_cart');
@@ -361,14 +258,7 @@ function safeSet(id, val) { const el=document.getElementById(id); if(el) el.valu
 
 function showForgotModal(e) {
   e.preventDefault();
-  const email = document.getElementById('login-email').value.trim();
-  if (window._firebaseReady && window.firebase && email) {
-    firebase.auth().sendPasswordResetEmail(email)
-      .then(() => authToast(`📧 Link de redefinição enviado para ${email}!`,'success'))
-      .catch(err => authToast(err.message,'error'));
-  } else {
-    authToast(`📧 Se ${email||'o e-mail'} estiver cadastrado, você receberá um link.`,'success');
-  }
+  authToast(`📧 Entre em contato pelo WhatsApp para redefinir sua senha.`, 'success');
 }
 
 function updateNavAccountLink(user) {
@@ -388,36 +278,7 @@ function authToast(msg, type='success') {
   t.textContent = msg; document.body.appendChild(t); setTimeout(()=>t.remove(),3500);
 }
 
-// ================================================================
-//  FIREBASE — init automático
-// ================================================================
-function initFirebase() {
-  if (!window._firebaseReady || !window.FIREBASE_CONFIG) return;
-  if (window.firebase?.apps?.length) return;
-  try {
-    firebase.initializeApp(FIREBASE_CONFIG);
-    console.log('✅ Firebase Auth inicializado');
-    firebase.auth().onAuthStateChanged(fbUser => {
-      if (fbUser && !getUser()) {
-        const np = (fbUser.displayName||'').split(' ');
-        saveUser({
-          id: fbUser.uid,
-          firstName: np[0]||'', lastName: np.slice(1).join(' ')||'',
-          name: fbUser.displayName||fbUser.email,
-          email: fbUser.email||'', photoURL: fbUser.photoURL||null,
-          provider: fbUser.providerData?.[0]?.providerId||'email',
-        });
-        renderDashboard();
-      }
-    });
-  } catch(err) {
-    console.warn('Firebase init error:', err.message);
-    window._firebaseReady = false;
-  }
-}
-
 document.addEventListener('DOMContentLoaded', () => {
-  initFirebase();
   const user = getUser();
   if (user && document.getElementById('account-dashboard')) renderDashboard();
   if (user) updateNavAccountLink(user);

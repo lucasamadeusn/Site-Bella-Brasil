@@ -506,21 +506,24 @@ async function startSquareCheckout() {
       priceRaw: Math.round(i.product.price * 100),
     }));
 
+    const sub = Cart.subtotal();
     const response = await fetch(`${BACKEND}/create-checkout`, {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         items,
-        delivery:     { method, fee },
-        customerName: `${firstName} ${lastName}`.trim(),
+        delivery:      { method, fee },
+        customerName:  `${firstName} ${lastName}`.trim(),
+        customerEmail: document.getElementById('field-email').value.trim(),
+        subtotal:      sub,
+        total:         sub + fee,
       }),
     });
 
     const data = await response.json();
 
     if (data.success && data.checkoutUrl) {
-      // Salva dados da entrega para a página de sucesso
-      const sub = Cart.subtotal();
+      // Salva dados da entrega para a página de sucesso (usado no checkout-success.html)
       sessionStorage.setItem('bb_delivery', JSON.stringify({
         name:  `${firstName} ${lastName}`,
         email: document.getElementById('field-email').value,

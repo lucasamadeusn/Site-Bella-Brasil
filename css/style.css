@@ -1238,6 +1238,7 @@ h4 { font-size: 1rem;    font-weight: 600; }
 .cart-item:last-child { border-bottom: none; }
 .cart-item-img {
   width: 80px;
+  min-width: 80px;   /* never shrink below this */
   height: 80px;
   background: var(--gray-100);
   border-radius: 10px;
@@ -1246,8 +1247,9 @@ h4 { font-size: 1rem;    font-weight: 600; }
   justify-content: center;
   font-size: 2rem;
   overflow: hidden;
+  flex-shrink: 0;
 }
-.cart-item-img img { width: 100%; height: 100%; object-fit: cover; }
+.cart-item-img img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; }
 .cart-item-name { font-size: .92rem; font-weight: 600; margin-bottom: .2rem; }
 .cart-item-cat { font-size: .72rem; color: var(--green); font-weight: 600; }
 .cart-item-price { font-size: .92rem; color: var(--green); font-weight: 700; }
@@ -1861,8 +1863,16 @@ h4 { font-size: 1rem;    font-weight: 600; }
   .form-grid       { grid-template-columns: 1fr; }
   .payment-options { grid-template-columns: 1fr; }
 
-  /* Cart */
-  .cart-item    { grid-template-columns: 64px 1fr auto; }
+  /* Cart — use flexbox on mobile for reliable layout */
+  .cart-item {
+    display: flex;
+    align-items: flex-start;
+    gap: .75rem;
+    padding: .9rem 1rem;
+  }
+  .cart-item-img { width: 72px; min-width: 72px; height: 72px; }
+  .cart-item > div:nth-child(2) { flex: 1; min-width: 0; }
+  .cart-item > div:nth-child(3) { flex-shrink: 0; text-align: right; }
 
   /* About */
   .about-stats  { grid-template-columns: repeat(2, 1fr); }
@@ -1915,10 +1925,11 @@ h4 { font-size: 1rem;    font-weight: 600; }
   .product-card .product-price { font-size: 1.05rem; }
   .product-card .add-btn      { width: 34px; height: 34px; font-size: 1.1rem; }
 
-  /* Cart */
-  .cart-item    { grid-template-columns: 56px 1fr auto; gap: .5rem; padding: .75rem; }
-  .cart-item-name  { font-size: .85rem; }
+  /* Cart — flexbox no mobile pequeno também */
+  .cart-item-img { width: 62px; min-width: 62px; height: 62px; }
+  .cart-item-name  { font-size: .83rem; }
   .cart-item-price { font-size: .78rem; }
+  .cart-item-cat   { font-size: .68rem; }
 
   /* Newsletter */
   .newsletter-form { flex-direction: column; border-radius: var(--radius); }

@@ -1797,16 +1797,16 @@ h4 { font-size: 1rem;    font-weight: 600; }
   .hero h1      { font-size: clamp(1.9rem, 8vw, 2.8rem); }
   .hero p       { margin: 0 auto 1.4rem; max-width: 88%; font-size: .95rem; }
   .hero-cta     { justify-content: center; gap: .7rem; }
-  .hero-visual  { margin-top: .5rem; }
+  .hero-visual  { margin-top: 1.5rem; padding: 1.2rem .5rem 1.5rem; }
   .hero-store-card   { max-width: 88%; margin: 0 auto; }
   .hero-store-card img { height: 230px; }
   .hero-stats   { justify-content: center; gap: 1.4rem; flex-wrap: wrap; }
 
   /* Badges flutuantes */
   .hero-flag-badge          { font-size: .73rem; padding: .5rem .75rem; }
-  .hero-flag-badge.badge-br { left: 4px; }
-  .hero-flag-badge.badge-us { right: 4px; }
-  .hero-flag-badge.badge-delivery { bottom: -10px; }
+  .hero-flag-badge.badge-br { left: 4px; top: -8px; }
+  .hero-flag-badge.badge-us { right: 4px; top: -8px; }
+  .hero-flag-badge.badge-delivery { bottom: -12px; }
 
   /* Trust bar */
   .trust-bar-inner {
@@ -1821,13 +1821,32 @@ h4 { font-size: 1rem;    font-weight: 600; }
   .trust-bar-inner::-webkit-scrollbar { display: none; }
   .trust-item { flex-shrink: 0; font-size: .75rem; }
 
-  /* Info strip */
-  .info-strip-inner { gap: 1.2rem; font-size: .8rem; }
+  /* Info strip — horizontal scroll like trust bar */
+  .info-strip-inner {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    justify-content: flex-start;
+    padding: .5rem 1rem;
+    gap: 1.4rem;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .info-strip-inner::-webkit-scrollbar { display: none; }
+  .info-item { flex-shrink: 0; font-size: .78rem; white-space: nowrap; }
 
   /* Sections */
   .section      { padding: 2.8rem 0; }
   .section-eyebrow { font-size: .7rem; }
   h2            { font-size: 1.75rem; }
+
+  /* Section header — stack vertically on mobile */
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .6rem;
+    margin-bottom: 1.4rem;
+  }
+  .section-header .see-all { font-size: .82rem; }
 
   /* Category grid — 2 colunas */
   .category-grid { grid-template-columns: repeat(2, 1fr); gap: .8rem; }

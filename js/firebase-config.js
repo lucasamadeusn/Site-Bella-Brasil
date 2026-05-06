@@ -1,27 +1,16 @@
 // ================================================================
-//  firebase-config.js — Configuração do Firebase Auth
-//
-//  COMO CONFIGURAR (5 minutos):
-//  1. Acesse https://console.firebase.google.com
-//  2. Clique em "Add project" → dê um nome (ex: bella-brasil)
-//  3. No menu lateral: Authentication → Get started
-//  4. Ative os provedores desejados:
-//     • Google      → só clicar em Enable
-//     • Facebook    → precisa de App ID + Secret do developers.facebook.com
-//     • Apple       → precisa de conta Apple Developer ($99/ano)
-//  5. No menu lateral: Project Settings (⚙️) → Your apps → Web (</>)
-//  6. Copie o firebaseConfig e cole abaixo
-//  7. Em Authentication → Settings → Authorized domains
-//     adicione: localhost (já deve estar lá)
+//  firebase-config.js — Bella Brasil Market Plus
+//  Projeto Firebase: bella-brasil-6b105
 // ================================================================
 
 const FIREBASE_CONFIG = {
-  apiKey:            "COLE_AQUI",
-  authDomain:        "SEU-PROJETO.firebaseapp.com",
-  projectId:         "SEU-PROJETO",
-  storageBucket:     "SEU-PROJETO.appspot.com",
-  messagingSenderId: "000000000000",
-  appId:             "1:000000000000:web:xxxxxxxxxxxxxxxx",
+  apiKey:            "AIzaSyAGiDp7pfKM3KNebBqxLHc2-z9a9ak5Irw",
+  authDomain:        "bella-brasil-6b105.firebaseapp.com",
+  projectId:         "bella-brasil-6b105",
+  storageBucket:     "bella-brasil-6b105.firebasestorage.app",
+  messagingSenderId: "265769821870",
+  appId:             "1:265769821870:web:2e9628dcae9ae2c9076f3f",
+  measurementId:     "G-0JX2WNNDV5",
 };
 
 // Detecta se o config foi preenchido

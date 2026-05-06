@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pedido Confirmado! — Bella Brasil Market Plus</title>
-  <link rel="stylesheet" href="css/style.css?v=2028" />
+  <link rel="stylesheet" href="css/style.css?v=2029" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#1A3B6F" />
 </head>
@@ -119,7 +119,7 @@
       <span style="font-size:2rem;cursor:default">⭐</span>
       <span style="font-size:2rem;cursor:default">⭐</span>
     </div>
-    <a href="https://search.google.com/local/writereview?placeid=ChIJcWvQD5QBkFQRsrjBGE_IimQ"
+    <a href="https://www.google.com/maps/place/Bella+Brasil+Market+Plus/@47.7073,-122.1719,17z/data=!4m8!3m7!1s0x5490018fd70f696e:0x628ac84f18c1b8b2!8m2!3d47.7073!4d-122.1719!9m1!1b1"
        target="_blank" rel="noopener"
        onclick="closeReviewPopup()"
        style="display:inline-block;background:#4285F4;color:#fff;border-radius:10px;
@@ -270,7 +270,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   localStorage.removeItem('bellabrasil_square_cart');
   Cart.clear();
 
-  // ── Google Review popup (aparece 7s após carregamento) ───────────────────
+  // ── Google Review popup (aparece 2s após carregamento) ───────────────────
   const reviewShown = sessionStorage.getItem('bb_review_shown');
   if (!reviewShown) {
     setTimeout(() => {
@@ -279,7 +279,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         popup.style.display = 'flex';
         sessionStorage.setItem('bb_review_shown', '1');
       }
-    }, 7000);
+    }, 2000);
   }
 });
 

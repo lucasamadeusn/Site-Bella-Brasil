@@ -3,7 +3,7 @@
 //  Cache-first for assets, network-first for API calls
 // ================================================================
 
-const CACHE_NAME = 'bellabrasil-v2026';
+const CACHE_NAME = 'bellabrasil-v2030';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
